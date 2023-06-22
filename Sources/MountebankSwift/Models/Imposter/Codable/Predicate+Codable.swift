@@ -21,10 +21,10 @@ extension Stub.Predicate {
         switch self {
         case .equals(let equalsData):
             try container.encode(equalsData, forKey: .equals)
-        case .deepEquals:
-            break
-        case .contains:
-            break
+        case .deepEquals(let deepEqualsData):
+            try container.encode(deepEqualsData, forKey: .deepEquals)
+        case .contains(let containsData):
+            try container.encode(containsData, forKey: .contains)
         case .startsWith:
             break
         case .endsWith:
@@ -49,10 +49,14 @@ extension Stub.Predicate {
 
         if let value = try container.decodeIfPresent(JSON.self, forKey: .equals) {
             self = .equals(value)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .deepEquals) {
+            self = .deepEquals(value)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .contains) {
+            self = .contains(value)
         } else if let value = try container.decodeIfPresent(String.self, forKey: .equals) {
             self = .inject(value)
         } else {
-            fatalError("TODO")
+            fatalError("This Predicate needs to be implemented")
         }
     }
 }

@@ -8,7 +8,7 @@ public struct Mountebank {
         URL(string: "http://\(host):\(port)")!
     }
 
-    private let httpClient: HttpClient
+    private let httpClient: HttpClientProtocol
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
 
@@ -18,7 +18,7 @@ public struct Mountebank {
         self.httpClient = HttpClient()
     }
     
-    init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClient) {
+    init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClientProtocol) {
         self.host = host
         self.port = port
         self.httpClient = httpClient

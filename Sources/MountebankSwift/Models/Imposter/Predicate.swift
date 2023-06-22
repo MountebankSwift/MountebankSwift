@@ -6,9 +6,9 @@ extension Stub {
         case equals(JSON)
         /// Performs nested set equality on the request field, useful when the request field is an object (e.g. the
         /// query field in http)
-        case deepEquals
+        case deepEquals(JSON)
         /// The request field contains the predicate
-        case contains
+        case contains(JSON)
         /// The request field starts with the predicate
         case startsWith
         /// The request field ends with the predicate

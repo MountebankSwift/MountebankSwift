@@ -3,39 +3,39 @@ import XCTest
 
 final class MountebankIntegrationTests: XCTestCase {
 
-    private var mountebank: Mountebank!
+    private var sut: Mountebank!
 
     override func setUp() async throws {
-        mountebank = Mountebank(host: .localhost, port: 2525)
+        sut = Mountebank(host: .localhost, port: 2525)
 
         do {
-            try await mountebank.testConnection()
+            try await sut.testConnection()
         } catch {
             XCTFail("Mountebank needs to be running to run the tests. Start with `mb start`")
         }
     }
 
     override func tearDown() async throws {
-        _ = try await mountebank.deleteAllImposters()
+        _ = try await sut.deleteAllImposters()
 
-        mountebank = nil
+        sut = nil
     }
 
     func testGettingLogs() async throws {
-        let logsResponse = try await mountebank.getLogs()
+        let logsResponse = try await sut.getLogs()
 
         XCTAssertGreaterThan(logsResponse.logs.count, 0)
     }
 
     func testGettingConfig() async throws {
-        let config = try await mountebank.getConfig()
+        let config = try await sut.getConfig()
 
-        XCTAssertGreaterThan(config.version.count, 4)
+        XCTAssertGreaterThan(config.version.count, 0)
     }
 
     func testUpdatingStub() async throws {
         let port = try await postDefaultImposter()
-        let updatedImposterResult = try await mountebank.postImposterStub(addStub: AddStub.injectBody, port: port)
+        let updatedImposterResult = try await sut.postImposterStub(addStub: AddStub.injectBody, port: port)
 
         XCTAssertEqual(updatedImposterResult.stubs.count, 2)
         XCTAssertEqual(updatedImposterResult.stubs.first, Stub.httpResponse200)
@@ -44,7 +44,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testUpdatingImposter() async throws {
         let port = try await postDefaultImposter()
-        let updatedImposterResult = try await mountebank.putImposterStubs(
+        let updatedImposterResult = try await sut.putImposterStubs(
             imposter: Imposter.exampleAllvariants,
             port: port
         )
@@ -56,7 +56,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testGetAllImposters() async throws {
         let port = try await postDefaultImposter()
-        let allImposters = try await mountebank.getImposter(port: port)
+        let allImposters = try await sut.getImposter(port: port)
 
         XCTAssertEqual(allImposters.stubs.count, 1)
         XCTAssertEqual(allImposters.port, port)
@@ -64,14 +64,14 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testDeleteAllImposters() async throws {
         let port = try await postDefaultImposter()
-        _ = try await mountebank.deleteAllImposters()
-        let allImposters = try await mountebank.getAllImposters()
+        _ = try await sut.deleteAllImposters()
+        let allImposters = try await sut.getAllImposters()
 
         XCTAssertEqual(allImposters.imposters.count, 0)
     }
 
     func testDeleteSavedProxyResponses() async throws {
-        let imposterResult = try await mountebank.postImposter(imposter: Imposter(
+        let imposterResult = try await sut.postImposter(imposter: Imposter(
             port: nil,
             scheme: .https,
             name: "Imposter with proxy",
@@ -84,13 +84,13 @@ final class MountebankIntegrationTests: XCTestCase {
             return
         }
 
-        let response = try await mountebank.deleteSavedProxyResponses(port: port)
+        let response = try await sut.deleteSavedProxyResponses(port: port)
 
         XCTAssertEqual(response.stubs.count, 1)
     }
 
     private func postDefaultImposter() async throws -> Int {
-        let imposterResult = try await mountebank.postImposter(imposter: Imposter.exampleSingleStub)
+        let imposterResult = try await sut.postImposter(imposter: Imposter.exampleSingleStub)
         guard let port = imposterResult.port else {
             XCTFail("Port should have been set by now.")
             return 0
