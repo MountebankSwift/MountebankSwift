@@ -10,25 +10,31 @@ final class ImposterTests: XCTestCase {
             Stub(
                 predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
                 responses: [
-                    .is(Response.Is(statusCode: 200, body: "hello world", mode: .text), Response.Parameters(repeatCount: 3)),
+                    .is(Stub.Response.Is(statusCode: 200, body: "hello world", mode: .text), Stub.Response.Parameters(repeatCount: 3)),
                 ]
             ),
             Stub(
                 predicates: [.equals(PredicateEquals(path: "/test-is-404"))],
                 responses: [
-                    .is(Response.Is(statusCode: 404), Response.Parameters(repeatCount: 2)),
+                    .is(Stub.Response.Is(statusCode: 404), Stub.Response.Parameters(repeatCount: 2)),
                 ]
             ),
             Stub(
                 predicates: [.equals(PredicateEquals(path: "/test-proxy"))],
                 responses: [
-                    .proxy(Response.Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways"), nil),
+                    .proxy(Stub.Response.Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways"), nil),
                 ]
             ),
             Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
+                predicates: [.equals(PredicateEquals(path: "/test-injection"))],
                 responses: [
                     .inject(injection: "(config) => { return { body: \"hello world\" }; }", nil),
+                ]
+            ),
+            Stub(
+                predicates: [.equals(PredicateEquals(path: "/test-fault"))],
+                responses: [
+                    .fault(.connectionResetByPeer, nil),
                 ]
             ),
         ]

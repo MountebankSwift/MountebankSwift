@@ -1,8 +1,8 @@
 import Foundation
 
 public struct Stub: Codable {
-    let predicates: [Predicate]
-    let responses: [Response]
+    let predicates: [Stub.Predicate]
+    let responses: [Stub.Response]
 
     enum CodingKeys: String, CodingKey {
         case predicates
