@@ -1,6 +1,5 @@
 import Foundation
 
-// https://www.mbtest.org/docs/api/contracts
 extension Stub.Response {
     public enum Body: Equatable {
         case text(String)

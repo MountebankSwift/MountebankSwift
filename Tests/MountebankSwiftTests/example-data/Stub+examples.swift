@@ -18,7 +18,7 @@ extension Stub {
             .is(
                 Stub.Response.Is(
                     statusCode: 200,
-                    body: "<html><body><marquee>Who needs html 5?</marquee></html>"
+                    body: "<html><body><h1>Who needs HTML?</h1></html>"
                 ),
                 nil
             ),

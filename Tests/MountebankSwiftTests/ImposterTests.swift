@@ -29,82 +29,46 @@ final class ImposterTests: XCTestCase {
     }
 
     func testEncodeDecodeDataStub() throws {
-        try encodeDecode(value: Stub.binary.responses[0])
+        try assertEncodeDecode(Stub.httpResponse200)
+        try assertEncodeDecode(Stub.html200)
+        try assertEncodeDecode(Stub.json)
+        try assertEncodeDecode(Stub.binary)
+        try assertEncodeDecode(Stub.httpResponse404)
+        try assertEncodeDecode(Stub.proxy)
+        try assertEncodeDecode(Stub.injectBody)
+        try assertEncodeDecode(Stub.connectionResetByPeer)
     }
 
+    func testEncodeDecodeParameters() throws {
+        try assertEncodeDecode(
+            Stub.Response.is(
+                Stub.Response.Is(statusCode: 200),
+                Stub.Response.Parameters(repeatCount: nil)
+            )
+        )
+
+        try assertEncodeDecode(
+            Stub.Response.is(
+                Stub.Response.Is(statusCode: 200),
+                Stub.Response.Parameters(repeatCount: 5)
+            )
+        )
+    }
 
     func testDecode() throws {
         let data = exampleJSON.data(using: .utf8)
         let decodedImposters = try JSONDecoder().decode(Imposter.self, from: data!)
         XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
-        XCTAssertEqual(decodedImposters.stubs[0].predicates, imposter.stubs[0].predicates)
-        XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
-        XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[1].predicates, imposter.stubs[1].predicates)
-        XCTAssertEqual(decodedImposters.stubs[1].responses[0], imposter.stubs[1].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[2].predicates, imposter.stubs[2].predicates)
-        XCTAssertEqual(decodedImposters.stubs[2].responses[0], imposter.stubs[2].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[3].predicates, imposter.stubs[3].predicates)
-        XCTAssertEqual(decodedImposters.stubs[3].responses[0], imposter.stubs[3].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[4].predicates, imposter.stubs[4].predicates)
-        XCTAssertEqual(decodedImposters.stubs[4].responses[0], imposter.stubs[4].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[5].predicates, imposter.stubs[5].predicates)
-        XCTAssertEqual(decodedImposters.stubs[5].responses[0], imposter.stubs[5].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[6].predicates, imposter.stubs[6].predicates)
-        XCTAssertEqual(decodedImposters.stubs[6].responses[0], imposter.stubs[6].responses[0])
-
         XCTAssertEqual(imposter, decodedImposters)
     }
 
     func testEncodeDecode() throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let jsonData = try encoder.encode(imposter)
-
-        let decodedImposters = try JSONDecoder().decode(Imposter.self, from: jsonData)
-
-        XCTAssertEqual(decodedImposters.port, imposter.port)
-        XCTAssertEqual(decodedImposters.scheme, imposter.scheme)
-        XCTAssertEqual(decodedImposters.name, imposter.name)
-        XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
-        XCTAssertEqual(decodedImposters.stubs[0].predicates, imposter.stubs[0].predicates)
-        XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
-        XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[1].predicates, imposter.stubs[1].predicates)
-        XCTAssertEqual(decodedImposters.stubs[1].responses[0], imposter.stubs[1].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[2].predicates, imposter.stubs[2].predicates)
-        XCTAssertEqual(decodedImposters.stubs[2].responses[0], imposter.stubs[2].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[3].predicates, imposter.stubs[3].predicates)
-        XCTAssertEqual(decodedImposters.stubs[3].responses[0], imposter.stubs[3].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[4].predicates, imposter.stubs[4].predicates)
-        XCTAssertEqual(decodedImposters.stubs[4].responses[0], imposter.stubs[4].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[5].predicates, imposter.stubs[5].predicates)
-        XCTAssertEqual(decodedImposters.stubs[5].responses[0], imposter.stubs[5].responses[0])
-
-        XCTAssertEqual(decodedImposters.stubs[6].predicates, imposter.stubs[6].predicates)
-        XCTAssertEqual(decodedImposters.stubs[6].responses[0], imposter.stubs[6].responses[0])
-
-        XCTAssertEqual(imposter, decodedImposters)
+        try assertEncodeDecode(imposter)
     }
 
-    func encodeDecode<SomeType: Codable & Equatable>(value: SomeType, line: UInt = #line) throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let data = try encoder.encode(value)
-        let decoded = try JSONDecoder().decode(SomeType.self, from: data)
-        XCTAssertEqual(value, decoded, line: line)
-    }
+//    func testDecodeEncode() throws {
+//        try assertDecodeEncode(exampleJSON, as: Imposter.self)
+//    }
 }
 
 fileprivate let exampleJSON = """
@@ -149,7 +113,7 @@ fileprivate let exampleJSON = """
         },
         {
             "predicates" : [{"equals" : {"path" : "/test-html-200"}}],
-            "responses" : [{"is" : {"statusCode" : 200, "body" : "<html><body><marquee>Who needs html 5?</marquee></html>"}}]
+            "responses" : [{"is" : {"statusCode" : 200, "body" : "<html><body><h1>Who needs HTML?</h1></html>"}}]
         }
     ]
 }

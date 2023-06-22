@@ -10,7 +10,6 @@ public struct Imposters: Codable {
             case port
         }
     }
-    let imposters: [ImposterRef]
-    
-}
 
+    let imposters: [ImposterRef]
+}

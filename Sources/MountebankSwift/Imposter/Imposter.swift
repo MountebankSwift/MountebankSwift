@@ -1,6 +1,10 @@
 import Foundation
 
-// https://www.mbtest.org/docs/api/contracts
+
+// TODO MB responses containing imposters will could also contain
+// public let requests: [Request]
+// public let numberOfRequests: Int
+
 public struct Imposter: Codable, Equatable {
     public let port: Int?
     public let scheme: Scheme
@@ -8,10 +12,6 @@ public struct Imposter: Codable, Equatable {
     public let stubs: [Stub]
     public let defaultResponse: Stub.Response?
     public let recordRequests: Bool?
-
-    // TODO
-    // public let requests: [Request]
-    // public let numberOfRequests: Int
 
     enum CodingKeys: String, CodingKey {
         case port
