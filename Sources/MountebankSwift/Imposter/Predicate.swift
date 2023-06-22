@@ -3,7 +3,7 @@ import Foundation
 // // https://www.mbtest.org/docs/api/contracts
 public enum Predicate: Codable {
     // The request field matches the predicate
-    case equals
+    case equals(PredicateEquals)
     // Performs nested set equality on the request field, useful when the request field is an object (e.g. the query field in http)
     case deepEquals
     // The request field contains the predicate
@@ -24,4 +24,8 @@ public enum Predicate: Codable {
     case and
     // Injects JavaScript to decide whether the request matches or not. See the injection page for more details.
     case inject
+}
+
+public struct PredicateEquals: Codable {
+    let path: String
 }

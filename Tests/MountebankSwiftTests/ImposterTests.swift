@@ -8,10 +8,29 @@ final class ImposterTests: XCTestCase {
         name: "imposter contract service",
         stubs: [
             Stub(
-                predicates: [.equals],
+                predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
                 responses: [
-                    .is(Response.Is(statusCode: 200, body: "hello world"), nil)
-                ])
+                    .is(Response.Is(statusCode: 200, body: "hello world", mode: .text), Response.Parameters(repeatCount: 3)),
+                ]
+            ),
+            Stub(
+                predicates: [.equals(PredicateEquals(path: "/test-is-404"))],
+                responses: [
+                    .is(Response.Is(statusCode: 404), Response.Parameters(repeatCount: 2)),
+                ]
+            ),
+            Stub(
+                predicates: [.equals(PredicateEquals(path: "/test-proxy"))],
+                responses: [
+                    .proxy(Response.Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways"), nil),
+                ]
+            ),
+            Stub(
+                predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
+                responses: [
+                    .inject(injection: "(config) => { return { body: \"hello world\" }; }", nil),
+                ]
+            ),
         ]
     )
 
@@ -35,70 +54,22 @@ fileprivate let exampleJSON = """
     "port": 4545,
     "protocol": "https",
     "name": "imposter contract service",
-    "recordRequests": "true",
-    "numberOfRequests": "1",
-    "defaultResponse": {
-        "statusCode": 400,
-        "body": "Bad Request",
-        "headers": {}
-    },
     "stubs": [
         {
-            "responses": [
-                {
-                    "is": {
-                        "statusCode": 201,
-                        "headers": {
-                            "Location": "http://example.com/resource"
-                        },
-                        "body": "The time is ${TIME}",
-                        "_mode": "text"
-                    },
-                    "repeat": 3,
-                    "behaviors": [
-                        {
-                            "wait": 500
-                        },
-                        {
-                            "decorate": "config => { config.response.body = config.response.body.replace('${TIME}', 'now'); }"
-                        },
-                        {
-                            "shellTransform": "transformResponse"
-                        },
-                        {
-                            "copy": {
-                                "from": "body",
-                                "into": "${NAME}",
-                                "using": {
-                                    "method": "xpath",
-                                    "selector": "//test:name",
-                                    "ns": {
-                                        "test": "http://example.com/test"
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                }
-            ],
-            "predicates": [
-                {
-                    "equals": {
-                        "body": "value"
-                    },
-                    "caseSensitive": true,
-                    "except": "^The ",
-                    "jsonpath": {
-                        "selector": "$..book"
-                    },
-                    "xpath": {
-                        "selector": "//book/@title",
-                        "ns": {
-                            "isbn": "http://schemas.isbn.org/ns/1999/basic.dtd"
-                        }
-                    }
-                }
-            ]
+            "predicates": [{"equals": {"path": "/test-is-200"}}],
+            "responses": [{ "is": { "statusCode": 200, "body": "Hello world", "_mode": "text" }, "repeat": 3 }]
+        },
+        {
+            "predicates": [{"equals": {"path": "/test-is-404"}}],
+            "responses": [{ "is": { "statusCode": 404 }, "repeat": 2 }]
+        },
+        {
+            "predicates": [{"equals": {"path": "/test-proxy"}}],
+            "responses": [{ "proxy": {"to": "https://www.somesite.com:3000", "mode": "proxyAlways"} }]
+        },
+        {
+            "predicates": [{"equals": {"path": "/test-inject"}}],
+            "responses": [{ "inject": "(config) => { return { body: \"hello world\" }; }" }]
         }
     ]
 }

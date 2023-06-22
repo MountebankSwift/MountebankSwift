@@ -29,10 +29,8 @@ public enum Response: Codable {
     }
 
     public struct Proxy: Codable {
-        // TODO
-    }
-    public struct Inject: Codable {
-        // TODO
+        let to: String
+        let mode: String
     }
 
     public struct Parameters: Codable {
@@ -44,6 +42,6 @@ public enum Response: Codable {
     }
 
     case `is`(Is, Parameters?)
-    // case proxy(Proxy, Parameters)
-    // case inject(Inject, Parameters)
+    case proxy(Proxy, Parameters?)
+    case inject(injection: String, Parameters?)
 }
