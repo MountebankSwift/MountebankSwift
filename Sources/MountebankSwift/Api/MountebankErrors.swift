@@ -1,14 +1,10 @@
 import Foundation
 
-struct MountebankErrors: Decodable {
-    let errors: [MountebankError]
-}
-
-struct MountebankError: Decodable, LocalizedError {
-    let code: String
-    let message: String
-
-    var errorDescription: String? {
-        message
+public struct MountebankErrors: Decodable, Error {
+    struct MountebankError: Decodable {
+        let code: String
+        let message: String
     }
+    
+    let errors: [MountebankError]
 }

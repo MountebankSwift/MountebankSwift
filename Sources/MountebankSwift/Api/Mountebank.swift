@@ -18,37 +18,99 @@ public struct Mountebank {
         self.httpClient = httpClient
     }
 
+    // MARK: - Imposter
+
+    public func getImposter(port: Int) async throws -> Imposter {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
+    }
+
+    public func getAllImposters() async throws -> Imposters {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
+    }
+
     public func postImposter(imposter: Imposter) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
     }
-    
+
     public func postImposterStub(addStub: AddStub, port: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: addStub)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
     }
 
     public func deleteImposter(port: Int) async throws -> Imposter {
-        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
     }
+
+    public func deleteAllImposters() async throws -> Imposters {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteAllImposters(), type: Imposters.self)
+    }
+
+    // MARK: - Stub
 
     public func putImposterStubs(imposter: Imposter, port: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
     }
-    
+
+    public func deleteStub(port: Int, stubIndex: Int) async throws -> Imposter {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteStub(port: port, stubIndex: stubIndex))
+    }
+
     public func putImposterStub(stub: Stub, port: Int, stubIndex: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: stub)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
+        return try await sendDataToEndpoint(
+            body: bodyData,
+            endpoint: Endpoint.putImposterStub(port: port, stubIndex: stubIndex)
+        )
+    }
+
+    // MARK: - Delete state
+
+    public func deleteSavedProxyResponses(port: Int) async throws -> Imposter {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedProxyResponses(port: port))
+    }
+
+    public func deleteSavedRequests(port: Int) async throws -> Imposter {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedRequests(port: port))
     }
     
-    private func sendDataToEndpoint(body: Data? = nil, endpoint: Endpoint) async throws -> Imposter {
+    // MARK: - Util
+    
+    public func testConnection() async throws {
+        _ = try await httpClient.httpRequest(HTTPRequest(
+            url: mountebankURL,
+            method: .get
+        ))
+    }
+
+    private func sendDataToEndpoint<T: Decodable>(
+        body: Data? = nil,
+        endpoint: Endpoint,
+        type: T.Type = Imposter.self
+    ) async throws -> T {
         let request = makeRequest(body: body, endPoint: endpoint)
-        let responseData = try await httpClient.httpRequest(request)
-        let imposterResponse = try decodeJson(data: responseData, type: Imposter.self)
+        let httpResponse = try await httpClient.httpRequest(request)
+        let imposterResponse = try mapHttpResponse(response: httpResponse, type: T.self)
         return imposterResponse
     }
+
+    private func mapHttpResponse<T: Decodable>(response: HTTPResponse, type: T.Type = Imposter.self) throws -> T {
+        guard response.statusCode.responseType == .success else {
+            throw mapMountebankErrors(data: response.body)
+        }
+        return try decodeJson(data: response.body, type: T.self)
+    }
     
+    private func mapMountebankErrors(data: Data) -> MountebankValidationError {
+        do {
+            let error = try jsonDecoder.decode(MountebankErrors.self, from: data)
+            return MountebankValidationError.remoteError(error)
+        } catch {
+            return MountebankValidationError.invalidResponseData
+        }
+    }
+
     private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {
         HTTPRequest(
             url: mountebankURL.appending(path: endPoint.templatePath),
