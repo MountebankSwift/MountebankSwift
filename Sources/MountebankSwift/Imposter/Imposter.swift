@@ -6,31 +6,32 @@ public struct Imposter: Codable, Equatable {
     public let scheme: Scheme
     public let name: String?
     public let stubs: [Stub]
+    public let defaultResponse: Stub.Response?
 
     // TODO
     // public let recordRequests: Bool
     // public let requests: [Request]
-
-    // only in response from MB
     // public let numberOfRequests: Int
-
-    // TODO
-    // public let defaultResponse: Response?
-
-    // TODO tcp ?
-    // endOfRequestResolver
 
     enum CodingKeys: String, CodingKey {
         case port
         case scheme = "protocol"
         case stubs
         case name
+        case defaultResponse
     }
 
-    public init(port: Int?, scheme: Scheme, name: String?, stubs: [Stub]) {
+    public init(
+        port: Int? = nil,
+        scheme: Scheme,
+        name: String? = nil,
+        stubs: [Stub],
+        defaultResponse: Stub.Response? = nil
+    ) {
         self.port = port
         self.scheme = scheme
         self.name = name
         self.stubs = stubs
+        self.defaultResponse = defaultResponse
     }
 }

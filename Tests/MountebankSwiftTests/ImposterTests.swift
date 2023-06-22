@@ -7,36 +7,14 @@ final class ImposterTests: XCTestCase {
         scheme: .https,
         name: "imposter contract service",
         stubs: [
-            Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
-                responses: [
-                    .is(Stub.Response.Is(statusCode: 200, body: "Hello world", mode: .text), Stub.Response.Parameters(repeatCount: 3)),
-                ]
-            ),
-            Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-is-404"))],
-                responses: [
-                    .is(Stub.Response.Is(statusCode: 404), Stub.Response.Parameters(repeatCount: 2)),
-                ]
-            ),
-            Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-proxy"))],
-                responses: [
-                    .proxy(Stub.Response.Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways"), nil),
-                ]
-            ),
-            Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-inject"))],
-                responses: [
-                    .inject("(config) => { return { body: \"hello world\" }; }", nil),
-                ]
-            ),
-            Stub(
-                predicates: [.equals(PredicateEquals(path: "/test-fault"))],
-                responses: [
-                    .fault(.connectionResetByPeer, nil),
-                ]
-            ),
+            Stub.httpResponse200,
+            Stub.httpResponse404,
+            Stub.proxy,
+            Stub.injectBody,
+            Stub.connectionResetByPeer,
+            Stub.json,
+            Stub.binary,
+            Stub.html200
         ]
     )
 
@@ -50,9 +28,15 @@ final class ImposterTests: XCTestCase {
         print(json)
     }
 
+    func testEncodeDecodeDataStub() throws {
+        try encodeDecode(value: Stub.binary.responses[0])
+    }
+
+
     func testDecode() throws {
         let data = exampleJSON.data(using: .utf8)
         let decodedImposters = try JSONDecoder().decode(Imposter.self, from: data!)
+        XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
         XCTAssertEqual(decodedImposters.stubs[0].predicates, imposter.stubs[0].predicates)
         XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
         XCTAssertEqual(decodedImposters.stubs[0].responses[0], imposter.stubs[0].responses[0])
@@ -68,6 +52,12 @@ final class ImposterTests: XCTestCase {
 
         XCTAssertEqual(decodedImposters.stubs[4].predicates, imposter.stubs[4].predicates)
         XCTAssertEqual(decodedImposters.stubs[4].responses[0], imposter.stubs[4].responses[0])
+
+        XCTAssertEqual(decodedImposters.stubs[5].predicates, imposter.stubs[5].predicates)
+        XCTAssertEqual(decodedImposters.stubs[5].responses[0], imposter.stubs[5].responses[0])
+
+        XCTAssertEqual(decodedImposters.stubs[6].predicates, imposter.stubs[6].predicates)
+        XCTAssertEqual(decodedImposters.stubs[6].responses[0], imposter.stubs[6].responses[0])
 
         XCTAssertEqual(imposter, decodedImposters)
     }
@@ -99,7 +89,21 @@ final class ImposterTests: XCTestCase {
         XCTAssertEqual(decodedImposters.stubs[4].predicates, imposter.stubs[4].predicates)
         XCTAssertEqual(decodedImposters.stubs[4].responses[0], imposter.stubs[4].responses[0])
 
+        XCTAssertEqual(decodedImposters.stubs[5].predicates, imposter.stubs[5].predicates)
+        XCTAssertEqual(decodedImposters.stubs[5].responses[0], imposter.stubs[5].responses[0])
+
+        XCTAssertEqual(decodedImposters.stubs[6].predicates, imposter.stubs[6].predicates)
+        XCTAssertEqual(decodedImposters.stubs[6].responses[0], imposter.stubs[6].responses[0])
+
         XCTAssertEqual(imposter, decodedImposters)
+    }
+
+    func encodeDecode<SomeType: Codable & Equatable>(value: SomeType, line: UInt = #line) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try encoder.encode(value)
+        let decoded = try JSONDecoder().decode(SomeType.self, from: data)
+        XCTAssertEqual(value, decoded, line: line)
     }
 }
 
@@ -128,6 +132,24 @@ fileprivate let exampleJSON = """
         {
             "predicates": [{"equals": {"path": "/test-fault"}}],
             "responses": [{ "fault": "CONNECTION_RESET_BY_PEER" }]
+        },
+        {
+            "predicates" : [{"equals" : {"path" : "/test-json"}}],
+            "responses" : [{"is" : {"statusCode" : 200, "body" : {"name" : "Turbo Bike 4000", "bikeId" : 123 }}}]
+        },
+        {
+            "predicates" : [{"equals" : {"path" : "/test-binary"}}],
+            "responses" : [{
+                "is" : {
+                    "_mode" : "binary",
+                    "statusCode" : 200,
+                    "body" : "\(StubImage.exampleBase64String)"
+                }
+            }]
+        },
+        {
+            "predicates" : [{"equals" : {"path" : "/test-html-200"}}],
+            "responses" : [{"is" : {"statusCode" : 200, "body" : "<html><body><marquee>Who needs html 5?</marquee></html>"}}]
         }
     ]
 }
