@@ -13,9 +13,12 @@ final class MountebankSwiftTests: XCTestCase {
         }
 
         _ = try await mountebank.postImposterStub(addStub: AddStub.injectBody, port: port)
+        _ = try await mountebank.getImposter(port: port)
+        _ = try await mountebank.getAllImposters()
         _ = try await mountebank.postImposterStub(addStub: AddStub(index: 2, stub: .connectionResetByPeer), port: port)
         _ = try await mountebank.putImposterStubs(imposter: Imposter.exampleSingleStub, port: port)
-        let deleteResult = try await mountebank.deleteImposter(port: port)
+        _ = try await mountebank.deleteSavedProxyResponses(port: port)
+        let deleteResult = try await mountebank.deleteAllImposters()
 
         print(deleteResult)
 
