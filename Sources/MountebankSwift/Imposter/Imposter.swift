@@ -27,7 +27,7 @@ public struct Imposter: Codable, Equatable {
         case name
     }
 
-    init(port: Int?, scheme: Scheme, name: String?, stubs: [Stub]) {
+    public init(port: Int?, scheme: Scheme, name: String?, stubs: [Stub]) {
         self.port = port
         self.scheme = scheme
         self.name = name

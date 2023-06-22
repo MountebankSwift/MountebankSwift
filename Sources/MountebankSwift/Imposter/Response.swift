@@ -1,8 +1,8 @@
 import Foundation
 
 // https://www.mbtest.org/docs/api/contracts
-extension Stub {
-    public enum Response: Codable, Equatable {
+public extension Stub {
+    enum Response: Codable, Equatable {
         public enum Mode: String, Codable, Equatable {
             case text
             case binary
@@ -21,7 +21,7 @@ extension Stub {
                 case mode = "_mode"
             }
 
-            init(statusCode: Int = 200, headers: [String : String]? = nil, body: String? = nil, mode: Mode? = nil) {
+            public init(statusCode: Int = 200, headers: [String : String]? = nil, body: String? = nil, mode: Mode? = nil) {
                 self.statusCode = statusCode
                 self.headers = headers?.isEmpty == true ? nil : headers
                 self.body = body
@@ -49,6 +49,11 @@ extension Stub {
         public struct Proxy: Codable, Equatable {
             let to: String
             let mode: String
+
+            public init(to: String, mode: String) {
+                self.to = to
+                self.mode = mode
+            }
         }
 
         public enum ResponseFault: String, Codable, Equatable {
@@ -59,7 +64,7 @@ extension Stub {
         public struct Parameters: Codable, Equatable {
             let `repeat`: Int?
 
-            init(repeatCount: Int? = nil) {
+            public init(repeatCount: Int? = nil) {
                 self.repeat = repeatCount
             }
 

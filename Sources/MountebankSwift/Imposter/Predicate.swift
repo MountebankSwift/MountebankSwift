@@ -1,7 +1,7 @@
 import Foundation
 
 // // https://www.mbtest.org/docs/api/contracts
-extension Stub {
+public extension Stub {
     public enum Predicate: Codable, Equatable {
         // The request field matches the predicate
         case equals(PredicateEquals)
@@ -83,4 +83,8 @@ extension Stub {
 
 public struct PredicateEquals: Codable, Equatable {
     let path: String
+
+    public init(path: String) {
+        self.path = path
+    }
 }

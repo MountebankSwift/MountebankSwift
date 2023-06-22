@@ -8,4 +8,9 @@ public struct Stub: Codable, Equatable {
         case predicates
         case responses
     }
+
+    public init(predicates: [Stub.Predicate], responses: [Stub.Response]) {
+        self.predicates = predicates
+        self.responses = responses
+    }
 }

@@ -7,7 +7,7 @@ final class MountebankSwiftTests: XCTestCase {
         let mountebank = Mountebank(host: .localhost, port: 2525)
 
         let result = try await mountebank.postImposter(
-            imposter: Imposter(port: 111, scheme: .http, name: "ssdf", stubs: [])
+            imposter: Imposter.exampleFull
         )
 
         print(result)
