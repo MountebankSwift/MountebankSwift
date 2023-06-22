@@ -19,13 +19,13 @@ public struct Mountebank {
     }
 
     // MARK: - Imposter
-    
+
     public func getImposter(port: Int) async throws -> Imposter {
-        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
     }
-    
+
     public func getAllImposters() async throws -> Imposters {
-        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
     }
 
     public func postImposter(imposter: Imposter) async throws -> Imposter {
@@ -81,9 +81,25 @@ public struct Mountebank {
         type: T.Type = Imposter.self
     ) async throws -> T {
         let request = makeRequest(body: body, endPoint: endpoint)
-        let responseData = try await httpClient.httpRequest(request)
-        let imposterResponse = try decodeJson(data: responseData, type: T.self)
+        let httpResponse = try await httpClient.httpRequest(request)
+        let imposterResponse = try mapHttpResponse(response: httpResponse, type: T.self)
         return imposterResponse
+    }
+
+    private func mapHttpResponse<T: Decodable>(response: HTTPResponse, type: T.Type = Imposter.self) throws -> T {
+        guard response.statusCode.responseType == .success else {
+            throw mapMountebankErrors(data: response.body)
+        }
+        return try decodeJson(data: response.body, type: T.self)
+    }
+    
+    private func mapMountebankErrors(data: Data) -> MountebankValidationError {
+        do {
+            let error = try jsonDecoder.decode(MountebankErrors.self, from: data)
+            return MountebankValidationError.remoteError(error)
+        } catch {
+            return MountebankValidationError.invalidResponseData
+        }
     }
 
     private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {

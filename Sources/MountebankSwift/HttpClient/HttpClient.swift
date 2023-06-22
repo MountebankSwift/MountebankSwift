@@ -10,19 +10,18 @@ public struct HttpClient {
         self.session = session
     }
 
-    public func httpRequest(_ request: HTTPRequest) async throws -> Data {
+    public func httpRequest(_ request: HTTPRequest) async throws -> HTTPResponse {
         let urlRequest = makeRequest(request: request)
 
         let (data, response) = try await session.data(for: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse,
-              let statusCode = HTTPStatusCode(rawValue: httpResponse.statusCode),
-              statusCode.responseType == .success else
-        {
+              let statusCode = HTTPStatusCode(rawValue: httpResponse.statusCode)
+        else {
             throw HttpError.requestFailed
         }
 
-        return data
+        return HTTPResponse(body: data, statusCode: statusCode)
     }
 
     private func makeRequest(request: HTTPRequest) -> URLRequest {
