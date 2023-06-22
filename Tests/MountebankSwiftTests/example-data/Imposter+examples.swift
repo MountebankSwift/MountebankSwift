@@ -5,19 +5,22 @@
 //  Created by Tieme van Veen on 22/06/2023.
 //
 
-import XCTest
 import MountebankSwift
+import XCTest
 
 extension Imposter {
     static let exampleFull = Imposter(
-        port: 4545,
+        port: nil,
         scheme: .https,
         name: "imposter contract service",
         stubs: [
             Stub(
                 predicates: [.equals(PredicateEquals(path: "/test-is-200"))],
                 responses: [
-                    .is(Stub.Response.Is(statusCode: 200, body: "Hello world", mode: .text), Stub.Response.Parameters(repeatCount: 3)),
+                    .is(
+                        Stub.Response.Is(statusCode: 200, body: "Hello world", mode: .text),
+                        Stub.Response.Parameters(repeatCount: 3)
+                    ),
                 ]
             ),
             Stub(

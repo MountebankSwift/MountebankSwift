@@ -20,11 +20,31 @@ public struct Mountebank {
 
     public func postImposter(imposter: Imposter) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
-        let request = makeRequest(body: bodyData, endPoint: Endpoint.postImposter)
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
+    }
 
+    public func deleteImposter(port: Int) async throws -> Imposter {
+        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
+    }
+
+    public func putImposterStubs(imposter: Imposter, port: Int) async throws -> Imposter {
+        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.putImposterStubs(port: port))
+    }
+    
+    private func sendDataToEndpoint(body: Data? = nil, endpoint: Endpoint) async throws -> Imposter {
+        let request = makeRequest(body: body, endPoint: endpoint)
         let responseData = try await httpClient.httpRequest(request)
         let imposterResponse = try decodeJson(data: responseData, type: Imposter.self)
         return imposterResponse
+    }
+    
+    private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {
+        HTTPRequest(
+            url: mountebankURL.appending(path: endPoint.templatePath),
+            method: endPoint.method,
+            body: body,
+            headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
+        )
     }
 
     private func makeImposter(name: String, stubs: [Stub]) -> Imposter? {
@@ -42,7 +62,7 @@ public struct Mountebank {
             throw MountebankValidationError.invalidRequestData
         }
     }
-    
+
     private func decodeJson<T: Decodable>(data: Data, type: T.Type) throws -> T {
         do {
             return try jsonDecoder.decode(type.self, from: data)
@@ -51,12 +71,4 @@ public struct Mountebank {
         }
     }
 
-    private func makeRequest(body: Data, endPoint: Endpoint) -> HTTPRequest {
-        HTTPRequest(
-            url: mountebankURL.appending(path: endPoint.templatePath),
-            method: endPoint.method,
-            body: body,
-            headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
-        )
-    }
 }
