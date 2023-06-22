@@ -74,6 +74,15 @@ public struct Mountebank {
     public func deleteSavedRequests(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedRequests(port: port))
     }
+    
+    // MARK: - Util
+    
+    public func testConnection() async throws {
+        _ = try await httpClient.httpRequest(HTTPRequest(
+            url: mountebankURL,
+            method: .get
+        ))
+    }
 
     private func sendDataToEndpoint<T: Decodable>(
         body: Data? = nil,

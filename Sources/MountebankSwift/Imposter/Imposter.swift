@@ -7,8 +7,8 @@ public struct Imposter: Codable, Equatable {
     public let name: String?
     public let stubs: [Stub]
 
+    public let recordRequests: Bool
     // TODO
-    // public let recordRequests: Bool
     // public let requests: [Request]
 
     // only in response from MB
@@ -23,14 +23,16 @@ public struct Imposter: Codable, Equatable {
     enum CodingKeys: String, CodingKey {
         case port
         case scheme = "protocol"
-        case stubs
         case name
+        case stubs
+        case recordRequests
     }
 
-    public init(port: Int?, scheme: Scheme, name: String?, stubs: [Stub]) {
+    public init(port: Int?, scheme: Scheme, name: String?, stubs: [Stub], recordRequests: Bool = false) {
         self.port = port
         self.scheme = scheme
         self.name = name
         self.stubs = stubs
+        self.recordRequests = recordRequests
     }
 }

@@ -6,6 +6,8 @@ final class MountebankSwiftTests: XCTestCase {
     func testConnectionWithMounteBank() async throws {
         let mountebank = Mountebank(host: .localhost, port: 2525)
 
+        try await mountebank.testConnection()
+        
         let imposterResult = try await mountebank.postImposter(imposter: Imposter.exampleSingleStub)
         guard let port = imposterResult.port else {
             XCTFail("Port should be set by now")
