@@ -2,7 +2,7 @@ import Foundation
 
 // // https://www.mbtest.org/docs/api/contracts
 extension Stub {
-    public enum Predicate: Codable {
+    public enum Predicate: Codable, Equatable {
         // The request field matches the predicate
         case equals(PredicateEquals)
         // Performs nested set equality on the request field, useful when the request field is an object (e.g. the query field in http)
@@ -70,11 +70,17 @@ extension Stub {
         }
         
         public init(from decoder: Decoder) throws {
-            fatalError()
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            
+            if let value = try container.decodeIfPresent(PredicateEquals.self, forKey: .equals) {
+                self = .equals(value)
+            } else {
+                fatalError("TODO")
+            }
         }
     }
 }
 
-public struct PredicateEquals: Codable {
+public struct PredicateEquals: Codable, Equatable {
     let path: String
 }

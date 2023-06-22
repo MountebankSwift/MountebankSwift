@@ -1,7 +1,7 @@
 import Foundation
 
 // https://www.mbtest.org/docs/api/contracts
-public struct Imposter: Codable {
+public struct Imposter: Codable, Equatable {
     public let port: Int?
     public let scheme: Scheme
     public let name: String?
