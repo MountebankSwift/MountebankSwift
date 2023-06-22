@@ -15,15 +15,16 @@ final class ImposterTests: XCTestCase {
             Stub.json,
             Stub.binary,
             Stub.html200
-        ]
+        ],
+        defaultResponse: Stub.Response.Is(
+            statusCode: 400,
+            headers: ["default-header": "set-by-mountebank"],
+            body: "Bad Request - 400"
+        )
     )
 
     func testEncode() throws {
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-
-        let jsonData = try encoder.encode(imposter)
-
+        let jsonData = try testEncoder.encode(imposter)
         let json = String(data: jsonData, encoding: .utf8)!
         print(json)
     }
@@ -57,7 +58,7 @@ final class ImposterTests: XCTestCase {
 
     func testDecode() throws {
         let data = exampleJSON.data(using: .utf8)
-        let decodedImposters = try JSONDecoder().decode(Imposter.self, from: data!)
+        let decodedImposters = try testDecoder.decode(Imposter.self, from: data!)
         XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
         XCTAssertEqual(imposter, decodedImposters)
     }
@@ -66,7 +67,7 @@ final class ImposterTests: XCTestCase {
         try assertEncodeDecode(imposter)
     }
 
-//    func testDecodeEncode() throws {
+//    func skip_testDecodeEncode() throws {
 //        try assertDecodeEncode(exampleJSON, as: Imposter.self)
 //    }
 }
@@ -115,6 +116,11 @@ fileprivate let exampleJSON = """
             "predicates" : [{"equals" : {"path" : "/test-html-200"}}],
             "responses" : [{"is" : {"statusCode" : 200, "body" : "<html><body><h1>Who needs HTML?</h1></html>"}}]
         }
-    ]
+    ],
+    "defaultResponse" : {
+        "statusCode": 400,
+        "headers": {"default-header": "set-by-mountebank"},
+        "body": "Bad Request - 400"
+    }
 }
 """

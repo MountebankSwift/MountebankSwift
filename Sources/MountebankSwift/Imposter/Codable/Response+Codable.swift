@@ -43,8 +43,8 @@ extension Stub.Response {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let parameters = try? Parameters(from: decoder)
 
+        let parameters = try? Parameters(from: decoder)
         if let isData = try container.decodeIfPresent(Is.self, forKey: .is) {
             self = .is(isData, parameters)
         } else if let proxyData = try container.decodeIfPresent(Proxy.self, forKey: .proxy) {
