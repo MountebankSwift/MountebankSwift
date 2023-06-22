@@ -1,10 +1,3 @@
-//
-//  Response+Codable.swift
-//
-//
-//  Created by Tieme van Veen on 22/06/2023.
-//
-
 import Foundation
 
 extension Stub.Predicate {
@@ -46,16 +39,18 @@ extension Stub.Predicate {
             break
         case .and:
             break
-        case .inject:
-            break
+        case .inject(let script):
+            try container.encode(script, forKey: .inject)
         }
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        if let value = try container.decodeIfPresent(PredicateEquals.self, forKey: .equals) {
+        if let value = try container.decodeIfPresent(JSON.self, forKey: .equals) {
             self = .equals(value)
+        } else if let value = try container.decodeIfPresent(String.self, forKey: .equals) {
+            self = .inject(value)
         } else {
             fatalError("TODO")
         }

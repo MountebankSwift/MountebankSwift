@@ -1,6 +1,7 @@
 import Foundation
 
-// https://www.mbtest.org/docs/api/overview
+/// All Endpoints as documented on:
+/// https://www.mbtest.org/docs/api/overview
 public struct Endpoint {
     let method: HTTPMethod
     let templatePath: String
@@ -9,27 +10,19 @@ public struct Endpoint {
     // static func getHypermedia() = Endpoint(method: .get, templatePath: "/")
 
     /// Get a list of all imposters
-    static func getAllImposters() -> Endpoint {
-        Endpoint(method: .get, templatePath: "/imposters")
-    }
+    static func getAllImposters() -> Endpoint { Endpoint(method: .get, templatePath: "/imposters") }
 
     /// Get a single imposter
-    static func getImposter(port: Int) -> Endpoint {
-        Endpoint(method: .get, templatePath: "/imposters/\(port)")
-    }
+    static func getImposter(port: Int) -> Endpoint { Endpoint(method: .get, templatePath: "/imposters/\(port)") }
 
     /// Create a single imposter
-    static func postImposter() -> Endpoint {
-        Endpoint(method: .post, templatePath: "/imposters")
-    }
+    static func postImposter() -> Endpoint { Endpoint(method: .post, templatePath: "/imposters") }
 
     /// Overwrite all imposters with a new set of imposters
     static func putImposters() -> Endpoint { Endpoint(method: .put, templatePath: "/imposters") }
 
     /// Delete a single imposter
-    static func deleteImposter(port: Int) -> Endpoint {
-        Endpoint(method: .delete, templatePath: "/imposters/\(port)")
-    }
+    static func deleteImposter(port: Int) -> Endpoint { Endpoint(method: .delete, templatePath: "/imposters/\(port)") }
 
     /// Add a stub to an existing imposter
     static func postImposterStub(port: Int) -> Endpoint {
@@ -64,9 +57,9 @@ public struct Endpoint {
     /// Delete all imposters
     static func deleteAllImposters() -> Endpoint { Endpoint(method: .delete, templatePath: "/imposters") }
 
-    // Get mountebank configuration and process information
-    // static func getConfig() -> Endpoint { Endpoint(method: .get, templatePath: "/config") }
+    /// Get mountebank configuration and process information
+    static func getConfig() -> Endpoint { Endpoint(method: .get, templatePath: "/config") }
 
-    // Get the logs
-    // static func getLogs() -> Endpoint { Endpoint(method: .get, templatePath: "/logs") }
+    /// Get the logs
+    static func getLogs() -> Endpoint { Endpoint(method: .get, templatePath: "/logs") }
 }

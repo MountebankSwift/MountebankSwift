@@ -1,6 +1,6 @@
 import Foundation
 
-public enum HTTPStatusCode: Int {
+enum HTTPStatusCode: Int {
 
     enum ResponseType {
         case informational

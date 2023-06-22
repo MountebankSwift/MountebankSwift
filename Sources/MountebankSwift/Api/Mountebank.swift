@@ -12,7 +12,13 @@ public struct Mountebank {
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
 
-    public init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClient = HttpClient()) {
+    public init(host: Host = .localhost, port: Int = 2525) {
+        self.host = host
+        self.port = port
+        self.httpClient = HttpClient()
+    }
+    
+    init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClient) {
         self.host = host
         self.port = port
         self.httpClient = httpClient
@@ -74,9 +80,17 @@ public struct Mountebank {
     public func deleteSavedRequests(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedRequests(port: port))
     }
-    
+
     // MARK: - Util
-    
+
+    public func getConfig() async throws -> Config {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getConfig(), type: Config.self)
+    }
+
+    public func getLogs() async throws -> Logs {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(), type: Logs.self)
+    }
+
     public func testConnection() async throws {
         _ = try await httpClient.httpRequest(HTTPRequest(
             url: mountebankURL,
@@ -101,7 +115,7 @@ public struct Mountebank {
         }
         return try decodeJson(data: response.body, type: T.self)
     }
-    
+
     private func mapMountebankErrors(data: Data) -> MountebankValidationError {
         do {
             let error = try jsonDecoder.decode(MountebankErrors.self, from: data)

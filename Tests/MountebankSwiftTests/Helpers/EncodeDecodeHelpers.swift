@@ -1,10 +1,3 @@
-//
-//  EncodeDecodeHelpers.swift
-//  MountebankSwift
-//
-//  Created by Tieme van Veen on 22/06/2023.
-//
-
 import Foundation
 import XCTest
 

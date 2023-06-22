@@ -1,6 +1,6 @@
 import Foundation
 
-public struct HTTPResponse {
+struct HTTPResponse {
     let body: Data
     let statusCode: HTTPStatusCode
 }

@@ -5,6 +5,6 @@ public struct MountebankErrors: Decodable, Error {
         let code: String
         let message: String
     }
-    
+
     let errors: [MountebankError]
 }

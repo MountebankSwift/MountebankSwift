@@ -30,7 +30,8 @@ import Foundation
 /// or strings.
 ///
 /// From  https://github.com/iwill/generic-json-swift/
-@dynamicMemberLookup public enum JSON: Codable, Hashable {
+@dynamicMemberLookup
+public enum JSON: Codable, Hashable {
     case string(String)
     case number(Double)
     case object([String:JSON])
@@ -41,15 +42,15 @@ import Foundation
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
-        case let .array(array):
+        case .array(let array):
             try container.encode(array)
-        case let .object(object):
+        case .object(let object):
             try container.encode(object)
-        case let .string(string):
+        case .string(let string):
             try container.encode(string)
-        case let .number(number):
+        case .number(let number):
             try container.encode(number)
-        case let .bool(bool):
+        case .bool(let bool):
             try container.encode(bool)
         case .null:
             try container.encodeNil()
@@ -116,14 +117,14 @@ import Foundation
     ///
     /// This lets you write `json.foo` instead of `json["foo"]`.
     public subscript(dynamicMember member: String) -> JSON? {
-        return self[member]
+        self[member]
     }
 
     /// Return the JSON type at the keypath if this is an `.object`, otherwise `nil`
     ///
     /// This lets you write `json[keyPath: "foo.bar.jar"]`.
     public subscript(keyPath keyPath: String) -> JSON? {
-        return queryKeyPath(keyPath.components(separatedBy: "."))
+        queryKeyPath(keyPath.components(separatedBy: "."))
     }
 
     func queryKeyPath<T>(_ path: T) -> JSON? where T: Collection, T.Element == String {
@@ -149,7 +150,6 @@ import Foundation
     }
 
 }
-
 
 private struct InitializationError: Error {}
 
@@ -178,9 +178,9 @@ extension JSON {
         case let bool as Bool:
             self = .bool(bool)
         case let array as [Any]:
-            self = .array(try array.map(JSON.init))
+            self = try .array(array.map(JSON.init))
         case let dict as [String:Any]:
-            self = .object(try dict.mapValues(JSON.init))
+            self = try .object(dict.mapValues(JSON.init))
         default:
             throw InitializationError()
         }
@@ -260,8 +260,11 @@ extension NSNumber {
     ///
     /// - seealso: https://stackoverflow.com/a/49641315/3589408
     fileprivate var isBool: Bool {
-        let objCType = String(cString: self.objCType)
-        if (self.compare(trueNumber) == .orderedSame && objCType == trueObjCType) || (self.compare(falseNumber) == .orderedSame && objCType == falseObjCType) {
+        let objCType = String(cString: objCType)
+        if
+            (compare(trueNumber) == .orderedSame && objCType == trueObjCType) ||
+            (compare(falseNumber) == .orderedSame && objCType == falseObjCType)
+        {
             return true
         } else {
             return false

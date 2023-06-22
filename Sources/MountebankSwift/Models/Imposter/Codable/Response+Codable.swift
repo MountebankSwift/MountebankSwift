@@ -1,10 +1,3 @@
-//
-//  Response+Codable.swift
-//
-//
-//  Created by Tieme van Veen on 22/06/2023.
-//
-
 import Foundation
 
 enum ResponseDecodeError: Error {
@@ -127,15 +120,15 @@ extension Stub.Response.Parameters {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.repeatCount = try? container.decode(Int.self, forKey: .repeatCount)
+        repeatCount = try? container.decode(Int.self, forKey: .repeatCount)
 
-        if self.isEmpty {
+        if isEmpty {
             throw ParametersDecodingError.empty
         }
     }
 
     public func encode(to encoder: Encoder) throws {
-        if self.isEmpty {
+        if isEmpty {
             return
         }
 

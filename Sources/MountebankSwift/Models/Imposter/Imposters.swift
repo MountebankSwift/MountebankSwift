@@ -1,15 +1,15 @@
 import Foundation
 
 public struct Imposters: Codable {
-    struct ImposterRef: Codable {
-        let scheme: Scheme
-        let port: Int
-        
+    public struct ImposterRef: Codable {
+        public let scheme: Scheme
+        public let port: Int
+
         enum CodingKeys: String, CodingKey {
             case scheme = "protocol"
             case port
         }
     }
 
-    let imposters: [ImposterRef]
+    public let imposters: [ImposterRef]
 }

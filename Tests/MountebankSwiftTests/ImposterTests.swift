@@ -14,7 +14,7 @@ final class ImposterTests: XCTestCase {
             Stub.connectionResetByPeer,
             Stub.json,
             Stub.binary,
-            Stub.html200
+            Stub.html200,
         ],
         defaultResponse: Stub.Response.Is(
             statusCode: 400,
@@ -72,7 +72,7 @@ final class ImposterTests: XCTestCase {
 //    }
 }
 
-fileprivate let exampleJSON = """
+private let exampleJSON = """
 {
     "port": 4545,
     "protocol": "https",
