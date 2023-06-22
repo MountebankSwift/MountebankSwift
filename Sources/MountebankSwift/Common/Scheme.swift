@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Scheme: String, Encodable {
+public enum Scheme: String, Codable {
     case http
     case https
 }

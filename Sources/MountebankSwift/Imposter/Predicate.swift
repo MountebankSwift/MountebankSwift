@@ -1,7 +1,7 @@
 import Foundation
 
 // // https://www.mbtest.org/docs/api/contracts
-public enum Predicate: Encodable {
+public enum Predicate: Codable {
     // The request field matches the predicate
     case equals
     // Performs nested set equality on the request field, useful when the request field is an object (e.g. the query field in http)

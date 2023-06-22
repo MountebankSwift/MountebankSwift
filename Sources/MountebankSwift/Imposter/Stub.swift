@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Stub: Encodable {
+public struct Stub: Codable {
     let predicates: [Predicate]
     let responses: [Response]
 

@@ -1,13 +1,13 @@
 import Foundation
 
 // // https://www.mbtest.org/docs/api/contracts
-public enum Response: Encodable {
-    public enum Mode: Encodable {
+public enum Response: Codable {
+    public enum Mode: Codable {
         case text
         case binary
     }
 
-    public struct Is: Encodable {
+    public struct Is: Codable {
         let statusCode: Int
         let headers: [String: String] // TODO more type safe?
         let body: String // or (JSON) object
@@ -28,22 +28,22 @@ public enum Response: Encodable {
         }
     }
 
-    public struct Proxy: Encodable {
+    public struct Proxy: Codable {
         // TODO
     }
-    public struct Inject: Encodable {
+    public struct Inject: Codable {
         // TODO
     }
 
-    public struct Parameters: Encodable {
-        let `repeat`: Int
+    public struct Parameters: Codable {
+        let `repeat`: Int?
 
-        init(repeatCount: Int) {
+        init(repeatCount: Int? = nil) {
             self.repeat = repeatCount
         }
     }
 
-    case `is`(Is, Parameters)
+    case `is`(Is, Parameters?)
     // case proxy(Proxy, Parameters)
     // case inject(Inject, Parameters)
 }

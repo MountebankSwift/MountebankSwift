@@ -1,7 +1,7 @@
 import Foundation
 
 // https://www.mbtest.org/docs/api/contracts
-public struct Imposter: Encodable {
+public struct Imposter: Codable {
     public let port: Int?
     public let scheme: Scheme
     public let name: String?
@@ -11,7 +11,7 @@ public struct Imposter: Encodable {
     // public let recordRequests: Bool
     // public let requests: [Request]
 
-    // only in response
+    // only in response from MB
     // public let numberOfRequests: Int
 
     // TODO
@@ -21,6 +21,7 @@ public struct Imposter: Encodable {
     // endOfRequestResolver
 
     enum CodingKeys: String, CodingKey {
+        case port
         case scheme = "protocol"
         case stubs
         case name
