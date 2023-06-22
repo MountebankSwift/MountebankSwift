@@ -2,7 +2,7 @@ import Foundation
 
 // https://www.mbtest.org/docs/api/overview
 public struct Endpoint {
-    let method: Method
+    let method: HTTPMethod
     let templatePath: String
 
     // Get entry hypermedia
