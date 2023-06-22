@@ -22,13 +22,24 @@ public struct Mountebank {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
     }
+    
+    public func postImposterStub(addStub: AddStub, port: Int) async throws -> Imposter {
+        let bodyData = try encodeJson(encodable: addStub)
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
+    }
 
     public func deleteImposter(port: Int) async throws -> Imposter {
         return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
     }
 
     public func putImposterStubs(imposter: Imposter, port: Int) async throws -> Imposter {
-        return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.putImposterStubs(port: port))
+        let bodyData = try encodeJson(encodable: imposter)
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
+    }
+    
+    public func putImposterStub(stub: Stub, port: Int, stubIndex: Int) async throws -> Imposter {
+        let bodyData = try encodeJson(encodable: stub)
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
     }
     
     private func sendDataToEndpoint(body: Data? = nil, endpoint: Endpoint) async throws -> Imposter {

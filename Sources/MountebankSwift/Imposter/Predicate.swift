@@ -2,7 +2,7 @@ import Foundation
 
 // // https://www.mbtest.org/docs/api/contracts
 public extension Stub {
-    public enum Predicate: Codable, Equatable {
+    enum Predicate: Codable, Equatable {
         // The request field matches the predicate
         case equals(PredicateEquals)
         // Performs nested set equality on the request field, useful when the request field is an object (e.g. the query field in http)
