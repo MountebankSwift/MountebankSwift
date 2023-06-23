@@ -57,19 +57,19 @@ extension Stub {
             .proxy(Stub.Response.Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways"), nil),
         ]
     )
-    
+
     static let injectBody = Stub(
         predicates: [.equals(["path": "/test-inject"])],
         responses: [
             .inject("(config) => { return { body: \"hello world\" }; }", nil),
         ]
     )
-    
+
     static let connectionResetByPeer = Stub(
         predicates: [.equals(["path": "/test-fault"])],
         responses: [
             .fault(.connectionResetByPeer, nil),
         ]
     )
-    
+
 }

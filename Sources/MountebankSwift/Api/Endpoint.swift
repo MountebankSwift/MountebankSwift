@@ -41,7 +41,7 @@ public struct Endpoint {
 
     /// Remove a single stub from an existing imposter
     static func deleteStub(port: Int, stubIndex: Int) -> Endpoint {
-        Endpoint(method: .delete, templatePath:"/imposters/\(port)/stubs/\(stubIndex)")
+        Endpoint(method: .delete, templatePath: "/imposters/\(port)/stubs/\(stubIndex)")
     }
 
     /// Delete saved proxy responses from an imposter

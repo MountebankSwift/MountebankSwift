@@ -28,7 +28,7 @@ public struct Logs: Codable {
                 .withFullDate,
                 .withFullTime,
                 .withDashSeparatorInDate,
-                .withFractionalSeconds,
+                .withFractionalSeconds
             ]
 
             return isoDateFormatter

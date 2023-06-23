@@ -14,10 +14,12 @@ public final class HttpClientSpy: HttpClientProtocol {
     public var httpRequestThrowableError: Error?
     public var httpRequestCallsCount = 0
     public var httpRequestCalled: Bool {
-        return httpRequestCallsCount > 0
+        httpRequestCallsCount > 0
     }
+
     public var httpRequestReceivedRequest: HTTPRequest?
     public var httpRequestReceivedInvocations: [HTTPRequest] = []
+    // swiftlint:disable:next implicitly_unwrapped_optional
     public var httpRequestReturnValue: HTTPResponse!
     public var httpRequestClosure: ((HTTPRequest) async throws -> HTTPResponse)?
 

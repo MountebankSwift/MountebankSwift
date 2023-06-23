@@ -11,7 +11,7 @@ public struct Imposter: Codable, Equatable {
     public let port: Int?
 
     /// Defines the protocol that the imposter will respond to.
-    public let scheme: Scheme
+    public let networkProtocol: NetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.
     public let name: String?
@@ -33,7 +33,7 @@ public struct Imposter: Codable, Equatable {
 
     enum CodingKeys: String, CodingKey {
         case port
-        case scheme = "protocol"
+        case networkProtocol = "protocol"
         case name
         case stubs
         case recordRequests
@@ -42,14 +42,14 @@ public struct Imposter: Codable, Equatable {
 
     public init(
         port: Int? = nil,
-        scheme: Scheme,
+        networkProtocol: NetworkProtocol,
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Stub.Response.Is? = nil,
         recordRequests: Bool? = nil
     ) {
         self.port = port
-        self.scheme = scheme
+        self.networkProtocol = networkProtocol
         self.name = name
         self.stubs = stubs
         self.defaultResponse = defaultResponse

@@ -3,7 +3,9 @@ import XCTest
 
 final class MountebankIntegrationTests: XCTestCase {
 
+    // swiftlint:disable implicitly_unwrapped_optional
     private var sut: Mountebank!
+    // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
         sut = Mountebank(host: .localhost, port: 2525)
@@ -73,7 +75,7 @@ final class MountebankIntegrationTests: XCTestCase {
     func testDeleteSavedProxyResponses() async throws {
         let imposterResult = try await sut.postImposter(imposter: Imposter(
             port: nil,
-            scheme: .https,
+            networkProtocol: .https,
             name: "Imposter with proxy",
             stubs: [
                 Stub.proxy,

@@ -2,11 +2,11 @@ import Foundation
 
 public struct Imposters: Codable {
     public struct ImposterRef: Codable {
-        public let scheme: Scheme
+        public let networkProtocol: NetworkProtocol
         public let port: Int
 
         enum CodingKeys: String, CodingKey {
-            case scheme = "protocol"
+            case networkProtocol = "protocol"
             case port
         }
     }

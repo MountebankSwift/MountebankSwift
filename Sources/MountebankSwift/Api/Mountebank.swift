@@ -15,9 +15,9 @@ public struct Mountebank {
     public init(host: Host = .localhost, port: Int = 2525) {
         self.host = host
         self.port = port
-        self.httpClient = HttpClient()
+        httpClient = HttpClient()
     }
-    
+
     init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClientProtocol) {
         self.host = host
         self.port = port
@@ -135,11 +135,14 @@ public struct Mountebank {
     }
 
     private func makeImposter(name: String, stubs: [Stub]) -> Imposter? {
-        guard let rawScheme = mountebankURL.scheme, let scheme = Scheme(rawValue: rawScheme) else {
+        guard
+            let rawNetworkProtocol = mountebankURL.scheme,
+            let networkProtocol = NetworkProtocol(rawValue: rawNetworkProtocol) else
+        {
             return nil
         }
 
-        return Imposter(port: port, scheme: scheme, name: name, stubs: stubs)
+        return Imposter(port: port, networkProtocol: networkProtocol, name: name, stubs: stubs)
     }
 
     private func encodeJson(encodable: Encodable) throws -> Data {

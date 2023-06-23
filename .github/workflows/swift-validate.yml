@@ -1,0 +1,56 @@
+name: Swift lint + test
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+    paths:
+      - '**/*.swift'
+      - '.github/workflows/*.yml'
+  pull_request:
+    paths:
+      - '**/*.swift'
+      - '.github/workflows/*.yml'
+jobs:
+  swift_lint:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run swiftlint
+        run: swiftlint lint --reporter github-actions-logging
+
+  test:
+    runs-on: macos-latest
+    name: Xcode ${{ matrix.xcode }}
+    strategy:
+      matrix:
+        xcode: ["14.2"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Mountebank
+        run: npm install mountebank
+      - name: Setup Mountebank
+        run: |
+          RUNNER_TRACKING_ID="" && mb start --allowInjection
+      - name: Set Xcode
+        run: |
+          echo "Available Xcode versions:"
+          ls /Applications | grep Xcode
+          echo "Choosing Xcode_${{ matrix.xcode }}.app"
+          sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
+          xcodebuild -version
+          swift --version
+          swift package --version
+      - name: Resolve
+        run: swift package resolve
+      - name: Build Package
+        env:
+          SWIFTPM_ENABLE_PLUGINS: 1
+        run: swift build -v
+      - name: Run tests
+        run: set -o pipefail && swift test 2>&1 | xcpretty
+        env:
+          SWIFTPM_ENABLE_PLUGINS: 1

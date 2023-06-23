@@ -4,7 +4,7 @@ import XCTest
 final class ImposterTests: XCTestCase {
     let imposter = Imposter(
         port: 4545,
-        scheme: .https,
+        networkProtocol: .https,
         name: "imposter contract service",
         stubs: [
             Stub.httpResponse200,
@@ -25,7 +25,10 @@ final class ImposterTests: XCTestCase {
 
     func testEncode() throws {
         let jsonData = try testEncoder.encode(imposter)
-        let json = String(data: jsonData, encoding: .utf8)!
+        guard let json = String(data: jsonData, encoding: .utf8) else {
+            XCTFail("Could not encode the imposter")
+            return
+        }
         print(json)
     }
 
@@ -57,8 +60,12 @@ final class ImposterTests: XCTestCase {
     }
 
     func testDecode() throws {
-        let data = exampleJSON.data(using: .utf8)
-        let decodedImposters = try testDecoder.decode(Imposter.self, from: data!)
+        guard let data = exampleJSON.data(using: .utf8) else {
+            XCTFail("Could not create data from exampleJSON")
+            return
+        }
+
+        let decodedImposters = try testDecoder.decode(Imposter.self, from: data)
         XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
         XCTAssertEqual(imposter, decodedImposters)
     }
@@ -67,9 +74,9 @@ final class ImposterTests: XCTestCase {
         try assertEncodeDecode(imposter)
     }
 
-//    func skip_testDecodeEncode() throws {
-//        try assertDecodeEncode(exampleJSON, as: Imposter.self)
-//    }
+    func skip_testDecodeEncode() throws {
+        try assertDecodeEncode(exampleJSON, as: Imposter.self)
+    }
 }
 
 private let exampleJSON = """

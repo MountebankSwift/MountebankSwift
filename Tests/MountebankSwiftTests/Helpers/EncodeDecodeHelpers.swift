@@ -30,7 +30,12 @@ func assertDecodeEncode<CodableEquatableType: Codable & Equatable>(
     file: StaticString = #file,
     line: UInt = #line
 ) throws {
-    let decoded = try testDecoder.decode(type, from: value.data(using: .utf8)!)
+    guard let stringData = value.data(using: .utf8) else {
+        XCTFail("Could not encode string to Data")
+        return
+    }
+
+    let decoded = try testDecoder.decode(type, from: stringData)
     XCTAssertNotNil(decoded, file: file, line: line)
     let data = try testEncoder.encode(value)
     let string = String(data: data, encoding: .utf8)

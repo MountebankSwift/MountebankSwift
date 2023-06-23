@@ -91,7 +91,7 @@ extension Stub.Response.Is {
         }
 
         switch mode {
-        case .none, .text :
+        case .none, .text:
             if let text = try? container.decode(String.self, forKey: .body) {
                 body = .text(text)
             } else if let json = try? container.decode(JSON.self, forKey: .body) {

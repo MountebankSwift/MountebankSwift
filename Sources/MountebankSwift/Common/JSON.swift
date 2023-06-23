@@ -34,7 +34,7 @@ import Foundation
 public enum JSON: Codable, Hashable {
     case string(String)
     case number(Double)
-    case object([String:JSON])
+    case object([String: JSON])
     case array([JSON])
     case bool(Bool)
     case null
@@ -91,6 +91,7 @@ public enum JSON: Codable, Hashable {
         default:
             let encoder = JSONEncoder()
             encoder.outputFormatting = [.prettyPrinted]
+            // swiftlint:disable:next force_try force_unwrapping
             return try! String(data: encoder.encode(self), encoding: .utf8)!
         }
     }
@@ -179,7 +180,7 @@ extension JSON {
             self = .bool(bool)
         case let array as [Any]:
             self = try .array(array.map(JSON.init))
-        case let dict as [String:Any]:
+        case let dict as [String: Any]:
             self = try .object(dict.mapValues(JSON.init))
         default:
             throw InitializationError()
@@ -221,7 +222,7 @@ extension JSON: ExpressibleByArrayLiteral {
 extension JSON: ExpressibleByDictionaryLiteral {
 
     public init(dictionaryLiteral elements: (String, JSON)...) {
-        var object: [String:JSON] = [:]
+        var object: [String: JSON] = [:]
         for (k, v) in elements {
             object[k] = v
         }

@@ -4,7 +4,7 @@ import XCTest
 extension Imposter {
     static let exampleAllvariants = Imposter(
         port: nil,
-        scheme: .https,
+        networkProtocol: .https,
         name: "imposter contract service",
         stubs: [
             Stub.httpResponse200,
@@ -16,10 +16,10 @@ extension Imposter {
     )
     static let exampleSingleStub = Imposter(
         port: nil,
-        scheme: .https,
+        networkProtocol: .https,
         name: "imposter contract service",
         stubs: [
-            Stub.httpResponse200
+            Stub.httpResponse200,
         ]
     )
 }
