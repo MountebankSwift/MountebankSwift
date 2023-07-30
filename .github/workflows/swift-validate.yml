@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install Mountebank
-        run: npm install mountebank
+        run: npm install mountebank -g
       - name: Setup Mountebank
         run: |
           RUNNER_TRACKING_ID="" && mb start --allowInjection
