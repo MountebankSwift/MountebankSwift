@@ -34,7 +34,7 @@ jobs:
         run: npm install mountebank -g
       - name: Setup Mountebank
         run: |
-          RUNNER_TRACKING_ID="" && mb start --allowInjection
+          RUNNER_TRACKING_ID="" && mb start --allowInjection &
       - name: Set Xcode
         run: |
           echo "Available Xcode versions:"
