@@ -46,14 +46,14 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testUpdatingImposter() async throws {
         let port = try await postDefaultImposter()
+        let imposter = try await sut.getImposter(port: port)
+        XCTAssertEqual(imposter.stubs, Imposter.exampleSingleStub.stubs)
+
         let updatedImposterResult = try await sut.putImposterStubs(
             imposter: Imposter.exampleAllvariants,
             port: port
         )
-
-        XCTAssertEqual(updatedImposterResult.stubs.count, 5)
-        XCTAssertEqual(updatedImposterResult.stubs.first, Stub.httpResponse200)
-        XCTAssertEqual(updatedImposterResult.stubs.last, Stub.connectionResetByPeer)
+        XCTAssertEqual(updatedImposterResult.stubs, Imposter.exampleAllvariants.stubs)
     }
 
     func testGetAllImposters() async throws {
@@ -65,7 +65,7 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testDeleteAllImposters() async throws {
-        let port = try await postDefaultImposter()
+        _ = try await postDefaultImposter()
         _ = try await sut.deleteAllImposters()
         let allImposters = try await sut.getAllImposters()
 

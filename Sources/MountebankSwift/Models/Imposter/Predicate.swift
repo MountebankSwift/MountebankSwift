@@ -1,29 +1,82 @@
 import Foundation
 
 extension Stub {
-    public enum Predicate: Codable, Equatable {
+    /// See https://www.mbtest.org/docs/api/predicates
+    public indirect enum Predicate: Codable, Equatable {
         /// The request field matches the predicate
-        case equals(JSON)
-        /// Performs nested set equality on the request field, useful when the request field is an object (e.g. the
-        /// query field in http)
-        case deepEquals(JSON)
+        /// https://www.mbtest.org/docs/api/predicates#predicates-equals
+        case equals(JSON, Parameters? = nil)
+
+        /// Performs nested set equality on the request field, useful when the request field is an object (e.g. the query field in http)
+        /// https://www.mbtest.org/docs/api/predicates#predicates-deepEquals
+        case deepEquals(JSON, Parameters? = nil)
+
         /// The request field contains the predicate
-        case contains(JSON)
+        /// https://www.mbtest.org/docs/api/predicates#predicates-contains
+        case contains(JSON, Parameters? = nil)
+
         /// The request field starts with the predicate
-        case startsWith
+        /// https://www.mbtest.org/docs/api/predicates#predicates-startsWith
+        case startsWith(JSON, Parameters? = nil)
+
         /// The request field ends with the predicate
-        case endsWith
+        /// https://www.mbtest.org/docs/api/predicates#predicates-endsWith
+        case endsWith(JSON, Parameters? = nil)
+
         /// The request field matches the JavaScript regular expression defined with the predicate.
-        case matches
+        /// https://www.mbtest.org/docs/api/predicates#predicates-matches
+        case matches(JSON, Parameters? = nil)
+
         /// If true, the request field must exist. If false, the request field must not exist.
-        case exists
+        /// https://www.mbtest.org/docs/api/predicates#predicates-exists
+        case exists(JSON, Parameters? = nil)
+
         /// Inverts a predicate
-        case not
+        /// https://www.mbtest.org/docs/api/predicates#predicates-not
+        case not(Stub.Predicate, Parameters? = nil)
+
         /// Logically or's two predicates together
-        case or
+        /// https://www.mbtest.org/docs/api/predicates#predicates-or
+        case or([Stub.Predicate], Parameters? = nil)
+
         /// Logically and's two predicates together
-        case and
-        /// Injects JavaScript to decide whether the request matches or not. See the injection page for more details.
-        case inject(String)
+        /// https://www.mbtest.org/docs/api/predicates#predicates-and
+        case and([Stub.Predicate], Parameters? = nil)
+
+        /// Injects JavaScript to decide whether the request matches or not.
+        /// The JavaScript should be a function that accepts the request object (and optionally a logger) and returns true or false.
+        /// https://www.mbtest.org/docs/api/predicates#predicates-inject
+        case inject(String, Parameters? = nil)
+    }
+}
+
+extension Stub.Predicate {
+    public struct Parameters: Codable, Equatable {
+        /// Determines if the match is case sensitive or not. This includes keys for objects such as query parameters.
+        let caseSensitive: Bool?
+        /// Defines a regular expression that is stripped out of the request field before matching.
+        let except: String?
+
+        // TODO: implement XPath
+        // https://www.mbtest.org/docs/api/xpath
+        // let xpath: XPath?
+
+        // TODO: implement JSONPath
+        // https://www.mbtest.org/docs/api/jsonpath
+        // let jsonpath: JSONPath?
+
+        var isEmpty: Bool {
+            // A bit overkill, but future proof
+            !Mirror(reflecting: self).children.contains(where: { "\($0.value)" != "nil" })
+        }
+
+        public init?(caseSensitive: Bool?, except: String?) {
+            self.caseSensitive = caseSensitive
+            self.except = except
+
+            if isEmpty {
+                return nil
+            }
+        }
     }
 }

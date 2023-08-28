@@ -7,16 +7,10 @@ extension Stub.Response {
         public let headers: [String: String]?
         public let body: Body?
 
-        public init(statusCode: Int, headers: [String: String]? = nil, body: Body) {
+        public init(statusCode: Int, headers: [String: String]? = nil, body: Body? = nil) {
             self.statusCode = statusCode
             self.headers = headers
             self.body = body
-        }
-
-        public init(statusCode: Int, headers: [String: String]? = nil) {
-            self.statusCode = statusCode
-            self.headers = headers
-            body = nil
         }
 
         public init(statusCode: Int, headers: [String: String]? = nil, body: String) {

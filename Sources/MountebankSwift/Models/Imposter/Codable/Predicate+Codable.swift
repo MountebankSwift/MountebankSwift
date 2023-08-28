@@ -1,5 +1,9 @@
 import Foundation
 
+enum PredicateDecodeError: Error {
+    case invalidType
+}
+
 extension Stub.Predicate {
     enum CodingKeys: String, CodingKey {
         case equals
@@ -19,44 +23,100 @@ extension Stub.Predicate {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         switch self {
-        case .equals(let equalsData):
-            try container.encode(equalsData, forKey: .equals)
-        case .deepEquals(let deepEqualsData):
-            try container.encode(deepEqualsData, forKey: .deepEquals)
-        case .contains(let containsData):
-            try container.encode(containsData, forKey: .contains)
-        case .startsWith:
-            break
-        case .endsWith:
-            break
-        case .matches:
-            break
-        case .exists:
-            break
-        case .not:
-            break
-        case .or:
-            break
-        case .and:
-            break
-        case .inject(let script):
-            try container.encode(script, forKey: .inject)
+        case .equals(let json, let parameters):
+            try container.encode(json, forKey: .equals)
+            try parameters?.encode(to: encoder)
+        case .deepEquals(let json, let parameters):
+            try container.encode(json, forKey: .deepEquals)
+            try parameters?.encode(to: encoder)
+        case .contains(let json, let parameters):
+            try container.encode(json, forKey: .contains)
+            try parameters?.encode(to: encoder)
+        case .startsWith(let json, let parameters):
+            try container.encode(json, forKey: .startsWith)
+            try parameters?.encode(to: encoder)
+        case .endsWith(let json, let parameters):
+            try container.encode(json, forKey: .endsWith)
+            try parameters?.encode(to: encoder)
+        case .matches(let json, let parameters):
+            try container.encode(json, forKey: .matches)
+            try parameters?.encode(to: encoder)
+        case .exists(let json, let parameters):
+            try container.encode(json, forKey: .exists)
+            try parameters?.encode(to: encoder)
+        case .not(let predicate, let parameters):
+            try container.encode(predicate, forKey: .not)
+            try parameters?.encode(to: encoder)
+        case .or(let predicate, let parameters):
+            try container.encode(predicate, forKey: .or)
+            try parameters?.encode(to: encoder)
+        case .and(let predicate, let parameters):
+            try container.encode(predicate, forKey: .and)
+            try parameters?.encode(to: encoder)
+        case .inject(let javascript, let parameters):
+            try container.encode(javascript, forKey: .inject)
+            try parameters?.encode(to: encoder)
         }
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        let parameters = try? Parameters(from: decoder)
         if let value = try container.decodeIfPresent(JSON.self, forKey: .equals) {
-            self = .equals(value)
+            self = .equals(value, parameters)
         } else if let value = try container.decodeIfPresent(JSON.self, forKey: .deepEquals) {
-            self = .deepEquals(value)
+            self = .deepEquals(value, parameters)
         } else if let value = try container.decodeIfPresent(JSON.self, forKey: .contains) {
-            self = .contains(value)
-        } else if let value = try container.decodeIfPresent(String.self, forKey: .equals) {
-            self = .inject(value)
+            self = .contains(value, parameters)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .startsWith) {
+            self = .startsWith(value, parameters)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .endsWith) {
+            self = .endsWith(value, parameters)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .matches) {
+            self = .matches(value, parameters)
+        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .exists) {
+            self = .exists(value, parameters)
+        } else if let value = try container.decodeIfPresent(Stub.Predicate.self, forKey: .not) {
+            self = .not(value, parameters)
+        } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .or) {
+            self = .or(value, parameters)
+        } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .and) {
+            self = .and(value, parameters)
+        } else if let value = try container.decodeIfPresent(String.self, forKey: .inject) {
+            self = .inject(value, parameters)
         } else {
-            fatalError("This Predicate needs to be implemented")
+            throw PredicateDecodeError.invalidType
         }
+    }
+}
+
+extension Stub.Predicate.Parameters {
+    enum ParametersDecodingError: Error {
+        case empty
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case caseSensitive, except
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        caseSensitive = try? container.decode(Bool.self, forKey: .caseSensitive)
+        except = try? container.decode(String.self, forKey: .except)
+
+        if isEmpty {
+            throw ParametersDecodingError.empty
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        if isEmpty {
+            return
+        }
+
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(caseSensitive, forKey: .caseSensitive)
+        try container.encode(except, forKey: .except)
     }
 }

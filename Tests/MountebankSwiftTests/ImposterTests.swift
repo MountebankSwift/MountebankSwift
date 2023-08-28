@@ -41,6 +41,13 @@ final class ImposterTests: XCTestCase {
         try assertEncodeDecode(Stub.proxy)
         try assertEncodeDecode(Stub.injectBody)
         try assertEncodeDecode(Stub.connectionResetByPeer)
+        try assertEncodeDecode(Stub.predicateEquals1)
+        try assertEncodeDecode(Stub.predicateEquals2)
+        try assertEncodeDecode(Stub.predicateEquals3)
+        try assertEncodeDecode(Stub.predicateEquals4)
+        try assertEncodeDecode(Stub.predicateDeepEquals1)
+        try assertEncodeDecode(Stub.predicateDeepEquals2)
+        try assertEncodeDecode(Stub.predicateDeepEquals3)
     }
 
     func testEncodeDecodeParameters() throws {
@@ -74,6 +81,7 @@ final class ImposterTests: XCTestCase {
         try assertEncodeDecode(imposter)
     }
 
+    // Escaping fails, not sure why yet
     func skip_testDecodeEncode() throws {
         try assertDecodeEncode(exampleJSON, as: Imposter.self)
     }

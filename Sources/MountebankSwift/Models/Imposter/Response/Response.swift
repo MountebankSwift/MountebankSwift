@@ -2,9 +2,9 @@ import Foundation
 
 extension Stub {
     public enum Response: Codable, Equatable {
-        case `is`(Is, Parameters?)
-        case proxy(Proxy, Parameters?)
-        case inject(String, Parameters?)
-        case fault(Fault, Parameters?)
+        case `is`(Is, Parameters? = nil)
+        case proxy(Proxy, Parameters? = nil)
+        case inject(String, Parameters? = nil)
+        case fault(Fault, Parameters? = nil)
     }
 }
