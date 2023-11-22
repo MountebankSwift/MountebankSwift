@@ -6,9 +6,4 @@ extension Stub.Response {
         case json(JSON)
         case data(Data)
     }
-
-    public enum Mode: String, Codable, Equatable {
-        case text
-        case binary
-    }
 }

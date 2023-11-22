@@ -1,6 +1,6 @@
 import Foundation
 
-// TODO MB responses containing imposters will could also contain
+// TODO: MB responses containing imposters will could also contain
 // public let requests: [Request]
 // public let numberOfRequests: Int
 

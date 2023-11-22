@@ -2,140 +2,25 @@ import XCTest
 @testable import MountebankSwift
 
 final class ImposterTests: XCTestCase {
-    let imposter = Imposter(
-        port: 4545,
-        networkProtocol: .https,
-        name: "imposter contract service",
-        stubs: [
-            Stub.httpResponse200,
-            Stub.httpResponse404,
-            Stub.proxy,
-            Stub.injectBody,
-            Stub.connectionResetByPeer,
-            Stub.json,
-            Stub.binary,
-            Stub.html200,
-        ],
-        defaultResponse: Stub.Response.Is(
-            statusCode: 400,
-            headers: ["default-header": "set-by-mountebank"],
-            body: "Bad Request - 400"
+    func testSimple() throws {
+        try assertEncode(
+            Imposter.Examples.simple.value,
+            Imposter.Examples.simple.json
         )
-    )
-
-    func testEncode() throws {
-        let jsonData = try testEncoder.encode(imposter)
-        guard let json = String(data: jsonData, encoding: .utf8) else {
-            XCTFail("Could not encode the imposter")
-            return
-        }
-        print(json)
-    }
-
-    func testEncodeDecodeDataStub() throws {
-        try assertEncodeDecode(Stub.httpResponse200)
-        try assertEncodeDecode(Stub.html200)
-        try assertEncodeDecode(Stub.json)
-        try assertEncodeDecode(Stub.binary)
-        try assertEncodeDecode(Stub.httpResponse404)
-        try assertEncodeDecode(Stub.proxy)
-        try assertEncodeDecode(Stub.injectBody)
-        try assertEncodeDecode(Stub.connectionResetByPeer)
-        try assertEncodeDecode(Stub.predicateEquals1)
-        try assertEncodeDecode(Stub.predicateEquals2)
-        try assertEncodeDecode(Stub.predicateEquals3)
-        try assertEncodeDecode(Stub.predicateEquals4)
-        try assertEncodeDecode(Stub.predicateDeepEquals1)
-        try assertEncodeDecode(Stub.predicateDeepEquals2)
-        try assertEncodeDecode(Stub.predicateDeepEquals3)
-    }
-
-    func testEncodeDecodeParameters() throws {
-        try assertEncodeDecode(
-            Stub.Response.is(
-                Stub.Response.Is(statusCode: 200),
-                Stub.Response.Parameters(repeatCount: nil)
-            )
-        )
-
-        try assertEncodeDecode(
-            Stub.Response.is(
-                Stub.Response.Is(statusCode: 200),
-                Stub.Response.Parameters(repeatCount: 5)
-            )
+        try assertDecode(
+            Imposter.Examples.simple.json,
+            Imposter.Examples.simple.value
         )
     }
 
-    func testDecode() throws {
-        guard let data = exampleJSON.data(using: .utf8) else {
-            XCTFail("Could not create data from exampleJSON")
-            return
-        }
-
-        let decodedImposters = try testDecoder.decode(Imposter.self, from: data)
-        XCTAssertEqual(decodedImposters.stubs.count, imposter.stubs.count)
-        XCTAssertEqual(imposter, decodedImposters)
-    }
-
-    func testEncodeDecode() throws {
-        try assertEncodeDecode(imposter)
-    }
-
-    // Escaping fails, not sure why yet
-    func skip_testDecodeEncode() throws {
-        try assertDecodeEncode(exampleJSON, as: Imposter.self)
+    func testAdvanced() throws {
+        try assertEncode(
+            Imposter.Examples.advanced.value,
+            Imposter.Examples.advanced.json
+        )
+        try assertDecode(
+            Imposter.Examples.advanced.json,
+            Imposter.Examples.advanced.value
+        )
     }
 }
-
-private let exampleJSON = """
-{
-    "port": 4545,
-    "protocol": "https",
-    "name": "imposter contract service",
-    "stubs": [
-        {
-            "predicates": [{"equals": {"path": "/test-is-200"}}],
-            "responses": [{ "is": { "statusCode": 200, "body": "Hello world", "_mode": "text" }, "repeat": 3 }]
-        },
-        {
-            "predicates": [{"equals": {"path": "/test-is-404"}}],
-            "responses": [{ "is": { "statusCode": 404 }, "repeat": 2 }]
-        },
-        {
-            "predicates": [{"equals": {"path": "/test-proxy"}}],
-            "responses": [{ "proxy": {"to": "https://www.somesite.com:3000", "mode": "proxyAlways"} }]
-        },
-        {
-            "predicates": [{"equals": {"path": "/test-inject"}}],
-            "responses": [{ "inject": "(config) => { return { body: \\"hello world\\" }; }" }]
-        },
-        {
-            "predicates": [{"equals": {"path": "/test-fault"}}],
-            "responses": [{ "fault": "CONNECTION_RESET_BY_PEER" }]
-        },
-        {
-            "predicates" : [{"equals" : {"path" : "/test-json"}}],
-            "responses" : [{"is" : {"statusCode" : 200, "body" : {"name" : "Turbo Bike 4000", "bikeId" : 123 }}}]
-        },
-        {
-            "predicates" : [{"equals" : {"path" : "/test-binary"}}],
-            "responses" : [{
-                "is" : {
-                    "_mode" : "binary",
-                    "statusCode" : 200,
-                    "body" : "\(StubImage.exampleBase64String)"
-                }
-            }]
-        },
-        {
-            "predicates" : [{"equals" : {"path" : "/test-html-200"}}],
-            "responses" : [{"is" : {"statusCode" : 200, "body" : "<html><body><h1>Who needs HTML?</h1></html>"}}]
-        }
-    ],
-    "defaultResponse" : {
-        "statusCode": 400,
-        "headers": {"default-header": "set-by-mountebank"},
-        "body": "Bad Request - 400"
-    }
-}
-"""

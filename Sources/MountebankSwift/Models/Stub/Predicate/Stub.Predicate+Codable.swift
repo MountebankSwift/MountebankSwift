@@ -53,14 +53,18 @@ extension Stub.Predicate {
         case .and(let predicate, let parameters):
             try container.encode(predicate, forKey: .and)
             try parameters?.encode(to: encoder)
-        case .inject(let javascript, let parameters):
+        case .inject(let javascript):
             try container.encode(javascript, forKey: .inject)
-            try parameters?.encode(to: encoder)
         }
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let value = try container.decodeIfPresent(String.self, forKey: .inject) {
+            self = .inject(value)
+            return
+        }
 
         let parameters = try? Parameters(from: decoder)
         if let value = try container.decodeIfPresent(JSON.self, forKey: .equals) {
@@ -83,8 +87,6 @@ extension Stub.Predicate {
             self = .or(value, parameters)
         } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .and) {
             self = .and(value, parameters)
-        } else if let value = try container.decodeIfPresent(String.self, forKey: .inject) {
-            self = .inject(value, parameters)
         } else {
             throw PredicateDecodeError.invalidType
         }
@@ -116,7 +118,13 @@ extension Stub.Predicate.Parameters {
         }
 
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(caseSensitive, forKey: .caseSensitive)
-        try container.encode(except, forKey: .except)
+        
+        if let caseSensitive {
+            try container.encode(caseSensitive, forKey: .caseSensitive)
+        }
+
+        if let except {
+            try container.encode(except, forKey: .except)
+        }
     }
 }

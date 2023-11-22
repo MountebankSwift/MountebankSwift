@@ -127,7 +127,7 @@ public struct Mountebank {
 
     private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {
         HTTPRequest(
-            url: mountebankURL.appending(path: endPoint.templatePath),
+            url: mountebankURL.appendingPathComponent(endPoint.templatePath),
             method: endPoint.method,
             body: body,
             headers: [HTTPHeaders.contentType: MimeType.json.rawValue]

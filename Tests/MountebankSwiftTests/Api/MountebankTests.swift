@@ -21,7 +21,7 @@ class MountebankTests: XCTestCase {
     func skip_testGetImposter() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data(), statusCode: .accepted)
 
-        try await sut.getAllImposters()
+        _ = try await sut.getAllImposters()
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }

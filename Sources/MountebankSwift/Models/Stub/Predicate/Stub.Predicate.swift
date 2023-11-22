@@ -46,7 +46,7 @@ extension Stub {
         /// Injects JavaScript to decide whether the request matches or not.
         /// The JavaScript should be a function that accepts the request object (and optionally a logger) and returns true or false.
         /// https://www.mbtest.org/docs/api/predicates#predicates-inject
-        case inject(String, Parameters? = nil)
+        case inject(String)
     }
 }
 
@@ -70,7 +70,7 @@ extension Stub.Predicate {
             !Mirror(reflecting: self).children.contains(where: { "\($0.value)" != "nil" })
         }
 
-        public init?(caseSensitive: Bool?, except: String?) {
+        public init?(caseSensitive: Bool? = nil, except: String? = nil) {
             self.caseSensitive = caseSensitive
             self.except = except
 
