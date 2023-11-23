@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AddStub: Encodable {
+struct AddStub: Codable, Equatable {
     public let index: Int
     public let stub: Stub
 

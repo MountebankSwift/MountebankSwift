@@ -120,7 +120,7 @@ extension Stub.Predicate.Parameters {
         }
 
         var container = encoder.container(keyedBy: CodingKeys.self)
-        
+
         if let caseSensitive {
             try container.encode(caseSensitive, forKey: .caseSensitive)
         }

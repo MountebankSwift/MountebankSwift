@@ -95,7 +95,7 @@ extension Stub.Predicate {
         /// The XPath namespace map, aliasing a prefix to a URL, which allows you to use the prefix in the selector.
         let namespace: [String: String]?
 
-        public init(selector: String, namespace: [String : String]?) {
+        public init(selector: String, namespace: [String: String]?) {
             self.selector = selector
             self.namespace = namespace
         }

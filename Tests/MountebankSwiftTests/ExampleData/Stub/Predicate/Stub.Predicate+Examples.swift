@@ -143,4 +143,3 @@ extension Stub.Predicate {
         )
     }
 }
-

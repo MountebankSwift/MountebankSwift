@@ -39,7 +39,8 @@ public struct Mountebank {
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
     }
 
-    public func postImposterStub(addStub: AddStub, port: Int) async throws -> Imposter {
+    public func postImposterStub(stub: Stub, index: Int, port: Int) async throws -> Imposter {
+        let addStub = AddStub(index: index, stub: stub)
         let bodyData = try encodeJson(encodable: addStub)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
     }

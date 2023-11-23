@@ -47,11 +47,15 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testUpdatingStub() async throws {
         let port = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
-        let updatedImposterResult = try await sut.postImposterStub(addStub: AddStub.injectBody, port: port)
+        let updatedImposterResult = try await sut.postImposterStub(
+            stub: AddStub.Examples.addInjectStubFirstIndex.value.stub,
+            index: AddStub.Examples.addInjectStubFirstIndex.value.index,
+            port: port
+        )
 
         XCTAssertEqual(updatedImposterResult.stubs.count, 2)
         XCTAssertEqual(updatedImposterResult.stubs.first, Imposter.Examples.simple.value.stubs.first)
-        XCTAssertEqual(updatedImposterResult.stubs.last, AddStub.injectBody.stub)
+        XCTAssertEqual(updatedImposterResult.stubs.last, AddStub.Examples.addInjectStubFirstIndex.value.stub)
     }
 
     func testUpdatingImposter() async throws {

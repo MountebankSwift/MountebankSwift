@@ -18,18 +18,18 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Run swiftlint
         run: swiftlint lint --reporter github-actions-logging
 
   test:
-    runs-on: macos-14
+    runs-on: macos-13
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
         xcode: ["15.0.1"]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Install Mountebank
         run: npm install mountebank -g
       - name: Setup Mountebank

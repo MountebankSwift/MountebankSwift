@@ -13,7 +13,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.equals.value
         )
     }
-    
+
     func testDeepEquals() throws {
         try assertEncode(
             Stub.Predicate.Examples.deepEquals.value,
@@ -24,7 +24,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.deepEquals.value
         )
     }
-    
+
     func testContains() throws {
         try assertEncode(
             Stub.Predicate.Examples.contains.value,
@@ -35,7 +35,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.contains.value
         )
     }
-    
+
     func testStartsWith() throws {
         try assertEncode(
             Stub.Predicate.Examples.startsWith.value,
@@ -46,7 +46,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.startsWith.value
         )
     }
-    
+
     func testEndsWith() throws {
         try assertEncode(
             Stub.Predicate.Examples.endsWith.value,
@@ -57,7 +57,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.endsWith.value
         )
     }
-    
+
     func testMatches() throws {
         try assertEncode(
             Stub.Predicate.Examples.matches.value,
@@ -68,7 +68,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.matches.value
         )
     }
-    
+
     func testExists() throws {
         try assertEncode(
             Stub.Predicate.Examples.exists.value,
@@ -79,7 +79,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.exists.value
         )
     }
-    
+
     func testNot() throws {
         try assertEncode(
             Stub.Predicate.Examples.not.value,
@@ -90,7 +90,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.not.value
         )
     }
-    
+
     func testOr() throws {
         try assertEncode(
             Stub.Predicate.Examples.or.value,
@@ -101,7 +101,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.or.value
         )
     }
-    
+
     func testAnd() throws {
         try assertEncode(
             Stub.Predicate.Examples.and.value,
@@ -112,7 +112,7 @@ final class StubPredicateTests: XCTestCase {
             Stub.Predicate.Examples.and.value
         )
     }
-    
+
     func testInject() throws {
         try assertEncode(
             Stub.Predicate.Examples.inject.value,
