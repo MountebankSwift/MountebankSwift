@@ -99,13 +99,15 @@ extension Stub.Predicate.Parameters {
     }
 
     enum CodingKeys: String, CodingKey {
-        case caseSensitive, except
+        case caseSensitive, except, xPath = "xpath", jsonPath = "jsonpath"
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         caseSensitive = try? container.decode(Bool.self, forKey: .caseSensitive)
         except = try? container.decode(String.self, forKey: .except)
+        xPath = try? container.decode(Stub.Predicate.XPath.self, forKey: .xPath)
+        jsonPath = try? container.decode(Stub.Predicate.JSONPath.self, forKey: .jsonPath)
 
         if isEmpty {
             throw ParametersDecodingError.empty
@@ -125,6 +127,14 @@ extension Stub.Predicate.Parameters {
 
         if let except {
             try container.encode(except, forKey: .except)
+        }
+
+        if let xPath {
+            try container.encode(xPath, forKey: .xPath)
+        }
+
+        if let jsonPath {
+            try container.encode(jsonPath, forKey: .jsonPath)
         }
     }
 }

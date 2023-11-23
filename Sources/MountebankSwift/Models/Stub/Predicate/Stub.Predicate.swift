@@ -56,27 +56,57 @@ extension Stub.Predicate {
         let caseSensitive: Bool?
         /// Defines a regular expression that is stripped out of the request field before matching.
         let except: String?
-
-        // TODO: implement XPath
-        // https://www.mbtest.org/docs/api/xpath
-        // let xpath: XPath?
-
-        // TODO: implement JSONPath
-        // https://www.mbtest.org/docs/api/jsonpath
-        // let jsonpath: JSONPath?
+        /// Defines an object containing a selector string and, optionally, an namespace map. The predicate's scope is limited to the selected value in the request field.
+        let xPath: XPath?
+        /// Defines an object containing a selector string. The predicate's scope is limited to the selected value in the request field.
+        let jsonPath: JSONPath?
 
         var isEmpty: Bool {
             // A bit overkill, but future proof
             !Mirror(reflecting: self).children.contains(where: { "\($0.value)" != "nil" })
         }
 
-        public init?(caseSensitive: Bool? = nil, except: String? = nil) {
+        public init?(
+            caseSensitive: Bool? = nil,
+            except: String? = nil,
+            xPath: XPath? = nil,
+            jsonPath: JSONPath? = nil
+        ) {
             self.caseSensitive = caseSensitive
             self.except = except
+            self.xPath = xPath
+            self.jsonPath = jsonPath
 
             if isEmpty {
                 return nil
             }
+        }
+    }
+
+    public struct XPath: Codable, Equatable {
+        enum CodingKeys: String, CodingKey {
+            case selector
+            case namespace = "ns"
+        }
+
+        /// The XPath selector
+        let selector: String
+
+        /// The XPath namespace map, aliasing a prefix to a URL, which allows you to use the prefix in the selector.
+        let namespace: [String: String]?
+
+        public init(selector: String, namespace: [String : String]?) {
+            self.selector = selector
+            self.namespace = namespace
+        }
+    }
+
+    public struct JSONPath: Codable, Equatable {
+        /// The JSONPath selector
+        let selector: String
+
+        public init(selector: String) {
+            self.selector = selector
         }
     }
 }

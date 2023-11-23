@@ -40,5 +40,24 @@ extension Imposter {
                 "recordRequests": true
             ]
         )
+
+        static let includingAllStubs = Example(
+            value: Imposter(
+                port: 8080,
+                networkProtocol: .https,
+                name: "Single stub",
+                stubs: Stub.Examples.all.map(\.value),
+                defaultResponse: Stub.Response.Is(statusCode: 403),
+                recordRequests: true
+            ),
+            json: [
+                "port": 8080,
+                "protocol": "https",
+                "name": "Single stub",
+                "stubs": .array(Stub.Examples.all.map(\.json)),
+                "defaultResponse": ["statusCode": 403],
+                "recordRequests": true
+            ]
+        )
     }
 }

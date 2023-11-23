@@ -3,6 +3,14 @@ import MountebankSwift
 
 extension Stub {
     enum Examples {
+        static let all = [
+            text,
+            json,
+            http404,
+            textWhenRefresh404,
+            multiplePredicatesAndResponses
+        ]
+
         static let text = Example(
             value: Stub(
                 responses: [Stub.Response.Examples.text.value],
@@ -58,20 +66,14 @@ extension Stub {
             ]
         )
 
-        static let multiplePredicates = Example(
+        static let multiplePredicatesAndResponses = Example(
             value: Stub(
-                responses: [Stub.Response.Examples.json.value],
-                predicates: [
-                    Stub.Predicate.Examples.equals.value,
-                    Stub.Predicate.Examples.deepEquals.value,
-                ]
+                responses: Stub.Response.Examples.all.map(\.value),
+                predicates: Stub.Predicate.Examples.all.map(\.value)
             ),
             json: [
-                "responses": [Stub.Response.Examples.json.json],
-                "predicates": [
-                    Stub.Predicate.Examples.equals.json,
-                    Stub.Predicate.Examples.deepEquals.json,
-                ]
+                "responses": .array(Stub.Response.Examples.all.map(\.json)),
+                "predicates": .array(Stub.Predicate.Examples.all.map(\.json))
             ]
         )
     }

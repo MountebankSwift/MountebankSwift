@@ -3,6 +3,21 @@ import MountebankSwift
 
 extension Stub.Predicate {
     enum Examples {
+        static let all = [
+            equals,
+            deepEquals,
+            contains,
+            startsWith,
+            endsWith,
+            matches,
+            exists,
+            not,
+            or,
+            and,
+            inject,
+            withParameters
+        ]
+
         static let equals = Example(
             value: Stub.Predicate.equals(
                 ["path": "/test-is-200"]
@@ -119,13 +134,13 @@ extension Stub.Predicate {
         static let withParameters = Example(
             value: Stub.Predicate.equals(
                 ["path": "/with-parameters"],
-                Stub.Predicate.Parameters(caseSensitive: true, except: "^Hello")
+                Stub.Predicate.Parameters.Examples.full.value
             ),
-            json: [
-                "equals" : ["path": "/with-parameters"],
-                "caseSensitive" : true,
-                "except": "^Hello"
-            ]
+            json: JSON(mergingObjects: [
+                ["equals" : ["path": "/with-parameters"]],
+                Stub.Predicate.Parameters.Examples.full.json
+            ])
         )
     }
 }
+

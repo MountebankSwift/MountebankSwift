@@ -3,6 +3,19 @@ import MountebankSwift
 
 extension Stub.Response {
     enum Examples {
+        static let all: [Example] = [
+            text,
+            html,
+            json,
+            binary,
+            http404,
+            proxy,
+            injectBody,
+            connectionResetByPeer,
+            randomDataThenClose,
+            repeating
+        ]
+
         static let text = Example(
             value: Stub.Response.is(
                 Is(statusCode: 200, body: "Hello world")
@@ -102,12 +115,12 @@ extension Stub.Response {
         static let repeating = Example(
             value: Stub.Response.is(
                 Stub.Response.Is(statusCode: 200, body: "Hello world"),
-                Stub.Response.Parameters(repeatCount: 3)
+                Stub.Response.Parameters.Examples.repeating.value
             ),
-            json: [
-                "is": ["statusCode": 200, "body": "Hello world"],
-                "repeat": 3
-            ]
+            json: JSON(mergingObjects: [
+                ["is": ["statusCode": 200, "body": "Hello world"]],
+                Stub.Response.Parameters.Examples.repeating.json
+            ])
         )
 
     }

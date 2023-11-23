@@ -3,14 +3,14 @@ import MountebankSwift
 import XCTest
 
 final class StubResponseParametersTests: XCTestCase {
-    func testAll() throws {
+    func testRepeating() throws {
         try assertEncode(
-            Stub.Response.Parameters.Examples.all.value,
-            Stub.Response.Parameters.Examples.all.json
+            Stub.Response.Parameters.Examples.repeating.value,
+            Stub.Response.Parameters.Examples.repeating.json
         )
         try assertDecode(
-            Stub.Response.Parameters.Examples.all.json,
-            Stub.Response.Parameters.Examples.all.value
+            Stub.Response.Parameters.Examples.repeating.json,
+            Stub.Response.Parameters.Examples.repeating.value
         )
     }
 }

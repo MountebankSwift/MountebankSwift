@@ -57,10 +57,10 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testGetAllImposters() async throws {
-        let port = try await postDefaultImposter(imposter: Imposter.Examples.advanced.value)
+        let port = try await postDefaultImposter(imposter: Imposter.Examples.includingAllStubs.value)
         let allImposters = try await sut.getImposter(port: port)
 
-        XCTAssertEqual(allImposters.stubs.count, Imposter.Examples.advanced.value.stubs.count)
+        XCTAssertEqual(allImposters.stubs.count, Imposter.Examples.includingAllStubs.value.stubs.count)
         XCTAssertEqual(allImposters.port, port)
     }
 

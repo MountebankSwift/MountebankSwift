@@ -47,14 +47,14 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testMultiplePredicates() throws {
+    func testMultiplePredicatesAndResponses() throws {
         try assertEncode(
-            Stub.Examples.multiplePredicates.value,
-            Stub.Examples.multiplePredicates.json
+            Stub.Examples.multiplePredicatesAndResponses.value,
+            Stub.Examples.multiplePredicatesAndResponses.json
         )
         try assertDecode(
-            Stub.Examples.multiplePredicates.json,
-            Stub.Examples.multiplePredicates.value
+            Stub.Examples.multiplePredicatesAndResponses.json,
+            Stub.Examples.multiplePredicatesAndResponses.value
         )
     }
 }

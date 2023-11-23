@@ -23,4 +23,15 @@ final class ImposterTests: XCTestCase {
             Imposter.Examples.advanced.value
         )
     }
+
+    func testIncludingAllStubs() throws {
+        try assertEncode(
+            Imposter.Examples.includingAllStubs.value,
+            Imposter.Examples.includingAllStubs.json
+        )
+        try assertDecode(
+            Imposter.Examples.includingAllStubs.json,
+            Imposter.Examples.includingAllStubs.value
+        )
+    }
 }
