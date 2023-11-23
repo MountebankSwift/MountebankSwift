@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Imposters: Codable {
-    public struct ImposterRef: Codable {
+public struct Imposters: Codable, Equatable {
+    public struct ImposterRef: Codable, Equatable {
         public let networkProtocol: NetworkProtocol
         public let port: Int
 
