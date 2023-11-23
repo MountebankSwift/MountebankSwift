@@ -1,8 +1,8 @@
 import Foundation
 
-public struct Config: Codable {
-    public struct Options: Codable {
-        public struct Log: Codable {
+public struct Config: Codable, Equatable {
+    public struct Options: Codable, Equatable {
+        public struct Log: Codable, Equatable {
             let level: LogLevel
         }
 
@@ -20,7 +20,7 @@ public struct Config: Codable {
         public let debug: Bool
     }
 
-    public struct Process: Codable {
+    public struct Process: Codable, Equatable {
         public let nodeVersion: String
         public let architecture: String
         public let platform: String

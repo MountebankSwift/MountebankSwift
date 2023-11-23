@@ -23,11 +23,11 @@ jobs:
         run: swiftlint lint --reporter github-actions-logging
 
   test:
-    runs-on: macos-latest
+    runs-on: macos-14
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["14.2"]
+        xcode: ["15.0.1"]
     steps:
       - uses: actions/checkout@v2
       - name: Install Mountebank
@@ -35,7 +35,7 @@ jobs:
       - name: Setup Mountebank
         run: |
           RUNNER_TRACKING_ID="" && mb start --allowInjection &
-      - name: Set Xcode
+      - name: Set correct Xcode version
         run: |
           echo "Available Xcode versions:"
           ls /Applications | grep Xcode

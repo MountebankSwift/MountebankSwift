@@ -12,8 +12,7 @@ let package = Package(
     products: [
         .library(
             name: "MountebankSwift",
-            targets: ["MountebankSwift"]
-        ),
+            targets: ["MountebankSwift"]),
     ],
     dependencies: [],
     targets: [
@@ -23,5 +22,4 @@ let package = Package(
         .testTarget(
             name: "MountebankSwiftTests",
             dependencies: ["MountebankSwift"]),
-    ]
-)
+    ])

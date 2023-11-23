@@ -1,13 +1,13 @@
 import Foundation
 
-public struct Logs: Codable {
+public struct Logs: Codable, Equatable {
 
-    public struct Log: Codable {
+    public struct Log: Codable, Equatable {
         public let level: LogLevel
         public let message: String
         public let date: Date?
 
-        enum CodingKeys: String, CodingKey {
+        enum CodingKeys: String, CodingKey, Equatable {
             case level
             case message
             case date
@@ -46,6 +46,16 @@ public struct Logs: Codable {
             } else {
                 date = nil
             }
+        }
+
+        init(
+            level: LogLevel,
+            message: String,
+            date: Date?
+        ) {
+            self.level = level
+            self.message = message
+            self.date = date
         }
 
     }

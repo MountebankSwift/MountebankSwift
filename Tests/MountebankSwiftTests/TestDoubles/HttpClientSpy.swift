@@ -30,11 +30,10 @@ public final class HttpClientSpy: HttpClientProtocol {
         httpRequestCallsCount += 1
         httpRequestReceivedRequest = request
         httpRequestReceivedInvocations.append(request)
-        if let httpRequestClosure = httpRequestClosure {
+        if let httpRequestClosure {
             return try await httpRequestClosure(request)
         } else {
             return httpRequestReturnValue
         }
     }
-
 }
