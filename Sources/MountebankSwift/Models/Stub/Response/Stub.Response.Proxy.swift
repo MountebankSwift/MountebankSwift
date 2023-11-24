@@ -6,7 +6,8 @@ extension Stub.Response {
         public enum Mode: String, Codable {
             /// proxyOnce mode doesn't require you to explicitly do anything to replay the proxied responses.
             case proxyOnce
-            /// The proxyAlways mode requires you to run the mb replay command (or equivalent) to switch from record mode to replay mode, but allows a richer set of data to be recorded.
+            /// The proxyAlways mode requires you to run the mb replay command (or equivalent) to 
+            /// switch from record mode to replay mode, but allows a richer set of data to be recorded.
             case proxyAlways
             /// proxy requests but do not record any data.
             case proxyTransparent
@@ -19,9 +20,13 @@ extension Stub.Response {
         let mode: Mode
 
         // TODO: add support for additional proxy options
-        ///// An array of objects that defines how the predicates for new stubs are created. Each object in the array defines the fields to generate predicates from.
+        ///// An array of objects that defines how the predicates for new stubs are created.
+        ///// Each object in the array defines the fields to generate predicates from.
         //let predicateGenerators: [PredicateGenerator]
-        ///// If true, mountebank will add a wait behavior to the response with the same latency that the proxied call took. This is useful in performance testing scenarios where you want to // simulate the actual latency of downstream services that you're virtualizing.
+        ///// If true, mountebank will add a wait behavior to the response 
+        ///// with the same latency that the proxied call took.
+        ///// This is useful in performance testing scenarios where you want to
+        ///// simulate the actual latency of downstream services that you're virtualizing.
         //let addWaitBehavior: Bool
         ///// If defined, mountebank will add a decorate behavior to the saved response.
         //let addDecorateBehavior: String

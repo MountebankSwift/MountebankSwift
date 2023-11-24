@@ -2,13 +2,16 @@ import Foundation
 
 extension Stub.Predicate {
     public struct Parameters: Codable, Equatable {
-        /// Determines if the match is case sensitive or not. This includes keys for objects such as query parameters.
+        /// Determines if the match is case sensitive or not. 
+        /// This includes keys for objects such as query parameters.
         let caseSensitive: Bool?
         /// Defines a regular expression that is stripped out of the request field before matching.
         let except: String?
-        /// Defines an object containing a selector string and, optionally, an namespace map. The predicate's scope is limited to the selected value in the request field.
+        /// Defines an object containing a selector string and, optionally, an namespace map. 
+        /// The predicate's scope is limited to the selected value in the request field.
         let xPath: XPath?
-        /// Defines an object containing a selector string. The predicate's scope is limited to the selected value in the request field.
+        /// Defines an object containing a selector string. 
+        /// The predicate's scope is limited to the selected value in the request field.
         let jsonPath: JSONPath?
 
         var isEmpty: Bool {
