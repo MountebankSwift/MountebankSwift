@@ -13,7 +13,7 @@ extension Stub.Response {
             injectBody,
             connectionResetByPeer,
             randomDataThenClose,
-            repeating
+            responseParameters
         ]
 
         static let text = Example(
@@ -83,7 +83,7 @@ extension Stub.Response {
 
         static let proxy = Example(
             value: Stub.Response.proxy(
-                Proxy(to: "https://www.somesite.com:3000", mode: "proxyAlways")
+                Proxy(to: "https://www.somesite.com:3000", mode: .proxyAlways)
             ),
             json: [
                 "proxy": [
@@ -112,14 +112,14 @@ extension Stub.Response {
             json: ["fault": "RANDOM_DATA_THEN_CLOSE"]
         )
 
-        static let repeating = Example(
+        static let responseParameters = Example(
             value: Stub.Response.is(
                 Stub.Response.Is(statusCode: 200, body: "Hello world"),
-                Stub.Response.Parameters.Examples.repeating.value
+                Stub.Response.Parameters.Examples.full.value
             ),
             json: JSON(mergingObjects: [
                 ["is": ["statusCode": 200, "body": "Hello world"]],
-                Stub.Response.Parameters.Examples.repeating.json
+                Stub.Response.Parameters.Examples.full.json
             ])
         )
 

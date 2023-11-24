@@ -102,14 +102,14 @@ final class StubResponseTests: XCTestCase {
         )
     }
 
-    func testRepeating() throws {
+    func testResponseParameters() throws {
         try assertEncode(
-            Stub.Response.Examples.repeating.value,
-            Stub.Response.Examples.repeating.json
+            Stub.Response.Examples.responseParameters.value,
+            Stub.Response.Examples.responseParameters.json
         )
         try assertDecode(
-            Stub.Response.Examples.repeating.json,
-            Stub.Response.Examples.repeating.value
+            Stub.Response.Examples.responseParameters.json,
+            Stub.Response.Examples.responseParameters.value
         )
     }
 }

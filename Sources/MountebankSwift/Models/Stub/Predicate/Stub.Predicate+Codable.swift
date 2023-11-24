@@ -1,10 +1,10 @@
 import Foundation
 
-enum PredicateDecodeError: Error {
-    case invalidType
-}
-
 extension Stub.Predicate {
+    enum DecodingError: Error {
+        case invalidType
+    }
+
     enum CodingKeys: String, CodingKey {
         case equals
         case deepEquals
@@ -88,53 +88,7 @@ extension Stub.Predicate {
         } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .and) {
             self = .and(value, parameters)
         } else {
-            throw PredicateDecodeError.invalidType
-        }
-    }
-}
-
-extension Stub.Predicate.Parameters {
-    enum ParametersDecodingError: Error {
-        case empty
-    }
-
-    enum CodingKeys: String, CodingKey {
-        case caseSensitive, except, xPath = "xpath", jsonPath = "jsonpath"
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        caseSensitive = try? container.decode(Bool.self, forKey: .caseSensitive)
-        except = try? container.decode(String.self, forKey: .except)
-        xPath = try? container.decode(Stub.Predicate.XPath.self, forKey: .xPath)
-        jsonPath = try? container.decode(Stub.Predicate.JSONPath.self, forKey: .jsonPath)
-
-        if isEmpty {
-            throw ParametersDecodingError.empty
-        }
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        if isEmpty {
-            return
-        }
-
-        var container = encoder.container(keyedBy: CodingKeys.self)
-
-        if let caseSensitive {
-            try container.encode(caseSensitive, forKey: .caseSensitive)
-        }
-
-        if let except {
-            try container.encode(except, forKey: .except)
-        }
-
-        if let xPath {
-            try container.encode(xPath, forKey: .xPath)
-        }
-
-        if let jsonPath {
-            try container.encode(jsonPath, forKey: .jsonPath)
+            throw DecodingError.invalidType
         }
     }
 }
