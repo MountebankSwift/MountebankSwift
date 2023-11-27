@@ -21,7 +21,7 @@ public struct Imposter: Codable, Equatable {
     ///
     /// You would use multiple stubs for an imposter if the types of response you return depends on something in the
     /// request, matched with a predicate.
-    public let stubs: [Stub]
+    public private(set) var stubs: [Stub]
 
     /// Allows you to override the default response that mountebank sends back if no predicate matches a request. Even
     /// if a predicate does match but the response isn't fully specified, these values get merged in to complete the
@@ -54,5 +54,9 @@ public struct Imposter: Codable, Equatable {
         self.stubs = stubs
         self.defaultResponse = defaultResponse
         self.recordRequests = recordRequests
+    }
+
+    public mutating func addStub(_ stub: Stub) {
+        stubs.append(stub)
     }
 }

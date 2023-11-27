@@ -26,44 +26,53 @@ public struct Mountebank {
 
     // MARK: - Imposter
 
+    @discardableResult
     public func getImposter(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
     }
 
+    @discardableResult
     public func getAllImposters() async throws -> Imposters {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
     }
 
+    @discardableResult
     public func postImposter(imposter: Imposter) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
     }
 
+    @discardableResult
     public func postImposterStub(stub: Stub, index: Int, port: Int) async throws -> Imposter {
         let addStub = AddStub(index: index, stub: stub)
         let bodyData = try encodeJson(encodable: addStub)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
     }
 
+    @discardableResult
     public func deleteImposter(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
     }
 
+    @discardableResult
     public func deleteAllImposters() async throws -> Imposters {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteAllImposters(), type: Imposters.self)
     }
 
     // MARK: - Stub
 
+    @discardableResult
     public func putImposterStubs(imposter: Imposter, port: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
     }
 
+    @discardableResult
     public func deleteStub(port: Int, stubIndex: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteStub(port: port, stubIndex: stubIndex))
     }
 
+    @discardableResult
     public func putImposterStub(stub: Stub, port: Int, stubIndex: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: stub)
         return try await sendDataToEndpoint(
@@ -74,10 +83,12 @@ public struct Mountebank {
 
     // MARK: - Delete state
 
+    @discardableResult
     public func deleteSavedProxyResponses(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedProxyResponses(port: port))
     }
 
+    @discardableResult
     public func deleteSavedRequests(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedRequests(port: port))
     }

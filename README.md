@@ -19,12 +19,12 @@ final class ExampleUITests: XCTestCase {
 
     override func setUp() async throws {
         // Test if mountebank is running if it failing please start mountebank with `mb start`.
-        _ = try await mounteBank.testConnection()
+        try await mounteBank.testConnection()
     }
 
     override func tearDown() async throws {
         // Remove all imposters to have a clean mounteBank instance for the next tests.
-        _ = try await mounteBank.deleteAllImposters()
+        try await mounteBank.deleteAllImposters()
     }
 
     func testExample() throws {
@@ -36,7 +36,7 @@ final class ExampleUITests: XCTestCase {
         )
         let imposter = Imposter(networkProtocol: .http, stubs: [stub])
         // Post the imposters to start testing against.
-        _ = try await mounteBank.postImposter(imposter: imposter)
+        try await mounteBank.postImposter(imposter: imposter)
 
         let app = XCUIApplication()
         app.launch()
