@@ -1,8 +1,8 @@
 # MountebankSwift
 
 A swift client library for the [Mountebank](https://www.mbtest.org/) - open source tool that
-provides test doubles over the wire. It provides the [all api functionality](https://www.mbtest.org/docs/api/overview) 
-to interact with a Mountebank instance running.
+provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.org/docs/api/overview)
+to interact with a running Mountebank instance.
 
 ## Usage
 
@@ -30,7 +30,7 @@ final class ExampleUITests: XCTestCase {
     func testExample() throws {
         let stub = Stub(
             responses: [
-                Stub.Response.`is`(Stub.Response.Is(statusCode: 201, body: .text("text")))
+                Stub.Response.is(Stub.Response.Is(statusCode: 201, body: .text("text")))
             ],
             predicates: []
         )
@@ -46,10 +46,10 @@ final class ExampleUITests: XCTestCase {
 
 ## Installation
 
-### Xcode
+### using Xcode
 
 > **Warning**
-> By default, Xcode will try to add the MountebankSwift package to your project's main application/framework target. 
+> By default, Xcode will try to add the MountebankSwift package to your project's main application/framework target.
 > Please ensure that MountebankSwift is added to a _test_ target instead, as documented in the last step, below.
 
  1. From the **File** menu, navigate through **Swift Packages** and select **Add Package Dependency…**.
@@ -58,7 +58,7 @@ final class ExampleUITests: XCTestCase {
  4. On the last dialog, update MountebankSwift's **Add to Target** column to a test target that will contain 
     tests that use mountebank.
 
-### Swift Package Manager
+### using Swift Package Manager
 
 To add MountebankSwift to a project that uses [SwiftPM](https://swift.org/package-manager/), you can add it as a 
 dependency in `Package.swift`:
