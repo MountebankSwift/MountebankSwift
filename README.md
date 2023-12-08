@@ -1,12 +1,15 @@
 # MountebankSwift
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMountebankSwift%2FMountebankSwift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/MountebankSwift/MountebankSwift)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMountebankSwift%2FMountebankSwift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/MountebankSwift/MountebankSwift)
+
 A swift client library for the [Mountebank](https://www.mbtest.org/) - open source tool that
 provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.org/docs/api/overview)
 to interact with a running Mountebank instance.
 
 ## Usage
 
-Once [installed](#installation), you need to start the mountebank server with `mb start`. You can import the 
+Once [installed](#installation), you need to start the mountebank server with `mb start`. You can import the
 `MountebankSwift` module and setup `MountebankSwift` in your test.
 
 ```swift
@@ -55,12 +58,12 @@ final class ExampleUITests: XCTestCase {
  1. From the **File** menu, navigate through **Swift Packages** and select **Add Package Dependency…**.
  2. Enter package repository URL: `https://github.com/MountebankSwift/MountebankSwift`.
  3. Confirm the version and let Xcode resolve the package.
- 4. On the last dialog, update MountebankSwift's **Add to Target** column to a test target that will contain 
+ 4. On the last dialog, update MountebankSwift's **Add to Target** column to a test target that will contain
     tests that use mountebank.
 
 ### using Swift Package Manager
 
-To add MountebankSwift to a project that uses [SwiftPM](https://swift.org/package-manager/), you can add it as a 
+To add MountebankSwift to a project that uses [SwiftPM](https://swift.org/package-manager/), you can add it as a
 dependency in `Package.swift`:
 
 ```swift
