@@ -47,9 +47,13 @@ final class ExampleUITests: XCTestCase {
 }
 ```
 
+## Documentation
+
+The documentation is available on the [Swift Package Index](https://swiftpackageindex.com/mountebankswift/mountebankswift/main/documentation) website.
+
 ## Installation
 
-### using Xcode
+### Using Xcode
 
 > **Warning**
 > By default, Xcode will try to add the MountebankSwift package to your project's main application/framework target.
@@ -61,7 +65,7 @@ final class ExampleUITests: XCTestCase {
  4. On the last dialog, update MountebankSwift's **Add to Target** column to a test target that will contain
     tests that use mountebank.
 
-### using Swift Package Manager
+### Using Swift Package Manager
 
 To add MountebankSwift to a project that uses [SwiftPM](https://swift.org/package-manager/), you can add it as a
 dependency in `Package.swift`:
