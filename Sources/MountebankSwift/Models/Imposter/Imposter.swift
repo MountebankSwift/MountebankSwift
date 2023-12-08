@@ -57,5 +57,4 @@ public struct Imposter: Codable, Equatable {
         self.defaultResponse = defaultResponse
         self.recordRequests = recordRequests
     }
-
 }

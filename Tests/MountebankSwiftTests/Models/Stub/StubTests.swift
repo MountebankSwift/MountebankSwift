@@ -57,4 +57,15 @@ final class StubTests: XCTestCase {
             Stub.Examples.multiplePredicatesAndResponses.value
         )
     }
+
+    func testWithResponseParameters() throws {
+        try assertEncode(
+            Stub.Examples.withResponseParameters.value,
+            Stub.Examples.withResponseParameters.json
+        )
+        try assertDecode(
+            Stub.Examples.withResponseParameters.json,
+            Stub.Examples.withResponseParameters.value
+        )
+    }
 }

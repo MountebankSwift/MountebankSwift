@@ -95,6 +95,58 @@ public enum JSON: Codable, Hashable {
             return try! String(data: encoder.encode(self), encoding: .utf8)!
         }
     }
+}
+
+// MARK: - Querying
+
+extension JSON {
+    /// Return the string value if this is a `.string`, otherwise `nil`
+    public var stringValue: String? {
+        if case .string(let value) = self {
+            return value
+        }
+        return nil
+    }
+
+    /// Return the double value if this is a `.number`, otherwise `nil`
+    public var doubleValue: Double? {
+        if case .number(let value) = self {
+            return value
+        }
+        return nil
+    }
+
+    /// Return the bool value if this is a `.bool`, otherwise `nil`
+    public var boolValue: Bool? {
+        if case .bool(let value) = self {
+            return value
+        }
+        return nil
+    }
+
+    /// Return the object value if this is an `.object`, otherwise `nil`
+    public var objectValue: [String: JSON]? {
+        if case .object(let value) = self {
+            return value
+        }
+        return nil
+    }
+
+    /// Return the array value if this is an `.array`, otherwise `nil`
+    public var arrayValue: [JSON]? {
+        if case .array(let value) = self {
+            return value
+        }
+        return nil
+    }
+
+    /// Return `true` iff this is `.null`
+    public var isNull: Bool {
+        if case .null = self {
+            return true
+        }
+        return false
+    }
 
     /// If this is an `.array`, return item at index
     ///
@@ -151,6 +203,8 @@ public enum JSON: Codable, Hashable {
     }
 
 }
+
+// MARK: - Initialization
 
 private struct InitializationError: Error {}
 
@@ -277,3 +331,46 @@ private let trueNumber = NSNumber(value: true)
 private let falseNumber = NSNumber(value: false)
 private let trueObjCType = String(cString: trueNumber.objCType)
 private let falseObjCType = String(cString: falseNumber.objCType)
+
+
+// MARK: - Merging
+
+extension JSON {
+
+    /// Return a new JSON value by merging two other ones
+    ///
+    /// If we call the current JSON value `old` and the incoming JSON value
+    /// `new`, the precise merging rules are:
+    ///
+    /// 1. If `old` or `new` are anything but an object, return `new`.
+    /// 2. If both `old` and `new` are objects, create a merged object like this:
+    ///     1. Add keys from `old` not present in `new` (“no change” case).
+    ///     2. Add keys from `new` not present in `old` (“create” case).
+    ///     3. For keys present in both `old` and `new`, apply merge recursively to their values (“update” case).
+    public func merging(with new: JSON) -> JSON {
+
+        // If old or new are anything but an object, return new.
+        guard case .object(let lhs) = self, case .object(let rhs) = new else {
+            return new
+        }
+
+        var merged: [String: JSON] = [:]
+
+        // Add keys from old not present in new (“no change” case).
+        for (key, val) in lhs where rhs[key] == nil {
+            merged[key] = val
+        }
+
+        // Add keys from new not present in old (“create” case).
+        for (key, val) in rhs where lhs[key] == nil {
+            merged[key] = val
+        }
+
+        // For keys present in both old and new, apply merge recursively to their values.
+        for key in lhs.keys where rhs[key] != nil {
+            merged[key] = lhs[key]?.merging(with: rhs[key]!)
+        }
+
+        return JSON.object(merged)
+    }
+}

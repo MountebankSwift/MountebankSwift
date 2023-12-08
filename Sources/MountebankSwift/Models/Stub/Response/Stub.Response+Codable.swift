@@ -10,40 +10,39 @@ extension Stub.Response {
         case proxy
         case inject
         case fault
-        case `repeat`
     }
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         switch self {
-        case .is(let isData, let parameters):
-            try container.encode(isData, forKey: .is)
-            try parameters?.encode(to: encoder)
-        case .proxy(let proxyData, let parameters):
-            try container.encode(proxyData, forKey: .proxy)
-            try parameters?.encode(to: encoder)
-        case .inject(let injectData, let parameters):
-            try container.encode(injectData, forKey: .inject)
-            try parameters?.encode(to: encoder)
-        case .fault(let faultData, let parameters):
-            try container.encode(faultData, forKey: .fault)
-            try parameters?.encode(to: encoder)
+        case .is(let response):
+            try container.encode(response, forKey: .is)
+            try response.parameters?.encode(to: encoder)
+        case .proxy(let response):
+            try container.encode(response, forKey: .proxy)
+        case .inject(let response):
+            try container.encode(response, forKey: .inject)
+        case .fault(let response):
+            try container.encode(response, forKey: .fault)
         }
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        let parameters = try? Parameters(from: decoder)
-        if let isData = try container.decodeIfPresent(Is.self, forKey: .is) {
-            self = .is(isData, parameters)
-        } else if let proxyData = try container.decodeIfPresent(Proxy.self, forKey: .proxy) {
-            self = .proxy(proxyData, parameters)
-        } else if let injectData = try container.decodeIfPresent(String.self, forKey: .inject) {
-            self = .inject(injectData, parameters)
-        } else if let faultData = try container.decodeIfPresent(Fault.self, forKey: .fault) {
-            self = .fault(faultData, parameters)
+        if let response = try container.decodeIfPresent(Is.self, forKey: .is) {
+            if let parameters = try? Parameters(from: decoder) {
+                self = .is(response.with(parameters: parameters))
+            } else {
+                self = .is(response)
+            }
+        } else if let response = try container.decodeIfPresent(Proxy.self, forKey: .proxy) {
+            self = .proxy(response)
+        } else if let response = try container.decodeIfPresent(Fault.self, forKey: .fault) {
+            self = .fault(response)
+        } else if let response = try container.decodeIfPresent(Inject.self, forKey: .inject) {
+            self = .inject(response)
         } else {
             throw DecodingError.invalidType
         }

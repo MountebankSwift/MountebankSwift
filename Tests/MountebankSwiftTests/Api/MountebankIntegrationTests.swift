@@ -111,7 +111,7 @@ final class MountebankIntegrationTests: XCTestCase {
             name: "Imposter with proxy",
             stubs: [
                 Stub(
-                    responses: [Stub.Response.Examples.proxy.value],
+                    responses: [Stub.Response.Proxy.Examples.proxy.value],
                     predicates: [Stub.Predicate.Examples.equals.value]
                 ),
             ]

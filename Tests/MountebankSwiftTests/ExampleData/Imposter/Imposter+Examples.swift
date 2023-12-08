@@ -7,12 +7,14 @@ extension Imposter {
             value: Imposter(
                 port: 19190,
                 networkProtocol: .https,
-                stubs: [Stub.Examples.text.value]
+                stubs: [Stub.Examples.text.value],
+                defaultResponse: Stub.Response.Is(statusCode: 403)
             ),
             json: [
                 "port": 19190,
                 "protocol": "https",
                 "stubs": [Stub.Examples.text.json],
+                "defaultResponse": ["statusCode": 403]
             ]
         )
 

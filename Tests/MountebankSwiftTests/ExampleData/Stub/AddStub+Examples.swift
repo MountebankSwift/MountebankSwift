@@ -7,14 +7,16 @@ extension AddStub {
             value: AddStub(
                 index: 1,
                 stub: Stub(
-                    responses: [Stub.Response.Examples.injectBody.value],
+                    responses: [Stub.Response.Inject.Examples.injectBody.value],
                     predicates: [Stub.Predicate.Examples.equals.value]
                 )
             ),
             json: [
                 "index": 1,
                 "stub": [
-                    "responses": [Stub.Response.Examples.injectBody.json],
+                    "responses": [
+                        ["inject": Stub.Response.Inject.Examples.injectBody.json]
+                    ],
                     "predicates": [Stub.Predicate.Examples.equals.json],
                 ],
             ]

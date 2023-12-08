@@ -2,7 +2,7 @@ import Foundation
 
 extension Stub.Response {
     /// https://www.mbtest.org/docs/api/proxies
-    public struct Proxy: Codable, Equatable {
+    public struct Proxy: StubResponse, Codable, Equatable {
         public enum Mode: String, Codable {
             /// proxyOnce mode doesn't require you to explicitly do anything to replay the proxied responses.
             case proxyOnce

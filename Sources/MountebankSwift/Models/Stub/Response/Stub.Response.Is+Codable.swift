@@ -7,6 +7,7 @@ extension Stub.Response.Is {
     }
 
     enum CodingKeys: String, CodingKey {
+        case `is`
         case statusCode
         case headers
         case body
@@ -28,11 +29,15 @@ extension Stub.Response.Is {
         case .data(let data):
             try container.encode(Stub.Response.Mode.binary, forKey: .mode)
             try container.encode(data, forKey: .body)
+        case .codable(let value):
+            try container.encode(value, forKey: .body)
         }
     }
 
     public init(from decoder: Decoder) throws {
+        parameters = nil
         let container = try decoder.container(keyedBy: CodingKeys.self)
+
         statusCode = try container.decode(Int.self, forKey: .statusCode)
         headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
 

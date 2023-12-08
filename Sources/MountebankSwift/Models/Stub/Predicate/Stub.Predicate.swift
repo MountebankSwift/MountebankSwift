@@ -3,6 +3,15 @@ import Foundation
 extension Stub {
     /// See https://www.mbtest.org/docs/api/predicates
     public indirect enum Predicate: Codable, Equatable {
+//        case simple(
+//            method: HTTPMethod? = nil,
+//            path: String? = nil,
+//            query: JSON? = nil,
+//            headers: JSON? = nil,
+//            data: JSON? = nil,
+//            Parameters? = nil
+//        )
+
         /// The request field matches the predicate
         /// https://www.mbtest.org/docs/api/predicates#predicates-equals
         case equals(JSON, Parameters? = nil)
