@@ -4,7 +4,7 @@ import MountebankSwift
 #if os(macOS)
 import Cocoa
 typealias StubImage = NSImage
-#elseif os(iOS) || os(tvOS)
+#elseif os(iOS) || os(tvOS) || os(watchOS)
 import UIKit
 typealias StubImage = UIImage
 #endif
