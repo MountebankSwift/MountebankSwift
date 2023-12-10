@@ -36,6 +36,14 @@ final class StubResponseTests: XCTestCase {
         )
     }
 
+    func testCodable() throws {
+        try assertEncode(
+            Stub.Response.Is.Examples.jsonEncodable.value,
+            Stub.Response.Is.Examples.jsonEncodable.json
+        )
+        // Not possibel to decode json back into codable
+    }
+
     func testBinary() throws {
         try assertEncode(
             Stub.Response.Is.Examples.binary.value,

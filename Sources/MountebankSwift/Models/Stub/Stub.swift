@@ -18,6 +18,7 @@ public struct Stub: Codable, Equatable {
     public let responses: [Stub.Response]
     public let predicates: [Stub.Predicate]
 
+    // TODO: Discuss, swap parameter order?
     public init(responses: [any StubResponse], predicates: [Stub.Predicate]) {
         self.responses = responses.compactMap(Response.init(response:))
         self.predicates = predicates

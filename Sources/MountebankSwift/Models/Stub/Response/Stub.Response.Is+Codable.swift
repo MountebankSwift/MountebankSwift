@@ -29,7 +29,7 @@ extension Stub.Response.Is {
         case .data(let data):
             try container.encode(Stub.Response.Mode.binary, forKey: .mode)
             try container.encode(data, forKey: .body)
-        case .codable(let value):
+        case .jsonEncodable(let value):
             try container.encode(value, forKey: .body)
         }
     }
@@ -40,6 +40,8 @@ extension Stub.Response.Is {
 
         statusCode = try container.decode(Int.self, forKey: .statusCode)
         headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
+
+        contentType = headers?[HTTPHeaders.contentType.rawValue]
 
         let mode = try container.decodeIfPresent(Stub.Response.Mode.self, forKey: .mode)
 

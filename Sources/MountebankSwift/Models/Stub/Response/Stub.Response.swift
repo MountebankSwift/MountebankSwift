@@ -3,6 +3,7 @@ import Foundation
 public protocol StubResponse: Codable, Equatable {}
 
 extension Stub {
+    // TODO make this type internal
     public enum Response: Codable, Equatable {
         case `is`(Stub.Response.Is)
         case proxy(Stub.Response.Proxy)

@@ -25,7 +25,10 @@ let package = Package(
         ),
         .testTarget(
             name: "MountebankSwiftTests",
-            dependencies: ["MountebankSwift"]
-        ),
+            dependencies: ["MountebankSwift"],
+            resources: [
+              .copy("ExampleData/Files"),
+            ]
+        )
     ]
 )

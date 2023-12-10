@@ -126,6 +126,36 @@ final class MountebankIntegrationTests: XCTestCase {
         XCTAssertEqual(response.stubs.count, 1)
     }
 
+    // Added test is encoding of all these types goes well
+    func testDiffentResponseBodyTypes() async throws {
+        let imposter = Imposter(
+            port: 1234,
+            networkProtocol: .http,
+            name: "Imposter with various body Types",
+            stubs: [
+                SampleFile.png,
+                SampleFile.jpg,
+                SampleFile.json,
+                SampleFile.pdf,
+                SampleFile.txt,
+                SampleFile.mp4,
+                SampleFile.html
+            ].map { file in
+                Stub(
+                    response: Stub.Response.Is(
+                        headers: [HTTPHeaders.contentType.rawValue : file.mimeType],
+                        body: file.body
+                    ),
+                    predicate: .equals(Stub.Request(path: "/\(file.rawValue)"))
+                )
+            },
+            recordRequests: true
+        )
+
+        let result = try await sut.postImposter(imposter: imposter)
+        print(result)
+    }
+
     private func postDefaultImposter(imposter: Imposter) async throws -> Int {
         let imposterResult = try await sut.postImposter(imposter: imposter)
         guard let port = imposterResult.port else {

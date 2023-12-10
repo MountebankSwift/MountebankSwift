@@ -42,6 +42,27 @@ extension Stub.Response.Is {
             ]
         )
 
+        struct SomeCodableObject: Codable {
+            struct Bar: Codable {
+                let baz: String
+            }
+            let foo: String
+            let bar: Bar
+        }
+
+        static let jsonEncodable = Example(
+            value: Stub.Response.Is(
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"],
+                body: SomeCodableObject(foo: "Foo", bar: SomeCodableObject.Bar(baz: "Baz"))
+            ),
+            json: [
+                "statusCode": 200,
+                "headers": ["Content-Type": "application/json"],
+                "body": ["foo": "Foo", "bar": ["baz": "Baz"]]
+            ]
+        )
+
         static let binary = Example(
             value: Stub.Response.Is(statusCode: 200, body: StubImage.example.value),
             json: [
