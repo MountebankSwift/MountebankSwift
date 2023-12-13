@@ -1,9 +1,5 @@
 import Foundation
 
-// TODO: MB responses containing imposters will could also contain
-// public let requests: [Request]
-// public let numberOfRequests: Int
-
 public struct Imposter: Codable, Equatable {
     /// The port to run the imposter on.
     ///
@@ -14,14 +10,14 @@ public struct Imposter: Codable, Equatable {
     public let networkProtocol: NetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.
-    public let name: String?
+    public var name: String?
 
     /// A set of behaviors used to generate a response for an imposter. An imposter can have 0 or more stubs, each of
     /// which are associated with different predicates and support different responses.
     ///
     /// You would use multiple stubs for an imposter if the types of response you return depends on something in the
     /// request, matched with a predicate.
-    public private(set) var stubs: [Stub]
+    public var stubs: [Stub]
 
     /// Allows you to override the default response that mountebank sends back if no predicate matches a request. Even
     /// if a predicate does match but the response isn't fully specified, these values get merged in to complete the
@@ -30,6 +26,10 @@ public struct Imposter: Codable, Equatable {
 
     /// If set to true, the server will record requests received, for mock verification purposes.
     public let recordRequests: Bool?
+
+    // TODO: MB responses containing imposters will could also contain
+    // public let numberOfRequests: Int?
+    // public let requests: [Request]
 
     enum CodingKeys: String, CodingKey {
         case port
@@ -56,7 +56,4 @@ public struct Imposter: Codable, Equatable {
         self.recordRequests = recordRequests
     }
 
-    public mutating func addStub(_ stub: Stub) {
-        stubs.append(stub)
-    }
 }

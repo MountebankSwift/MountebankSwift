@@ -28,11 +28,11 @@ enum HTTPStatusCode: Int {
     case forbidden = 403
     case notFound = 404
     case methodNotAllowed = 405
+    case unprocessableEntity = 422
 
     case internalServerError = 500
     case badGateway = 502
     case serviceUnavailable = 503
-    case unprocessableEntity = 422
 
     var responseType: ResponseType {
         switch rawValue {

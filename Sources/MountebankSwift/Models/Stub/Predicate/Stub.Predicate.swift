@@ -7,7 +7,7 @@ extension Stub {
         /// https://www.mbtest.org/docs/api/predicates#predicates-equals
         case equals(JSON, Parameters? = nil)
 
-        /// Performs nested set equality on the request field, 
+        /// Performs nested set equality on the request field,
         /// useful when the request field is an object (e.g. the query field in http)
         /// https://www.mbtest.org/docs/api/predicates#predicates-deepEquals
         case deepEquals(JSON, Parameters? = nil)
@@ -24,7 +24,7 @@ extension Stub {
         /// https://www.mbtest.org/docs/api/predicates#predicates-endsWith
         case endsWith(JSON, Parameters? = nil)
 
-        /// The request field matches the JavaScript regular expression 
+        /// The request field matches the JavaScript regular expression
         /// defined with the predicate.
         /// https://www.mbtest.org/docs/api/predicates#predicates-matches
         case matches(JSON, Parameters? = nil)
@@ -47,7 +47,7 @@ extension Stub {
         case and([Stub.Predicate], Parameters? = nil)
 
         /// Injects JavaScript to decide whether the request matches or not.
-        /// The JavaScript should be a function that accepts the request object 
+        /// The JavaScript should be a function that accepts the request object
         /// (and optionally a logger) and returns true or false.
         /// https://www.mbtest.org/docs/api/predicates#predicates-inject
         case inject(String)

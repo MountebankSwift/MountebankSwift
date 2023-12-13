@@ -11,7 +11,8 @@ extension Config.Process {
             heapTotal: 100,
             heapUsed: 10,
             uptime: 10.0,
-            cwd: "/user/bin/mb"), json: [
+            cwd: "/user/bin/mb"
+        ), json: [
             "architecture": "x86",
             "cwd": "/user/bin/mb",
             "heapTotal": 100,

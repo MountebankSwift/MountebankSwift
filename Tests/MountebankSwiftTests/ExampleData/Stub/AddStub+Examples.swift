@@ -16,7 +16,7 @@ extension AddStub {
                 "stub": [
                     "responses": [Stub.Response.Examples.injectBody.json],
                     "predicates": [Stub.Predicate.Examples.equals.json],
-                ]
+                ],
             ]
         )
     }

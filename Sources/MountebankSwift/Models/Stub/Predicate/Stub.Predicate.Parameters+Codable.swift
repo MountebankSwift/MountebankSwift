@@ -6,7 +6,10 @@ extension Stub.Predicate.Parameters {
     }
 
     enum CodingKeys: String, CodingKey {
-        case caseSensitive, except, xPath = "xpath", jsonPath = "jsonpath"
+        case caseSensitive
+        case except
+        case xPath = "xpath"
+        case jsonPath = "jsonpath"
     }
 
     public init(from decoder: Decoder) throws {

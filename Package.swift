@@ -9,19 +9,23 @@ let package = Package(
         .iOS(.v13),
         .macOS(.v13),
         .tvOS(.v16),
-        .watchOS(.v9)
+        .watchOS(.v9),
     ],
     products: [
         .library(
             name: "MountebankSwift",
-            targets: ["MountebankSwift"]),
+            targets: ["MountebankSwift"]
+        ),
     ],
     dependencies: [],
     targets: [
         .target(
             name: "MountebankSwift",
-            dependencies: []),
+            dependencies: []
+        ),
         .testTarget(
             name: "MountebankSwiftTests",
-            dependencies: ["MountebankSwift"]),
-    ])
+            dependencies: ["MountebankSwift"]
+        ),
+    ]
+)

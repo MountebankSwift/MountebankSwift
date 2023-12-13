@@ -13,6 +13,7 @@ final class StubResponseBehaviorTests: XCTestCase {
             Stub.Response.Behavior.Examples.wait.value
         )
     }
+
     func testWaitJavascript() throws {
         try assertEncode(
             Stub.Response.Behavior.Examples.waitJavascript.value,
@@ -23,6 +24,7 @@ final class StubResponseBehaviorTests: XCTestCase {
             Stub.Response.Behavior.Examples.waitJavascript.value
         )
     }
+
     func testCopy() throws {
         try assertEncode(
             Stub.Response.Behavior.Examples.copy.value,
@@ -33,6 +35,7 @@ final class StubResponseBehaviorTests: XCTestCase {
             Stub.Response.Behavior.Examples.copy.value
         )
     }
+
     func testLookup() throws {
         try assertEncode(
             Stub.Response.Behavior.Examples.lookup.value,
@@ -43,6 +46,7 @@ final class StubResponseBehaviorTests: XCTestCase {
             Stub.Response.Behavior.Examples.lookup.value
         )
     }
+
     func testDecorate() throws {
         try assertEncode(
             Stub.Response.Behavior.Examples.decorate.value,
@@ -53,6 +57,7 @@ final class StubResponseBehaviorTests: XCTestCase {
             Stub.Response.Behavior.Examples.decorate.value
         )
     }
+
     func testShellTransform() throws {
         try assertEncode(
             Stub.Response.Behavior.Examples.shellTransform.value,

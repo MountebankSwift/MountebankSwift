@@ -15,7 +15,8 @@ extension Config.Options {
             formatter: "formater",
             configFile: "config.txt",
             allowInjection: true,
-            debug: false), json: [
+            debug: false
+        ), json: [
             "allowInjection": true,
             "configFile": "config.txt",
             "debug": false,
