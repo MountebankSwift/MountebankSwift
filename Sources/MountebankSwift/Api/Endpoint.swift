@@ -1,7 +1,7 @@
 import Foundation
 
 /// All Endpoints as documented on:
-/// https://www.mbtest.org/docs/api/overview
+/// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
 public struct Endpoint {
     let method: HTTPMethod
     let templatePath: String
@@ -57,7 +57,7 @@ public struct Endpoint {
     /// Delete all imposters
     static func deleteAllImposters() -> Endpoint { Endpoint(method: .delete, templatePath: "/imposters") }
 
-    /// Get mountebank configuration and process information
+    /// Get Mountebank configuration and process information
     static func getConfig() -> Endpoint { Endpoint(method: .get, templatePath: "/config") }
 
     /// Get the logs
