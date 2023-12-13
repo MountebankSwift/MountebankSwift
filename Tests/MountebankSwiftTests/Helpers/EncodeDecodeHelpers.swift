@@ -1,6 +1,6 @@
 import Foundation
-import XCTest
 import MountebankSwift
+import XCTest
 
 enum DecodeError: Error {
     case unableToCreateUTF8StringFromData

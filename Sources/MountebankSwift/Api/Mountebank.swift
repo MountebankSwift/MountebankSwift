@@ -1,9 +1,10 @@
 import Foundation
 
+/// Mountebank client to connect to the mountebank server.
 public struct Mountebank {
     private let host: Host
     private let port: Int
-    private var mountebankURL: URL {
+    public var mountebankURL: URL {
         // swiftlint:disable:next force_unwrapping
         URL(string: "http://\(host):\(port)")!
     }
@@ -12,6 +13,9 @@ public struct Mountebank {
     private let jsonEncoder = JSONEncoder()
     private let jsonDecoder = JSONDecoder()
 
+    /// - Parameters:
+    ///   - host: The mountebank server host adress
+    ///   - port: The Mountebank server port
     public init(host: Host = .localhost, port: Int = 2525) {
         self.host = host
         self.port = port
@@ -43,7 +47,13 @@ public struct Mountebank {
     }
 
     @discardableResult
-    public func postImposterStub(stub: Stub, index: Int, port: Int) async throws -> Imposter {
+    public func putImposters(imposters: Imposters) async throws -> Imposters {
+        let bodyData = try encodeJson(encodable: imposters)
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposters(), type: Imposters.self)
+    }
+
+    @discardableResult
+    public func postImposterStub(stub: Stub, index: Int? = nil, port: Int) async throws -> Imposter {
         let addStub = AddStub(index: index, stub: stub)
         let bodyData = try encodeJson(encodable: addStub)
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
@@ -59,11 +69,16 @@ public struct Mountebank {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteAllImposters(), type: Imposters.self)
     }
 
+    public func makeImposterUrl(port: Int) -> URL {
+        // swiftlint:disable:next force_unwrapping
+        URL(string: "http://\(host):\(port)")!
+    }
+
     // MARK: - Stub
 
     @discardableResult
-    public func putImposterStubs(imposter: Imposter, port: Int) async throws -> Imposter {
-        let bodyData = try encodeJson(encodable: imposter)
+    public func putImposterStubs(stubs: [Stub], port: Int) async throws -> Imposter {
+        let bodyData = try encodeJson(encodable: Stubs(stubs: stubs))
         return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
     }
 
@@ -99,7 +114,7 @@ public struct Mountebank {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getConfig(), type: Config.self)
     }
 
-    public func getLogs() async throws -> Logs {
+    public func getLogs(startIndex: Int? = nil, endIndex: Int? = nil) async throws -> Logs {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(), type: Logs.self)
     }
 
@@ -109,6 +124,8 @@ public struct Mountebank {
             method: .get
         ))
     }
+
+    // MARK: - Internal
 
     private func sendDataToEndpoint<T: Decodable>(
         body: Data? = nil,
@@ -144,17 +161,6 @@ public struct Mountebank {
             body: body,
             headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
         )
-    }
-
-    private func makeImposter(name: String, stubs: [Stub]) -> Imposter? {
-        guard
-            let rawNetworkProtocol = mountebankURL.scheme,
-            let networkProtocol = NetworkProtocol(rawValue: rawNetworkProtocol) else
-        {
-            return nil
-        }
-
-        return Imposter(port: port, networkProtocol: networkProtocol, name: name, stubs: stubs)
     }
 
     private func encodeJson(encodable: Encodable) throws -> Data {

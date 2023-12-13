@@ -5,12 +5,27 @@ extension Imposter {
     enum Examples {
         static let simple = Example(
             value: Imposter(
+                port: 19190,
                 networkProtocol: .https,
                 stubs: [Stub.Examples.text.value]
             ),
             json: [
+                "port": 19190,
                 "protocol": "https",
-                "stubs": [Stub.Examples.text.json]
+                "stubs": [Stub.Examples.text.json],
+            ]
+        )
+
+        static let json = Example(
+            value: Imposter(
+                port: 100,
+                networkProtocol: .http,
+                stubs: [Stub.Examples.json.value]
+            ),
+            json: [
+                "port": 100,
+                "protocol": "http",
+                "stubs": [Stub.Examples.json.json],
             ]
         )
 
@@ -37,7 +52,7 @@ extension Imposter {
                     Stub.Examples.http404.json,
                 ],
                 "defaultResponse": ["statusCode": 403],
-                "recordRequests": true
+                "recordRequests": true,
             ]
         )
 
@@ -56,7 +71,7 @@ extension Imposter {
                 "name": "Single stub",
                 "stubs": .array(Stub.Examples.all.map(\.json)),
                 "defaultResponse": ["statusCode": 403],
-                "recordRequests": true
+                "recordRequests": true,
             ]
         )
     }
