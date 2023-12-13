@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub.Predicate {
+extension Predicate {
     enum DecodingError: Error {
         case invalidType
     }
@@ -66,26 +66,26 @@ extension Stub.Predicate {
             return
         }
 
-        let parameters = try? Parameters(from: decoder)
-        if let value = try container.decodeIfPresent(JSON.self, forKey: .equals) {
+        let parameters = try? PredicateParameters(from: decoder)
+        if let value = try container.decodeIfPresent(Request.self, forKey: .equals) {
             self = .equals(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .deepEquals) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .deepEquals) {
             self = .deepEquals(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .contains) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .contains) {
             self = .contains(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .startsWith) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .startsWith) {
             self = .startsWith(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .endsWith) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .endsWith) {
             self = .endsWith(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .matches) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .matches) {
             self = .matches(value, parameters)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .exists) {
+        } else if let value = try container.decodeIfPresent(Request.self, forKey: .exists) {
             self = .exists(value, parameters)
-        } else if let value = try container.decodeIfPresent(Stub.Predicate.self, forKey: .not) {
+        } else if let value = try container.decodeIfPresent(Predicate.self, forKey: .not) {
             self = .not(value, parameters)
-        } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .or) {
+        } else if let value = try container.decodeIfPresent([Predicate].self, forKey: .or) {
             self = .or(value, parameters)
-        } else if let value = try container.decodeIfPresent([Stub.Predicate].self, forKey: .and) {
+        } else if let value = try container.decodeIfPresent([Predicate].self, forKey: .and) {
             self = .and(value, parameters)
         } else {
             throw DecodingError.invalidType

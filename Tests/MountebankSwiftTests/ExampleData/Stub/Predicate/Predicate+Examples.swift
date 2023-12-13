@@ -1,7 +1,7 @@
 import Foundation
 import MountebankSwift
 
-extension Stub.Predicate {
+extension MountebankSwift.Predicate {
     enum Examples {
         static let all = [
             equals,
@@ -19,8 +19,8 @@ extension Stub.Predicate {
         ]
 
         static let equals = Example(
-            value: Stub.Predicate.equals(
-                ["path": "/test-is-200"]
+            value: Predicate.equals(
+                Request(path: "/test-is-200")
             ),
             json: [
                 "equals" : ["path": "/test-is-200"]
@@ -28,8 +28,8 @@ extension Stub.Predicate {
         )
 
         static let deepEquals = Example(
-            value: Stub.Predicate.deepEquals(
-                ["query": ["key": ["first", "second"]]]
+            value: Predicate.deepEquals(
+                Request(query: ["key": ["first", "second"]])
             ),
             json: [
                 "deepEquals": [
@@ -39,8 +39,8 @@ extension Stub.Predicate {
         )
 
         static let contains = Example(
-            value: Stub.Predicate.contains(
-                ["data": "AgM="]
+            value: Predicate.contains(
+                Request(data: "AgM=")
             ),
             json: [
                 "contains": ["data": "AgM="]
@@ -48,8 +48,8 @@ extension Stub.Predicate {
         )
 
         static let startsWith = Example(
-            value: Stub.Predicate.startsWith(
-                ["data": "first"]
+            value: Predicate.startsWith(
+                Request(data: "first")
             ),
             json: [
                 "startsWith": ["data": "first"]
@@ -57,8 +57,8 @@ extension Stub.Predicate {
         )
 
         static let endsWith = Example(
-            value: Stub.Predicate.endsWith(
-                ["data": "last"]
+            value: Predicate.endsWith(
+                Request(data: "last")
             ),
             json: [
                 "endsWith": ["data": "last"]
@@ -66,8 +66,8 @@ extension Stub.Predicate {
         )
 
         static let matches = Example(
-            value: Stub.Predicate.matches(
-                ["data": "^first"]
+            value: Predicate.matches(
+                Request(data: "^first")
             ),
             json: [
                 "matches": ["data": "^first"]
@@ -75,8 +75,8 @@ extension Stub.Predicate {
         )
 
         static let exists = Example(
-            value: Stub.Predicate.exists(
-                ["query": ["q": true, "search": false]]
+            value: Predicate.exists(
+                Request(query: ["q": true, "search": false])
             ),
             json: [
                 "exists": ["query": ["q" : true, "search" : false]]
@@ -84,46 +84,46 @@ extension Stub.Predicate {
         )
 
         static let not = Example(
-            value: Stub.Predicate.not(
-                Stub.Predicate.Examples.equals.value
+            value: Predicate.not(
+                Predicate.Examples.equals.value
             ),
             json: [
-                "not": Stub.Predicate.Examples.equals.json
+                "not": Predicate.Examples.equals.json
             ]
         )
 
         static let or = Example(
-            value: Stub.Predicate.or(
+            value: Predicate.or(
                 [
-                    Stub.Predicate.Examples.equals.value,
-                    Stub.Predicate.Examples.contains.value
+                    Predicate.Examples.equals.value,
+                    Predicate.Examples.contains.value
                 ]
             ),
             json: [
                 "or": [
-                    Stub.Predicate.Examples.equals.json,
-                    Stub.Predicate.Examples.contains.json
+                    Predicate.Examples.equals.json,
+                    Predicate.Examples.contains.json
                 ]
             ]
         )
 
         static let and = Example(
-            value: Stub.Predicate.and(
+            value: Predicate.and(
                 [
-                    Stub.Predicate.Examples.equals.value,
-                    Stub.Predicate.Examples.deepEquals.value
+                    Predicate.Examples.equals.value,
+                    Predicate.Examples.deepEquals.value
                 ]
             ),
             json: [
                 "and": [
-                    Stub.Predicate.Examples.equals.json,
-                    Stub.Predicate.Examples.deepEquals.json
+                    Predicate.Examples.equals.json,
+                    Predicate.Examples.deepEquals.json
                 ]
             ]
         )
 
         static let inject = Example(
-            value: Stub.Predicate.inject(
+            value: Predicate.inject(
                 "(config) => { return config.request.headers['Authorization'] == 'Bearer <my-token>'; }"
             ),
             json: [
@@ -132,13 +132,13 @@ extension Stub.Predicate {
         )
 
         static let withParameters = Example(
-            value: Stub.Predicate.equals(
-                ["path": "/with-parameters"],
-                Stub.Predicate.Parameters.Examples.full.value
+            value: Predicate.equals(
+                Request(path: "/with-parameters"),
+                PredicateParameters.Examples.full.value
             ),
             json: JSON(mergingObjects: [
                 ["equals" : ["path": "/with-parameters"]],
-                Stub.Predicate.Parameters.Examples.full.json
+                PredicateParameters.Examples.full.json
             ])
         )
     }

@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub.Response.Parameters {
+extension ResponseParameters {
     enum DecodingError: Error {
         case empty
     }
@@ -13,7 +13,7 @@ extension Stub.Response.Parameters {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         repeatCount = try container.decodeIfPresent(Int.self, forKey: .repeatCount)
-        behaviors = try container.decodeIfPresent([Stub.Response.Behavior].self, forKey: .behaviors)
+        behaviors = try container.decodeIfPresent([Behavior].self, forKey: .behaviors)
 
         if isEmpty {
             throw DecodingError.empty

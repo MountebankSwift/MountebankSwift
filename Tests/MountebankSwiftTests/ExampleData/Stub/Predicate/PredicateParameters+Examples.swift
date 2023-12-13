@@ -1,7 +1,7 @@
 import Foundation
 import MountebankSwift
 
-extension Stub.Predicate.Parameters {
+extension PredicateParameters {
     enum Examples {
         static let all = [
             caseSensiteve,
@@ -12,18 +12,18 @@ extension Stub.Predicate.Parameters {
         ]
 
         static let caseSensiteve = Example(
-            value: Stub.Predicate.Parameters(caseSensitive: true),
+            value: PredicateParameters(caseSensitive: true),
             json: ["caseSensitive" : true]
         )
 
         static let except = Example(
-            value: Stub.Predicate.Parameters(except: "^Foo"),
+            value: PredicateParameters(except: "^Foo"),
             json: ["except": "^Foo"]
         )
 
         static let xPath = Example(
-            value: Stub.Predicate.Parameters(
-                xPath: Stub.Predicate.XPath(
+            value: PredicateParameters(
+                xPath: XPath(
                     selector: "//a:title",
                     namespace: ["a": "http://example.com/book"]
                 )
@@ -37,19 +37,19 @@ extension Stub.Predicate.Parameters {
         )
 
         static let jsonPath = Example(
-            value: Stub.Predicate.Parameters(jsonPath: Stub.Predicate.JSONPath(selector: "$..title")),
+            value: PredicateParameters(jsonPath: JSONPath(selector: "$..title")),
             json: ["jsonpath": ["selector": "$..title"]]
         )
 
         static let full = Example(
-            value: Stub.Predicate.Parameters(
+            value: PredicateParameters(
                 caseSensitive: true,
                 except: "^The ",
-                xPath: Stub.Predicate.XPath(
+                xPath: XPath(
                     selector: "//a:title",
                     namespace: ["a": "http://example.com/book"]
                 ),
-                jsonPath: Stub.Predicate.JSONPath(selector: "$..title")
+                jsonPath: JSONPath(selector: "$..title")
             ),
             json: [
                 "except": "^The ",

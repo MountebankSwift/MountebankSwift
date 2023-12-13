@@ -1,6 +1,12 @@
 import Foundation
 
-extension Stub.Response {
+/// Used for encoding / decoding only
+internal enum CodableResponse: Codable, Equatable {
+    case `is`(Is)
+    case proxy(Proxy)
+    case inject(Inject)
+    case fault(Fault)
+
     enum DecodingError: Error {
         case invalidType
     }
@@ -32,8 +38,15 @@ extension Stub.Response {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         if let response = try container.decodeIfPresent(Is.self, forKey: .is) {
-            if let parameters = try? Parameters(from: decoder) {
-                self = .is(response.with(parameters: parameters))
+            if let parameters = try? ResponseParameters(from: decoder) {
+                self = .is(
+                    Is(
+                        statusCode: response.statusCode,
+                        headers: response.headers,
+                        body: response.body,
+                        parameters: parameters
+                    )
+                )
             } else {
                 self = .is(response)
             }

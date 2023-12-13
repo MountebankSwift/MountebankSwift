@@ -8,7 +8,7 @@ extension Imposter {
                 port: 19190,
                 networkProtocol: .https,
                 stubs: [Stub.Examples.text.value],
-                defaultResponse: Stub.Response.Is(statusCode: 403)
+                defaultResponse: Is(statusCode: 403)
             ),
             json: [
                 "port": 19190,
@@ -41,7 +41,7 @@ extension Imposter {
                     Stub.Examples.json.value,
                     Stub.Examples.http404.value,
                 ],
-                defaultResponse: Stub.Response.Is(statusCode: 403),
+                defaultResponse: Is(statusCode: 403),
                 recordRequests: true
             ),
             json: [
@@ -64,7 +64,7 @@ extension Imposter {
                 networkProtocol: .https,
                 name: "Single stub",
                 stubs: Stub.Examples.all.map(\.value),
-                defaultResponse: Stub.Response.Is(statusCode: 403),
+                defaultResponse: Is(statusCode: 403),
                 recordRequests: true
             ),
             json: [

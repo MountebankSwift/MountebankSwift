@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub.Predicate.Parameters {
+extension PredicateParameters {
     enum DecodingError: Error {
         case empty
     }
@@ -16,8 +16,8 @@ extension Stub.Predicate.Parameters {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         caseSensitive = try container.decodeIfPresent(Bool.self, forKey: .caseSensitive)
         except = try container.decodeIfPresent(String.self, forKey: .except)
-        xPath = try container.decodeIfPresent(Stub.Predicate.XPath.self, forKey: .xPath)
-        jsonPath = try container.decodeIfPresent(Stub.Predicate.JSONPath.self, forKey: .jsonPath)
+        xPath = try container.decodeIfPresent(XPath.self, forKey: .xPath)
+        jsonPath = try container.decodeIfPresent(JSONPath.self, forKey: .jsonPath)
 
         if isEmpty {
             throw DecodingError.empty

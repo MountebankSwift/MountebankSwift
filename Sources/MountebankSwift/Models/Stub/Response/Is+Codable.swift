@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub.Response.Is {
+extension Is: Codable {
     enum DecodingError: Error {
         case invalidBodyForTextBodyMode
         case invalidBodyForBinaryBodyMode
@@ -27,7 +27,7 @@ extension Stub.Response.Is {
         case .json(let json):
             try container.encode(json, forKey: .body)
         case .data(let data):
-            try container.encode(Stub.Response.Mode.binary, forKey: .mode)
+            try container.encode(Body.Mode.binary, forKey: .mode)
             try container.encode(data, forKey: .body)
         case .jsonEncodable(let value):
             try container.encode(value, forKey: .body)
@@ -41,9 +41,7 @@ extension Stub.Response.Is {
         statusCode = try container.decode(Int.self, forKey: .statusCode)
         headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
 
-        contentType = headers?[HTTPHeaders.contentType.rawValue]
-
-        let mode = try container.decodeIfPresent(Stub.Response.Mode.self, forKey: .mode)
+        let mode = try container.decodeIfPresent(Body.Mode.self, forKey: .mode)
 
         guard container.contains(.body) else {
             body = nil

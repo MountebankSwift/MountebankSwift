@@ -1,7 +1,7 @@
 import Foundation
 import MountebankSwift
 
-extension Stub.Response.Behavior {
+extension Behavior {
     enum Examples {
         static let all = [
             wait,
@@ -13,17 +13,17 @@ extension Stub.Response.Behavior {
         ]
 
         static let wait = Example(
-            value: Stub.Response.Behavior.wait(miliseconds: 500),
+            value: Behavior.wait(miliseconds: 500),
             json: ["wait": 500]
         )
 
         static let waitJavascript = Example(
-            value: Stub.Response.Behavior.waitJavascript("() => { return Math.floor(Math.random() * 91) + 10; }"),
+            value: Behavior.waitJavascript("() => { return Math.floor(Math.random() * 91) + 10; }"),
             json: ["wait": "() => { return Math.floor(Math.random() * 91) + 10; }"]
         )
 
         static let copy = Example(
-            value: Stub.Response.Behavior.copy([
+            value: Behavior.copy([
                 "from": "path",
                 "into": "${code}",
                 "using": ["method": "regex", "selector": "\\d+"]
@@ -38,7 +38,7 @@ extension Stub.Response.Behavior {
         )
 
         static let lookup = Example(
-            value: Stub.Response.Behavior.lookup([
+            value: Behavior.lookup([
                 "key": [
                     "from": "path",
                     "using": ["method": "regex", "selector": "/(.*)$"],
@@ -73,14 +73,14 @@ extension Stub.Response.Behavior {
         )
 
         static let decorate = Example(
-            value: Stub.Response.Behavior.decorate(
+            value: Behavior.decorate(
             "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"
             ),
             json: ["decorate": "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"]
         )
 
         static let shellTransform = Example(
-            value: Stub.Response.Behavior.shellTransform("node /app/addName.js"),
+            value: Behavior.shellTransform("node /app/addName.js"),
             json: ["shellTransform": "node /app/addName.js"]
         )
     }

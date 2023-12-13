@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub.Response.Behavior {
+extension Behavior: Codable {
     enum DecodingError: Error {
         case invalidType
     }

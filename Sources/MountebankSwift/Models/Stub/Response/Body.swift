@@ -2,18 +2,19 @@ import Foundation
 
 private var jsonEncoder = JSONEncoder()
 
-extension Stub.Response {
-    public enum Body: Equatable {
-        case text(String)
-        // case textAsData(Data)
-        case json(JSON)
-        case jsonEncodable(Encodable)
-        case data(Data)
+public enum Body: Equatable {
+    public enum Mode: String, Codable, Equatable {
+        case text
+        case binary
     }
-}
 
-extension Stub.Response.Body {
-    public static func == (lhs: Stub.Response.Body, rhs: Stub.Response.Body) -> Bool {
+    case text(String)
+    // case textAsData(Data)
+    case json(JSON)
+    case jsonEncodable(Encodable)
+    case data(Data)
+
+    public static func == (lhs: Body, rhs: Body) -> Bool {
         switch (lhs, rhs) {
         case (.text(let lhs), .text(let rhs)):
             return lhs == rhs
@@ -25,9 +26,9 @@ extension Stub.Response.Body {
             do {
                 return try jsonEncoder.encode(lhs) == jsonEncoder.encode(rhs)
             } catch {
-                print("Failed to decode object \(error)")
+                print("Failed to decode object: \(error)")
+                return false
             }
-            return false
         case (.text, _), (.json, _), (.jsonEncodable, _), (.data, _):
             return false
         }

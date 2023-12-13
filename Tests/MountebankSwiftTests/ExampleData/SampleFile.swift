@@ -26,7 +26,7 @@ enum SampleFile: String {
         try! String(contentsOf: url)
     }
 
-    var body: Stub.Response.Body {
+    var body: Body {
         switch self {
         case .png, .jpg, .pdf, .mp4:
             return .data(data)
