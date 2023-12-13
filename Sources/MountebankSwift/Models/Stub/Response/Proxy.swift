@@ -1,6 +1,7 @@
 import Foundation
 
-/// https://www.mbtest.org/docs/api/proxies
+/// Proxy as documented on:
+/// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
 public struct Proxy: StubResponse, Codable, Equatable {
     public enum Mode: String, Codable {
         /// proxyOnce mode doesn't require you to explicitly do anything to replay the proxied responses.

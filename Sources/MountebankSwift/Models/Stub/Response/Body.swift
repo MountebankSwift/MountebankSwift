@@ -9,7 +9,6 @@ public enum Body: Equatable {
     }
 
     case text(String)
-    // case textAsData(Data)
     case json(JSON)
     case jsonEncodable(Encodable)
     case data(Data)
