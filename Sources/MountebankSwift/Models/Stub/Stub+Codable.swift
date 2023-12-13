@@ -1,6 +1,6 @@
 import Foundation
 
-extension Stub: Codable, Equatable {
+extension Stub: Codable {
     enum CodingKeys: CodingKey {
         case predicates
         case responses

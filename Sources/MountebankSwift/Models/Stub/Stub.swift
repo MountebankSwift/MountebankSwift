@@ -2,12 +2,7 @@ import Foundation
 
 /// A Stub as documented on:
 /// [mbtest.org/docs/api/contracts?type=stub](https://www.mbtest.org/docs/api/contracts?type=stub)
-public struct Stub: Codable, Equatable {
-	enum CodingKeys: String, CodingKey {
-        case responses
-        case predicates
-    }
-
+public struct Stub: Equatable {
     /// In the absence of a predicate, a stub always matches, and there's never a reason to add more than one stub to
     /// an imposter. Predicates allow imposters to have much richer behavior by defining whether or not a stub matches
     /// a request. When multiple stubs are created on an imposter, the first stub that matches is selected.

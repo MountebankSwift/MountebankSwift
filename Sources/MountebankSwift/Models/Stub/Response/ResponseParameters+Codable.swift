@@ -1,6 +1,6 @@
 import Foundation
 
-extension ResponseParameters {
+extension ResponseParameters: Codable {
     enum DecodingError: Error {
         case empty
     }

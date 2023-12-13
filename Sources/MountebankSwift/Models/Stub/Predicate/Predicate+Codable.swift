@@ -1,6 +1,6 @@
 import Foundation
 
-extension Predicate {
+extension Predicate: Codable {
     enum DecodingError: Error {
         case invalidType
     }

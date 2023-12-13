@@ -1,7 +1,7 @@
 import Foundation
 
 /// See https://www.mbtest.org/docs/api/predicates
-public indirect enum Predicate: Codable, Equatable {
+public indirect enum Predicate: Equatable {
     /// The request field matches the predicate
     /// https://www.mbtest.org/docs/api/predicates#predicates-equals
     case equals(Request, PredicateParameters? = nil)

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PredicateParameters: Codable, Equatable {
+public struct PredicateParameters: Equatable {
     /// Determines if the match is case sensitive or not.
     /// This includes keys for objects such as query parameters.
     let caseSensitive: Bool?
