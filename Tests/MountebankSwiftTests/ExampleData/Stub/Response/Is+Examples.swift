@@ -86,47 +86,10 @@ extension Is {
                     behaviors: Behavior.Examples.all.map(\.value)
                 )
             ),
-            // Parameters should not encoded inside the Is
+            // Parameters should not be encoded inside the Is
             json: [
                 "statusCode": 200,
                 "body": "Hello world",
-            ]
-        )
-    }
-}
-
-extension Inject {
-    enum Examples {
-        static let injectBody = Example(
-            value: Inject(
-                "(config) => { return { \"body\": \"hello world\" }; }"
-            ),
-            json: "(config) => { return { \"body\": \"hello world\" }; }"
-        )
-    }
-}
-
-extension Fault {
-    enum Examples {
-        static let connectionResetByPeer = Example(
-            value: Fault.connectionResetByPeer,
-            json: "CONNECTION_RESET_BY_PEER"
-        )
-
-        static let randomDataThenClose = Example(
-            value: Fault.randomDataThenClose,
-            json: "RANDOM_DATA_THEN_CLOSE"
-        )
-    }
-}
-
-extension Proxy {
-    enum Examples {
-        static let proxy = Example(
-            value: Proxy(to: "https://www.somesite.com:3000", mode: .proxyAlways),
-            json: [
-                "to": "https://www.somesite.com:3000",
-                "mode": "proxyAlways",
             ]
         )
     }

@@ -41,7 +41,7 @@ final class ResponseTests: XCTestCase {
             Is.Examples.jsonEncodable.value,
             Is.Examples.jsonEncodable.json
         )
-        // Not possibel to decode json back into codable
+        // Not possible to decode json back into codable
     }
 
     func testBinary() throws {
