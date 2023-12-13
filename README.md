@@ -9,7 +9,7 @@ to interact with a running Mountebank instance.
 
 ## Usage
 
-Once [installed](#installation), you need to start the mountebank server with `mb start`. You can import the
+Once [installed](#installation), you need to start the Mountebank server with `mb start`. You can import the
 `MountebankSwift` module and setup `MountebankSwift` in your test.
 
 ```swift
@@ -21,12 +21,12 @@ final class ExampleUITests: XCTestCase {
     private var mounteBank = Mountebank(host: .localhost)
 
     override func setUp() async throws {
-        // Test if mountebank is running if it failing please start mountebank with `mb start`.
+        // Test if Mountebank is running if it failing please start Mountebank with `mb start`.
         try await mounteBank.testConnection()
     }
 
     override func tearDown() async throws {
-        // Remove all imposters to have a clean mounteBank instance for the next tests.
+        // Remove all imposters to have a clean Mountebank instance for the next tests.
         try await mounteBank.deleteAllImposters()
     }
 
@@ -63,7 +63,7 @@ The documentation is available on the [Swift Package Index](https://swiftpackage
  2. Enter package repository URL: `https://github.com/MountebankSwift/MountebankSwift`.
  3. Confirm the version and let Xcode resolve the package.
  4. On the last dialog, update MountebankSwift's **Add to Target** column to a test target that will contain
-    tests that use mountebank.
+    tests that use Mountebank.
 
 ### Using Swift Package Manager
 

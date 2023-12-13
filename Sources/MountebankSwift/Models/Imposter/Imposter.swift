@@ -1,5 +1,7 @@
 import Foundation
 
+/// A Imposter as documented on:
+/// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
     /// The port to run the imposter on.
     ///
@@ -19,7 +21,7 @@ public struct Imposter: Codable, Equatable {
     /// request, matched with a predicate.
     public var stubs: [Stub]
 
-    /// Allows you to override the default response that mountebank sends back if no predicate matches a request. Even
+    /// Allows you to override the default response that Mountebank sends back if no predicate matches a request. Even
     /// if a predicate does match but the response isn't fully specified, these values get merged in to complete the
     /// response.
     public let defaultResponse: Stub.Response.Is?

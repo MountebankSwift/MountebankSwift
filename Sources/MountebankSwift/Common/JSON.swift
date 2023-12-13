@@ -29,7 +29,7 @@ import Foundation
 /// and `Codable`, so that you can compare values for equality and code and decode them into data
 /// or strings.
 ///
-/// From  https://github.com/iwill/generic-json-swift/
+/// From  [github.com/iwill/generic-json-swift](https://github.com/iwill/generic-json-swift/)
 @dynamicMemberLookup
 public enum JSON: Codable, Hashable {
     case string(String)

@@ -23,12 +23,12 @@ extension Stub.Response {
         ///// An array of objects that defines how the predicates for new stubs are created.
         ///// Each object in the array defines the fields to generate predicates from.
         //let predicateGenerators: [PredicateGenerator]
-        ///// If true, mountebank will add a wait behavior to the response 
+        ///// If true, Mountebank will add a wait behavior to the response 
         ///// with the same latency that the proxied call took.
         ///// This is useful in performance testing scenarios where you want to
         ///// simulate the actual latency of downstream services that you're virtualizing.
         //let addWaitBehavior: Bool
-        ///// If defined, mountebank will add a decorate behavior to the saved response.
+        ///// If defined, Mountebank will add a decorate behavior to the saved response.
         //let addDecorateBehavior: String
 
         public init(to: String, mode: Mode) {
