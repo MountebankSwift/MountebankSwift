@@ -13,7 +13,7 @@ extension ResponseParameters {
                 behaviors: Behavior.Examples.all.map(\.value)
             ),
             json: [
-                "behaviors": .array(Behavior.Examples.all.map(\.json))
+                "behaviors": .array(Behavior.Examples.all.map(\.json)),
             ]
         )
 
@@ -24,7 +24,7 @@ extension ResponseParameters {
             ),
             json: [
                 "repeat": 5,
-                "behaviors": .array(Behavior.Examples.all.map(\.json))
+                "behaviors": .array(Behavior.Examples.all.map(\.json)),
             ]
         )
     }

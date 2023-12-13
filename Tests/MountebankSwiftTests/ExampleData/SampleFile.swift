@@ -11,18 +11,17 @@ enum SampleFile: String {
     case html = "sample.html"
 
     var url: URL {
+        // swiftlint:disable:next force_unwrapping
         Bundle.module.url(forResource: "Files/\(rawValue)", withExtension: nil)!
     }
 
     var data: Data {
+        // swiftlint:disable:next force_try
         try! Data(contentsOf: url)
     }
 
-    var image: StubImage {
-        StubImage(data: data)!
-    }
-
     var string: String {
+        // swiftlint:disable:next force_try
         try! String(contentsOf: url)
     }
 
@@ -31,6 +30,7 @@ enum SampleFile: String {
         case .png, .jpg, .pdf, .mp4:
             return .data(data)
         case .json:
+            // swiftlint:disable:next force_try
             return .json(try! testDecoder.decode(JSON.self, from: data))
         case .txt, .html:
             return .text(string)

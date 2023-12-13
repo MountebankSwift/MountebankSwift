@@ -11,6 +11,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
         /// proxy requests but do not record any data.
         case proxyTransparent
     }
+
     /// Defines the origin server that the request should proxy to.
     /// A URL without the path (e.g. http://someserver:3000 or tcp://someserver:3000)
     let to: String
@@ -21,14 +22,14 @@ public struct Proxy: StubResponse, Codable, Equatable {
     // TODO: add support for additional proxy options
     ///// An array of objects that defines how the predicates for new stubs are created.
     ///// Each object in the array defines the fields to generate predicates from.
-    //let predicateGenerators: [PredicateGenerator]
+    // let predicateGenerators: [PredicateGenerator]
     ///// If true, mountebank will add a wait behavior to the response
     ///// with the same latency that the proxied call took.
     ///// This is useful in performance testing scenarios where you want to
     ///// simulate the actual latency of downstream services that you're virtualizing.
-    //let addWaitBehavior: Bool
+    // let addWaitBehavior: Bool
     ///// If defined, mountebank will add a decorate behavior to the saved response.
-    //let addDecorateBehavior: String
+    // let addDecorateBehavior: String
 
     public init(to: String, mode: Mode) {
         self.to = to
@@ -37,7 +38,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
 }
 
 // TODO: Implement and test Proxy Parameters
-//extension Proxy {
+// extension Proxy {
 //    struct Parameters {
 //        /// The SSL client certificate, a PEM-formatted string
 //        let cert: String?
@@ -54,4 +55,4 @@ public struct Proxy: StubResponse, Codable, Equatable {
 //        /// Key-value pairs of headers to inject into the proxied request.
 //        let injectHeaders: [String: String]
 //    }
-//}
+// }

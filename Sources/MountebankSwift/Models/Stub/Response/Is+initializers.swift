@@ -1,8 +1,8 @@
 import Foundation
 
 // Convenience overloads for various body types
-public extension Is {
-    init(
+extension Is {
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         body: String,
@@ -16,7 +16,7 @@ public extension Is {
         )
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         body: JSON,
@@ -30,7 +30,7 @@ public extension Is {
         )
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         body: Data,
@@ -44,7 +44,7 @@ public extension Is {
         )
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         body: any Codable,
@@ -60,8 +60,8 @@ public extension Is {
 }
 
 // Convenience overloads for various body types
-public extension Array where Element == Is {
-    init(
+extension Array where Element == Is {
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         bodies: [Body],
@@ -77,7 +77,7 @@ public extension Array where Element == Is {
         }
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         bodies: [String],
@@ -93,7 +93,7 @@ public extension Array where Element == Is {
         }
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         bodies: [JSON],
@@ -109,7 +109,7 @@ public extension Array where Element == Is {
         }
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         bodies: [Data],
@@ -125,7 +125,7 @@ public extension Array where Element == Is {
         }
     }
 
-    init(
+    public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         bodies: [any Codable],

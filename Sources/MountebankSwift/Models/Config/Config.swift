@@ -10,25 +10,25 @@ public struct Config: Codable, Equatable {
 
         /// The port to run the main Mountebank server on
         public let port: Int
-        
+
         /// Only accept requests from localhost. You should ALWAYS do this when running Mountebank with
         /// allowInjection directly on your developer machine, but will need to use ipWhitelist otherwise
         /// (or if running in Docker)
         public let localOnly: Bool
-        
+
         /// A pipe-delimited string of remote IP addresses to whitelist (local IP addresses will always be allowed).
         /// Any request to the primary mb socket or an imposter socket that isn't whitelisted will be dropped.
         public let ipWhitelist: [String]
-        
+
         /// A safe origin for CORS requests. Use the flag multiple times to enable multiple origins.
         public let origin: Bool
-        
+
         /// File to load custom protocol implementations from.
         public let protofile: String
-        
+
         /// The file where the process id is stored for the mb stop command
         public let pidfile: String?
-        
+
         /// Advanced logging configuration, when you want to customize the log formats. While you can pass the JSON
         /// string on the command line, it's easier to put it in the rcfile. If you pass log, the simpler logging
         /// configuration options (loglevel, logfile, nologfile) will be ignored.
@@ -38,12 +38,12 @@ public struct Config: Codable, Equatable {
         /// - %timestampd
         /// - %message
         public let log: Log?
-        
+
         /// By default, Mountebank will render config files through EJS templating to allow modularizing rich
         /// configuration. Use this flag if you aren't using templating and have special character sequences in
         /// your configuration that cause rendering errors.
         public let noParse: Bool?
-        
+
         /// Historically, Mountebank supported EJS templating when using the configfile option, and was limited to
         /// saving all configuration in a single file when calling mb save. For backwards compatibility, that
         /// remains the default option, even though EJS has subsequently made breaking changes.
@@ -51,10 +51,10 @@ public struct Config: Codable, Equatable {
         /// convert between other service virtualization products). See below for more details. In the context of
         /// mb start, the formatter will be used to parse the configfile.
         public let formatter: String?
-       
+
         /// If present, Mountebank will load the contents of the specified file. See below for details.
         public let configFile: String?
-        
+
         /// Mountebank supports JavaScript injection for predicates, stub responses, behavior decoration, wait
         /// behavior functions and tcp request resolution, but they are disabled by default. Including this
         /// parameter will enable them.
@@ -62,7 +62,7 @@ public struct Config: Codable, Equatable {
         /// > Note: Be aware that allowing injection means that an attacker can run random code on the machine running
         /// mb. Please see the security page for tips on securing your system.
         public let allowInjection: Bool
-        
+
         /// Include a matches array with each stub in the body of a GET imposter response for debugging why a
         /// particular stub did or did not match a request. Every time a response from the stub is used, a
         /// match will be added containing the request, the response configuration, the actual generated

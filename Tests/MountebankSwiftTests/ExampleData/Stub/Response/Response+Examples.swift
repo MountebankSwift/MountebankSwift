@@ -8,7 +8,7 @@ extension Is {
             html,
             json,
             binary,
-            http404
+            http404,
         ]
 
         static let text = Example(
@@ -25,7 +25,7 @@ extension Is {
             json: [
                 "statusCode": 200,
                 "headers" : ["Content-Type": "text/html"],
-                "body": "<html><body><h1>Who needs HTML?</h1></html>"
+                "body": "<html><body><h1>Who needs HTML?</h1></html>",
             ]
         )
 
@@ -37,7 +37,7 @@ extension Is {
             json: [
                 "statusCode": 200,
                 "headers": ["Content-Type": "application/json"],
-                "body": ["bikeId": 123, "name": "Turbo Bike 4000"]
+                "body": ["bikeId": 123, "name": "Turbo Bike 4000"],
             ]
         )
 
@@ -45,6 +45,7 @@ extension Is {
             struct Bar: Codable {
                 let baz: String
             }
+
             let foo: String
             let bar: Bar
         }
@@ -58,7 +59,7 @@ extension Is {
             json: [
                 "statusCode": 200,
                 "headers": ["Content-Type": "application/json"],
-                "body": ["foo": "Foo", "bar": ["baz": "Baz"]]
+                "body": ["foo": "Foo", "bar": ["baz": "Baz"]],
             ]
         )
 
@@ -67,7 +68,7 @@ extension Is {
             json: [
                 "_mode" : "binary",
                 "statusCode" : 200,
-                "body" : StubImage.example.json
+                "body" : StubImage.example.json,
             ]
         )
 
@@ -125,7 +126,7 @@ extension Proxy {
             value: Proxy(to: "https://www.somesite.com:3000", mode: .proxyAlways),
             json: [
                 "to": "https://www.somesite.com:3000",
-                "mode": "proxyAlways"
+                "mode": "proxyAlways",
             ]
         )
     }

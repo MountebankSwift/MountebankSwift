@@ -38,7 +38,7 @@ public struct Is: StubResponse, Equatable {
         }
 
         if let headers {
-            result.merge(headers, uniquingKeysWith: { a, b in b })
+            result.merge(headers, uniquingKeysWith: { _, b in b })
         }
 
         return result.isEmpty ? nil : result

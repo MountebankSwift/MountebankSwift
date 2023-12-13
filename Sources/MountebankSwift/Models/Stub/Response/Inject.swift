@@ -7,7 +7,7 @@ public struct Inject: StubResponse, Codable, Equatable {
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        self.injection = try container.decode(String.self)
+        injection = try container.decode(String.self)
     }
 
     public func encode(to encoder: Encoder) throws {

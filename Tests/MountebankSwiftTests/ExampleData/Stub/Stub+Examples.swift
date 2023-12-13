@@ -8,7 +8,7 @@ extension Stub {
             json,
             http404,
             textWhenRefresh404,
-            multiplePredicatesAndResponses
+            multiplePredicatesAndResponses,
         ]
 
         static let text = Example(
@@ -20,7 +20,7 @@ extension Stub {
             ),
             json: [
                 "responses": [["is": Is.Examples.text.json]],
-                "predicates": [["equals" : ["path": "/text-200"]]]
+                "predicates": [["equals" : ["path": "/text-200"]]],
             ]
         )
 
@@ -31,7 +31,7 @@ extension Stub {
             ),
             json: [
                 "responses": [["is": Is.Examples.json.json]],
-                "predicates": [["equals" : ["path": "/json-200"]]]
+                "predicates": [["equals" : ["path": "/json-200"]]],
             ]
         )
 
@@ -42,7 +42,7 @@ extension Stub {
             ),
             json: [
                 "responses": [["is": Is.Examples.http404.json]],
-                "predicates": [["equals" : ["path": "/404"]]]
+                "predicates": [["equals" : ["path": "/404"]]],
             ]
         )
 
@@ -54,7 +54,7 @@ extension Stub {
                     Is.Examples.text.value,
                 ],
                 predicates: [
-                    Predicate.equals(Request(path: "/404-to-200"))
+                    Predicate.equals(Request(path: "/404-to-200")),
                 ]
             ),
             json: [
@@ -63,19 +63,19 @@ extension Stub {
                     ["is": Is.Examples.text.json],
                 ],
                 "predicates": [
-                    ["equals" : ["path": "/404-to-200"]]
-                ]
+                    ["equals" : ["path": "/404-to-200"]],
+                ],
             ]
         )
 
         static let multiplePredicatesAndResponses = Example(
             value: Stub(
-                responses: 
-                    Is.Examples.allWithoutParameters.map(\.value) +
+                responses:
+                Is.Examples.allWithoutParameters.map(\.value) +
                     [
                         Proxy.Examples.proxy.value,
                         Fault.Examples.connectionResetByPeer.value,
-                        Inject.Examples.injectBody.value
+                        Inject.Examples.injectBody.value,
                     ]
                 ,
                 predicates: Predicate.Examples.all.map(\.value)
@@ -84,14 +84,14 @@ extension Stub {
                 "responses": .array(
                     Is.Examples.allWithoutParameters
                         .map(\.json)
-                        .map { ["is" : $0 ] } +
-                    [
-                        ["proxy": Proxy.Examples.proxy.json],
-                        ["fault": Fault.Examples.connectionResetByPeer.json],
-                        ["inject": Inject.Examples.injectBody.json]
-                    ]
+                        .map { ["is" : $0] } +
+                        [
+                            ["proxy": Proxy.Examples.proxy.json],
+                            ["fault": Fault.Examples.connectionResetByPeer.json],
+                            ["inject": Inject.Examples.injectBody.json],
+                        ]
                 ),
-                "predicates": .array(Predicate.Examples.all.map(\.json))
+                "predicates": .array(Predicate.Examples.all.map(\.json)),
             ]
         )
 
@@ -102,13 +102,10 @@ extension Stub {
             ),
             json: [
                 "responses": [
-                    [
-                        "is": Is.Examples.withResponseParameters.json,
-                        "repeat": 5,
-                        "behaviors": .array(Behavior.Examples.all.map(\.json))
-                    ]
+                    (["is": Is.Examples.withResponseParameters.json] as JSON)
+                        .merging(with: ResponseParameters.Examples.full.json),
                 ],
-                "predicates": .array(Predicate.Examples.all.map(\.json))
+                "predicates": .array(Predicate.Examples.all.map(\.json)),
             ]
         )
     }

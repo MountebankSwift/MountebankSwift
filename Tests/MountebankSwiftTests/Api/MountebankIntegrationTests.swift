@@ -139,7 +139,7 @@ final class MountebankIntegrationTests: XCTestCase {
                 SampleFile.pdf,
                 SampleFile.txt,
                 SampleFile.mp4,
-                SampleFile.html
+                SampleFile.html,
             ].map { file in
                 Stub(
                     response: Is(

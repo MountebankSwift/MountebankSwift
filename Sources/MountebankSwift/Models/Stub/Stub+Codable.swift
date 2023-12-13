@@ -21,7 +21,7 @@ extension Stub: Codable {
 
     public static func == (lhs: Stub, rhs: Stub) -> Bool {
         lhs.predicates == rhs.predicates &&
-        lhs.responses.map(\.codable) == rhs.responses.map(\.codable)
+            lhs.responses.map(\.codable) == rhs.responses.map(\.codable)
     }
 }
 
@@ -29,9 +29,9 @@ extension CodableResponse {
     var stubResponse: any StubResponse {
         switch self {
         case .is(let value as any StubResponse),
-            .proxy(let value as any StubResponse),
-            .inject(let value as any StubResponse),
-            .fault(let value as any StubResponse):
+             .proxy(let value as any StubResponse),
+             .inject(let value as any StubResponse),
+             .fault(let value as any StubResponse):
             return value
         }
     }
@@ -52,4 +52,3 @@ extension StubResponse {
         fatalError("Unknown StubResponse")
     }
 }
-

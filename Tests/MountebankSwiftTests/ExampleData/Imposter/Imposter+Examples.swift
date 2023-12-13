@@ -14,7 +14,7 @@ extension Imposter {
                 "port": 19190,
                 "protocol": "https",
                 "stubs": [Stub.Examples.text.json],
-                "defaultResponse": ["statusCode": 403]
+                "defaultResponse": ["statusCode": 403],
             ]
         )
 

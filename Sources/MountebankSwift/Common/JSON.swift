@@ -332,7 +332,6 @@ private let falseNumber = NSNumber(value: false)
 private let trueObjCType = String(cString: trueNumber.objCType)
 private let falseObjCType = String(cString: falseNumber.objCType)
 
-
 // MARK: - Merging
 
 extension JSON {
@@ -368,6 +367,7 @@ extension JSON {
 
         // For keys present in both old and new, apply merge recursively to their values.
         for key in lhs.keys where rhs[key] != nil {
+            // swiftlint:disable:next force_unwrapping
             merged[key] = lhs[key]?.merging(with: rhs[key]!)
         }
 

@@ -15,10 +15,10 @@ extension AddStub {
                 "index": 1,
                 "stub": [
                     "responses": [
-                        ["inject": Inject.Examples.injectBody.json]
+                        ["inject": Inject.Examples.injectBody.json],
                     ],
                     "predicates": [Predicate.Examples.equals.json],
-                ]
+                ],
             ]
         )
     }

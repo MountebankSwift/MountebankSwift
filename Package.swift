@@ -27,8 +27,8 @@ let package = Package(
             name: "MountebankSwiftTests",
             dependencies: ["MountebankSwift"],
             resources: [
-              .copy("ExampleData/Files"),
+                .copy("ExampleData/Files"),
             ]
-        )
+        ),
     ]
 )

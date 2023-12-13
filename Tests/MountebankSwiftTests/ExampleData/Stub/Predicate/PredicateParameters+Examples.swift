@@ -31,8 +31,8 @@ extension PredicateParameters {
             json: [
                 "xpath": [
                     "selector": "//a:title",
-                    "ns": ["a": "http://example.com/book"]
-                ]
+                    "ns": ["a": "http://example.com/book"],
+                ],
             ]
         )
 
@@ -56,9 +56,9 @@ extension PredicateParameters {
                 "caseSensitive": true,
                 "xpath": [
                     "selector": "//a:title",
-                    "ns": ["a": "http://example.com/book"]
+                    "ns": ["a": "http://example.com/book"],
                 ],
-                "jsonpath": ["selector": "$..title"]
+                "jsonpath": ["selector": "$..title"],
             ]
         )
     }

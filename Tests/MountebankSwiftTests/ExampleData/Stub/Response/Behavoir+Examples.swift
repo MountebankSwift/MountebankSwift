@@ -9,7 +9,7 @@ extension Behavior {
             copy,
             lookup,
             decorate,
-            shellTransform
+            shellTransform,
         ]
 
         static let wait = Example(
@@ -26,14 +26,14 @@ extension Behavior {
             value: Behavior.copy([
                 "from": "path",
                 "into": "${code}",
-                "using": ["method": "regex", "selector": "\\d+"]
+                "using": ["method": "regex", "selector": "\\d+"],
             ]),
             json: [
                 "copy": [
                     "from": "path",
                     "into": "${code}",
-                    "using": ["method": "regex", "selector": "\\d+"]
-                ]
+                    "using": ["method": "regex", "selector": "\\d+"],
+                ],
             ]
         )
 
@@ -42,39 +42,39 @@ extension Behavior {
                 "key": [
                     "from": "path",
                     "using": ["method": "regex", "selector": "/(.*)$"],
-                    "index": 1
+                    "index": 1,
                 ],
                 "fromDataSource": [
                     "csv": [
                         "path": "/app/values.csv",
                         "keyColumn": "Name",
-                        "delimiter": ","
-                    ]
+                        "delimiter": ",",
+                    ],
                 ],
-                "into": "${row}"
+                "into": "${row}",
             ]),
             json: [
                 "lookup": [
                     "key": [
                         "from": "path",
                         "using": ["method": "regex", "selector": "/(.*)$"],
-                        "index": 1
+                        "index": 1,
                     ],
                     "fromDataSource": [
                         "csv": [
                             "path": "/app/values.csv",
                             "keyColumn": "Name",
-                            "delimiter": ","
-                        ]
+                            "delimiter": ",",
+                        ],
                     ],
-                    "into": "${row}"
-                ]
+                    "into": "${row}",
+                ],
             ]
         )
 
         static let decorate = Example(
             value: Behavior.decorate(
-            "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"
+                "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"
             ),
             json: ["decorate": "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"]
         )

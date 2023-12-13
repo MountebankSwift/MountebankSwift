@@ -15,7 +15,7 @@ extension MountebankSwift.Predicate {
             or,
             and,
             inject,
-            withParameters
+            withParameters,
         ]
 
         static let equals = Example(
@@ -23,7 +23,7 @@ extension MountebankSwift.Predicate {
                 Request(path: "/test-is-200")
             ),
             json: [
-                "equals" : ["path": "/test-is-200"]
+                "equals" : ["path": "/test-is-200"],
             ]
         )
 
@@ -33,8 +33,8 @@ extension MountebankSwift.Predicate {
             ),
             json: [
                 "deepEquals": [
-                    "query": ["key": ["first", "second"]]
-                ]
+                    "query": ["key": ["first", "second"]],
+                ],
             ]
         )
 
@@ -43,7 +43,7 @@ extension MountebankSwift.Predicate {
                 Request(data: "AgM=")
             ),
             json: [
-                "contains": ["data": "AgM="]
+                "contains": ["data": "AgM="],
             ]
         )
 
@@ -52,7 +52,7 @@ extension MountebankSwift.Predicate {
                 Request(data: "first")
             ),
             json: [
-                "startsWith": ["data": "first"]
+                "startsWith": ["data": "first"],
             ]
         )
 
@@ -61,7 +61,7 @@ extension MountebankSwift.Predicate {
                 Request(data: "last")
             ),
             json: [
-                "endsWith": ["data": "last"]
+                "endsWith": ["data": "last"],
             ]
         )
 
@@ -70,7 +70,7 @@ extension MountebankSwift.Predicate {
                 Request(data: "^first")
             ),
             json: [
-                "matches": ["data": "^first"]
+                "matches": ["data": "^first"],
             ]
         )
 
@@ -79,7 +79,7 @@ extension MountebankSwift.Predicate {
                 Request(query: ["q": true, "search": false])
             ),
             json: [
-                "exists": ["query": ["q" : true, "search" : false]]
+                "exists": ["query": ["q" : true, "search" : false]],
             ]
         )
 
@@ -88,7 +88,7 @@ extension MountebankSwift.Predicate {
                 Predicate.Examples.equals.value
             ),
             json: [
-                "not": Predicate.Examples.equals.json
+                "not": Predicate.Examples.equals.json,
             ]
         )
 
@@ -96,14 +96,14 @@ extension MountebankSwift.Predicate {
             value: Predicate.or(
                 [
                     Predicate.Examples.equals.value,
-                    Predicate.Examples.contains.value
+                    Predicate.Examples.contains.value,
                 ]
             ),
             json: [
                 "or": [
                     Predicate.Examples.equals.json,
-                    Predicate.Examples.contains.json
-                ]
+                    Predicate.Examples.contains.json,
+                ],
             ]
         )
 
@@ -111,14 +111,14 @@ extension MountebankSwift.Predicate {
             value: Predicate.and(
                 [
                     Predicate.Examples.equals.value,
-                    Predicate.Examples.deepEquals.value
+                    Predicate.Examples.deepEquals.value,
                 ]
             ),
             json: [
                 "and": [
                     Predicate.Examples.equals.json,
-                    Predicate.Examples.deepEquals.json
-                ]
+                    Predicate.Examples.deepEquals.json,
+                ],
             ]
         )
 
@@ -127,7 +127,7 @@ extension MountebankSwift.Predicate {
                 "(config) => { return config.request.headers['Authorization'] == 'Bearer <my-token>'; }"
             ),
             json: [
-                "inject" : "(config) => { return config.request.headers['Authorization'] == 'Bearer <my-token>'; }"
+                "inject" : "(config) => { return config.request.headers['Authorization'] == 'Bearer <my-token>'; }",
             ]
         )
 
@@ -136,10 +136,8 @@ extension MountebankSwift.Predicate {
                 Request(path: "/with-parameters"),
                 PredicateParameters.Examples.full.value
             ),
-            json: JSON(mergingObjects: [
-                ["equals" : ["path": "/with-parameters"]],
-                PredicateParameters.Examples.full.json
-            ])
+            json: (["equals" : ["path": "/with-parameters"]] as JSON)
+                .merging(with: PredicateParameters.Examples.full.json)
         )
     }
 }
