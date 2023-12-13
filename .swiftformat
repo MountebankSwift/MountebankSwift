@@ -1,0 +1,79 @@
+# Options
+--allman false # braces
+--self remove # redundantSelf
+--importgrouping testable-bottom # sortImports
+--commas always # trailingCommas
+--trimwhitespace always # trailingSpace
+--indent 4 # indent
+--tabwidth 4 # indent
+--ifdef no-indent # indent
+--indentstrings false # indent
+--indentcase false # indent
+--wraparguments before-first # wrapArguments
+--wrapparameters before-first # wrapArguments
+--wrapcollections before-first # wrapArguments
+--wrapconditions before-first # wrapArguments
+--wrapreturntype preserve # wrapArguments
+--closingparen balanced # wrapArguments
+--wraptypealiases before-first # wrapArguments
+--funcattributes prev-line # wrapAttributes
+--typeattributes prev-line # wrapAttributes
+--wrapternary default # wrap
+--stripunusedargs closure-only # unusedArguments
+--extensionacl on-declarations # extensionAccessControl
+--patternlet inline # hoistPatternLet
+--redundanttype inferred # redundantType
+--swiftversion 5.7
+--guardelse same-line # elseOnSameLine
+--maxwidth 120 # wrap
+
+# Rules
+--rules anyObjectProtocol
+--rules blankLinesBetweenScopes
+--rules blankLineAfterImports
+--rules consecutiveSpaces
+--rules duplicateImports
+--rules extensionAccessControl
+--rules hoistPatternLet
+--rules indent
+--rules redundantParens
+--rules redundantReturn
+--rules redundantSelf
+--rules redundantType
+--rules redundantPattern
+--rules redundantGet
+--rules redundantFileprivate
+--rules redundantRawValues
+--rules sortImports
+--rules sortDeclarations
+--rules strongifiedSelf
+--rules trailingCommas
+--rules trailingSpace
+--rules typeSugar
+--rules wrap
+--rules wrapMultilineStatementBraces
+--rules wrapArguments
+--rules wrapAttributes
+--rules wrapenumcases
+--rules braces
+--rules redundantClosure
+--rules redundantInit
+--rules redundantVoidReturnType
+--rules unusedArguments
+--rules spaceInsideBrackets
+--rules spaceInsideBraces
+--rules spaceAroundBraces
+--rules spaceInsideParens
+--rules spaceAroundParens
+--rules enumNamespaces
+--rules spaceAroundComments
+--rules spaceInsideComments
+--rules consecutiveBlankLines
+--rules elseOnSameLine
+--rules initCoderUnavailable
+
+# Excludes
+--exclude .build
+--exclude .git
+--exclude .github
+--exclude .swiftpm
