@@ -14,7 +14,7 @@ public struct Mountebank {
     private let jsonDecoder = JSONDecoder()
 
     /// - Parameters:
-    ///   - host: The Mountebank server host adress
+    ///   - host: The Mountebank server host address
     ///   - port: The Mountebank server port
     public init(host: Host = .localhost, port: Int = 2525) {
         self.host = host
@@ -50,7 +50,7 @@ public struct Mountebank {
 
     /// Get a list of all Imposters
     ///
-    /// This is where you will come to retrieve a list of all active ``Imposters``. By default, mountebank returns some
+    /// Get a list of all active ``Imposters``. By default, mountebank returns some
     /// basic information and hypermedia. If you want more information, either get the single ``Imposter`` or use the
     /// `replayable` flag.
     ///
@@ -64,8 +64,8 @@ public struct Mountebank {
 
     /// Create a single Imposter
     ///
-    /// Though he's not proud to admit it, Mountebank employs an army of ``Imposters`` to fulfill your orders. Because
-    /// your needs are varied and sundry, his ``Imposters`` are all different, and all are identified by a port number
+    /// You can create multiple ``Imposters``  in Mountebank of to fulfill your testing needs. Because your
+    /// needs are varied, the ``Imposters`` are all different, and all are identified by a port number
     /// and associated with a protocol. The value you get out of Mountebank always starts by creating an imposter,
     /// which represents a test double listening on a socket.
     ///
@@ -82,8 +82,8 @@ public struct Mountebank {
 
     /// Overwrite all Imposters with a new set of Imposters
     ///
-    /// Sometimes you want to create a batch of ``Imposters`` in a single call, overwriting any ``Imposters`` already created.
-    /// This call is destructive - it will first delete all existing ``Imposters``. The output of a
+    /// Sometimes you want to create a batch of ``Imposters`` in a single call, overwriting any ``Imposters`` already
+    /// created. This call is destructive - it will first delete all existing ``Imposters``. The output of a
     /// GET /imposters?replayable=true can directly be replayed through this call. This call is also used during
     /// startup if you set the --configfile command line flag.
     ///
@@ -100,10 +100,11 @@ public struct Mountebank {
 
     /// Add a stub to an existing Imposter
     ///
-    /// In most cases, you would add the stubs at the time you create the ``Imposter``, but this call allows you to add a
-    /// stub to an existing ``Imposter`` without restarting it. You can add the new stub at any index between 0 and the
-    /// end of the existing array. If you leave off the index field, the stub will be added to the end of the existing
-    /// stubs array. On a successful request, Mountebank will return the updated ``Imposter`` resource.
+    /// In most cases, you would add the stubs at the time you create the ``Imposter``, but this call allows you to
+    /// add a stub to an existing ``Imposter`` without restarting it. You can add the new stub at any index between 0
+    /// and the end of the existing array. If you leave off the index field, the stub will be added to the end of the
+    /// existing stubs array. On a successful request, Mountebank will return the updated ``Imposter``
+    /// resource.
     ///
     /// - Parameters:
     ///   - stub: The Stub that will be added to the ``Imposter``
@@ -138,9 +139,9 @@ public struct Mountebank {
 
     /// Delete all Imposters
     ///
-    /// The surest way to reset to a clean slate is to delete all ``Imposters``. Any ``Imposter`` sockets Mountebank has open
-    /// will be closed, and the response body will contain exactly what you need to mass create the same ``Imposters``
-    /// in the future.
+    /// If you want to have a clean state, the best way is to delete all ``Imposters``. Any ``Imposter``
+    /// sockets Mountebank has open will be closed, and the response body will contain exactly what
+    /// you need to mass create the same ``Imposters`` in the future.
     ///
     /// - Returns: The deleted ``Imposter``
     ///
@@ -154,7 +155,7 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
-    /// - Returns: The mountainbank ``Imposter`` url.
+    /// - Returns: The Mountainbank ``Imposter`` url.
     public func makeImposterUrl(port: Int) -> URL {
         // swiftlint:disable:next force_unwrapping
         URL(string: "http://\(host):\(port)")!
@@ -164,8 +165,8 @@ public struct Mountebank {
 
     /// Overwrite all stubs in an existing Imposter
     ///
-    /// Use this endpoint to overwrite all existing ``Stub`` without restarting the ``Imposter``. The response will provide
-    /// the updated ``Imposter`` resource.
+    /// Use this endpoint to overwrite all existing ``Stub`` without restarting the ``Imposter``. The response
+    /// will provide the updated ``Imposter`` resource.
     ///
     /// - Parameters:
     ///   - stubs: The ``Stub`` that will be on the ``Imposter``
@@ -181,8 +182,8 @@ public struct Mountebank {
 
     /// Remove a single stub from an existing Imposter
     ///
-    /// Use this endpoint to remove the ``Stub`` at the given array index without restarting the ``Imposter``. The response
-    /// will provide the updated ``Imposter`` resource.
+    /// Use this endpoint to remove the ``Stub`` at the given array index without restarting the ``Imposter``.
+    /// The response will provide the updated ``Imposter`` resource.
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
@@ -197,9 +198,9 @@ public struct Mountebank {
 
     /// Change a Stub in an existing Imposter
     ///
-    /// Use this endpoint to overwrite an existing ``Stub`` without restarting the ``Imposter``. The stubIndex must match the
-    /// array index of the ``Stub`` you wish to change. Pass the new ``Stub`` as the body of the request. The response will
-    /// provide the updated imposter resource.
+    /// Use this endpoint to overwrite an existing ``Stub`` without restarting the ``Imposter``. The stubIndex must
+    /// match the array index of the ``Stub`` you wish to change. Pass the new ``Stub`` as the body of the request. The
+    /// response will provide the updated imposter resource.
     ///
     /// - Parameters:
     ///   - stub: The ``Stub`` that will be added to the ``Imposter``
@@ -221,7 +222,7 @@ public struct Mountebank {
 
     /// Delete saved proxy responses from an Imposter
     ///
-    /// Proxy Stubs save all responses returned from downstream systems. Usually this is what you want, as they can
+    /// ``Proxy`` Stubs save all responses returned from downstream systems. Usually this is what you want, as they can
     /// be played back at a later time without the actual downstream system available. However, if you need to clear
     /// them but keep the Stubs intact, you can do so with this call.
     ///
@@ -266,9 +267,9 @@ public struct Mountebank {
         try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getConfig(), type: Config.self)
     }
 
-    /// Get the logs of currect session.
+    /// Get the logs from the current session.
     ///
-    /// In the rare scenario where Mountebank is hosted on a different server and you need access to the logs,
+    /// In the rare scenario where Mountebank is hosted on a different server and you need access to the ``Logs``,
     /// they are accessible through this endpoint.
     ///
     /// - Returns: The ``Logs`` for of the Mountebank server
@@ -278,8 +279,10 @@ public struct Mountebank {
         return try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(), type: Logs.self)
     }
 
-    /// Test if the Mountebank server is up.
+    /// Validate if the Mountebank server is up.
     ///
+    /// Before you want to setup all your Mountebank ``Imposters`` you can use this method to check if Mountebank
+    /// is running.
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     public func testConnection() async throws {
@@ -290,7 +293,7 @@ public struct Mountebank {
     }
 
     // MARK: - Internal
-    
+
     private func sendDataToEndpoint<T: Decodable>(
         body: Data? = nil,
         endpoint: Endpoint,
