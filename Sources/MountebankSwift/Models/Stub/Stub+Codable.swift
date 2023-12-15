@@ -49,6 +49,7 @@ extension StubResponse {
             return .fault(response)
         }
 
-        fatalError("Unknown StubResponse")
+        print("❌ Unknown StubResponse \(type(of: self))")
+        return .is(Is(statusCode: 500, body: "❌ Unknown StubResponse \(type(of: self))"))
     }
 }
