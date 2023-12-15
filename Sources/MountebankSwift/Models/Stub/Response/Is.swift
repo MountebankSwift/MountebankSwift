@@ -19,13 +19,12 @@ public struct Is: StubResponse, Equatable {
     ) {
         self.statusCode = statusCode
         self.body = body
-        self.headers = Self.makeHeaders(headers: headers, body: body)
-
-        self.parameters = parameters
+        self.headers = Self.makeHeaders(headers, body: body)
+        self.parameters = Self.makeParameters(parameters)
     }
 
     static func makeHeaders(
-        headers: [String: String]?,
+        _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
         var result = Self.defaultHeaders
@@ -42,5 +41,14 @@ public struct Is: StubResponse, Equatable {
         }
 
         return result.isEmpty ? nil : result
+    }
+
+    static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
+        defaultBehaviors.isEmpty
+            ? parameters
+            : ResponseParameters(
+                repeatCount: parameters?.repeatCount,
+                behaviors: Self.defaultBehaviors + (parameters?.behaviors ?? [])
+            )
     }
 }
