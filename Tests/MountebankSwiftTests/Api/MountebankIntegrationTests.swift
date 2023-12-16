@@ -36,13 +36,25 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testPostImposter() async throws {
-        let imposterResult = try await sut.postImposter(imposter: Imposter.Examples.includingAllStubs.value)
+        let imposterToPost = Imposter.Examples.includingAllStubs.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
         guard imposterResult.port != nil else {
             XCTFail("Port should have been set by now.")
             return
         }
 
-        XCTAssertEqual(imposterResult, Imposter.Examples.includingAllStubs.value)
+        let result = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: imposterToPost.networkProtocol,
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, result)
     }
 
     func testUpdatingStub() async throws {

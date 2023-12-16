@@ -58,6 +58,30 @@ extension Imposter {
             ]
         )
 
+        static let withResponseData = Example(
+            value: Imposter(
+                port: 19190,
+                networkProtocol: .https,
+                stubs: [Stub.Examples.text.value],
+                recordRequests: true,
+                numberOfRequests: 1,
+                requests: [.object(["ip": "127.0.0.1", "body": "test"])]
+            ),
+            json: [
+                "port": 19190,
+                "protocol": "https",
+                "stubs": [Stub.Examples.text.json],
+                "recordRequests": true,
+                "numberOfRequests": 1,
+                "requests": [
+                    [
+                        "ip": "127.0.0.1",
+                        "body": "test",
+                    ],
+                ],
+            ]
+        )
+
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,

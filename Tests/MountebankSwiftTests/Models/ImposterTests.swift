@@ -24,6 +24,17 @@ final class ImposterTests: XCTestCase {
         )
     }
 
+    func testWithResponseData() throws {
+        try assertEncode(
+            Imposter.Examples.withResponseData.value,
+            Imposter.Examples.withResponseData.json
+        )
+        try assertDecode(
+            Imposter.Examples.withResponseData.json,
+            Imposter.Examples.withResponseData.value
+        )
+    }
+
     func testIncludingAllStubs() throws {
         try assertEncode(
             Imposter.Examples.includingAllStubs.value,
