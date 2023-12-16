@@ -2,7 +2,7 @@ import Foundation
 
 /// All Endpoints as documented on:
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
-public struct Endpoint {
+struct Endpoint {
     let method: HTTPMethod
     let templatePath: String
 

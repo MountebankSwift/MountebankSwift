@@ -4,6 +4,8 @@ import Foundation
 public struct Mountebank {
     private let host: Host
     private let port: Int
+
+    /// The url of the Mountebank server this client will connect to
     public var mountebankURL: URL {
         // swiftlint:disable:next force_unwrapping
         URL(string: "http://\(host):\(port)")!

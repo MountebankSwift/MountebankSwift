@@ -1,12 +1,12 @@
 import Foundation
 
 public struct MountebankErrors: Codable, Equatable, Error {
-    struct MountebankError: Codable, Equatable {
-        let code: String
-        let message: String?
-        let errno: Int?
-        let syscall: String?
+    public struct MountebankError: Codable, Equatable {
+        public let code: String
+        public let message: String?
+        public let errno: Int?
+        public let syscall: String?
     }
 
-    let errors: [MountebankError]
+    public let errors: [MountebankError]
 }
