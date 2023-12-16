@@ -1,5 +1,6 @@
 import Foundation
 
+/// The host of Mountebank server
 public enum Host {
     public typealias RawValue = String
     case localhost

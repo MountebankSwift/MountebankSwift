@@ -1,6 +1,6 @@
 import Foundation
 
-/// A Imposter as documented on:
+/// Imposter as documented on:
 /// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
     /// The port to run the imposter on.

@@ -1,6 +1,6 @@
 import Foundation
 
-/// A Stub as documented on:
+/// Stub as documented on:
 /// [mbtest.org/docs/api/contracts?type=stub](https://www.mbtest.org/docs/api/contracts?type=stub)
 public struct Stub: Codable, Equatable {
     enum CodingKeys: String, CodingKey {

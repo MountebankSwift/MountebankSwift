@@ -1,5 +1,6 @@
 import Foundation
 
+/// Error thrown if something did go wrong with the Mountebank client or server.
 public enum MountebankValidationError: Error, Equatable {
 
     /// The request to make is invalid

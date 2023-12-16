@@ -1,5 +1,6 @@
 import Foundation
 
+/// Error that the Moutebank server will return if something did go wrong.
 public struct MountebankErrors: Codable, Equatable, Error {
     public struct MountebankError: Codable, Equatable {
         public let code: String
