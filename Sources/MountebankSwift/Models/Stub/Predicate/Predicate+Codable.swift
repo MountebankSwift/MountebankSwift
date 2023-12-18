@@ -23,26 +23,26 @@ extension Predicate: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         switch self {
-        case .equals(let json, let parameters):
-            try container.encode(json, forKey: .equals)
+        case .equals(let request, let parameters):
+            try container.encode(request, forKey: .equals)
             try parameters?.encode(to: encoder)
-        case .deepEquals(let json, let parameters):
-            try container.encode(json, forKey: .deepEquals)
+        case .deepEquals(let request, let parameters):
+            try container.encode(request, forKey: .deepEquals)
             try parameters?.encode(to: encoder)
-        case .contains(let json, let parameters):
-            try container.encode(json, forKey: .contains)
+        case .contains(let request, let parameters):
+            try container.encode(request, forKey: .contains)
             try parameters?.encode(to: encoder)
-        case .startsWith(let json, let parameters):
-            try container.encode(json, forKey: .startsWith)
+        case .startsWith(let request, let parameters):
+            try container.encode(request, forKey: .startsWith)
             try parameters?.encode(to: encoder)
-        case .endsWith(let json, let parameters):
-            try container.encode(json, forKey: .endsWith)
+        case .endsWith(let request, let parameters):
+            try container.encode(request, forKey: .endsWith)
             try parameters?.encode(to: encoder)
-        case .matches(let json, let parameters):
-            try container.encode(json, forKey: .matches)
+        case .matches(let request, let parameters):
+            try container.encode(request, forKey: .matches)
             try parameters?.encode(to: encoder)
-        case .exists(let json, let parameters):
-            try container.encode(json, forKey: .exists)
+        case .exists(let request, let parameters):
+            try container.encode(request, forKey: .exists)
             try parameters?.encode(to: encoder)
         case .not(let predicate, let parameters):
             try container.encode(predicate, forKey: .not)

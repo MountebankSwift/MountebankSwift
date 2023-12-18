@@ -52,3 +52,27 @@ public indirect enum Predicate: Equatable {
     /// [mbtest.org/docs/api/predicates#predicates-inject](https://www.mbtest.org/docs/api/predicates#predicates-inject)
     case inject(String)
 }
+
+extension Predicate {
+    /// The request field matches the predicate
+    /// [mbtest.org/docs/api/predicates#predicates-equals](https://www.mbtest.org/docs/api/predicates#predicates-equals)
+    ///
+    /// Convenience method for most used predicate.
+    public static func equalsRequest(
+        method: HTTPMethod? = nil,
+        path: String? = nil,
+        query: [String: JSON]? = nil,
+        headers: [String: JSON]? = nil,
+        data: JSON? = nil
+    ) -> Predicate {
+        Predicate.equals(
+            Request(
+                method: method,
+                path: path,
+                query: query,
+                headers: headers,
+                data: data
+            )
+        )
+    }
+}

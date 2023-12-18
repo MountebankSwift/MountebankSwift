@@ -20,10 +20,22 @@ extension MountebankSwift.Predicate {
 
         static let equals = Example(
             value: Predicate.equals(
-                Request(path: "/test-is-200")
+                Request(
+                    method: .put,
+                    path: "/test-is-200",
+                    query: ["key": ["first", "second"]],
+                    headers: ["foo": "bar"],
+                    data: ["baz"]
+                )
             ),
             json: [
-                "equals" : ["path": "/test-is-200"],
+                "equals" : [
+                    "method": "PUT",
+                    "path": "/test-is-200",
+                    "query": ["key": ["first", "second"]],
+                    "headers": ["foo": "bar"],
+                    "data": ["baz"]
+                ],
             ]
         )
 

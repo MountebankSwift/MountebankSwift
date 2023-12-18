@@ -134,4 +134,25 @@ final class PredicateTests: XCTestCase {
             Predicate.Examples.withParameters.value
         )
     }
+
+    func testEqualsRequest() throws {
+        XCTAssertEqual(
+            Predicate.equals(
+                Request(
+                    method: .put,
+                    path: "/test",
+                    query: ["key": ["first", "second"]],
+                    headers: ["foo": "bar"],
+                    data: ["baz"]
+                )
+            ),
+            .equalsRequest(
+                method: .put,
+                path: "/test",
+                query: ["key": ["first", "second"]],
+                headers: ["foo": "bar"],
+                data: ["baz"]
+            )
+        )
+    }
 }
