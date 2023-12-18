@@ -35,7 +35,7 @@ public struct Imposter: Codable, Equatable {
     /// Mountebank will save all requests to the imposter for mock verification.
     ///
     /// By retrieving the imposter, your client code can determine if an expected service call was in fact made.
-    public let requests: [JSON]?
+    public let requests: [Imposter.RecordedRequest]?
 
     enum CodingKeys: String, CodingKey {
         case port
@@ -56,7 +56,7 @@ public struct Imposter: Codable, Equatable {
         defaultResponse: Is? = nil,
         recordRequests: Bool? = nil,
         numberOfRequests: Int? = nil,
-        requests: [JSON]? = nil
+        requests: [Imposter.RecordedRequest]? = nil
     ) {
         self.port = port
         self.networkProtocol = networkProtocol

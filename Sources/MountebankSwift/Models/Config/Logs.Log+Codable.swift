@@ -13,22 +13,8 @@ extension Logs.Log {
         try container.encode(level, forKey: .level)
         try container.encode(message, forKey: .message)
         if let timestamp {
-            let dateFormatter = Self.makeDateformatter()
-            try container.encodeIfPresent(dateFormatter.string(from: timestamp), forKey: .timestamp)
+            try container.encodeIfPresent(DateFormatter.shared.formatFromDate(timestamp), forKey: .timestamp)
         }
-    }
-
-    private static func makeDateformatter() -> ISO8601DateFormatter {
-        let isoDateFormatter = ISO8601DateFormatter()
-        isoDateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        isoDateFormatter.formatOptions = [
-            .withFullDate,
-            .withFullTime,
-            .withDashSeparatorInDate,
-            .withFractionalSeconds,
-        ]
-
-        return isoDateFormatter
     }
 
     public init(from decoder: Decoder) throws {
@@ -38,8 +24,7 @@ extension Logs.Log {
         message = try container.decode(String.self, forKey: .message)
 
         if let dateString = try container.decodeIfPresent(String.self, forKey: .timestamp) {
-            let formatter = Self.makeDateformatter()
-            timestamp = formatter.date(from: dateString)
+            timestamp = DateFormatter.shared.formatToDate(dateString)
         } else {
             timestamp = nil
         }
