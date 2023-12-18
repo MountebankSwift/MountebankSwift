@@ -21,6 +21,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
     let mode: Mode
 
     // TODO: add support for additional proxy options
+    // see https://github.com/MountebankSwift/MountebankSwift/issues/14
     ///// An array of objects that defines how the predicates for new stubs are created.
     ///// Each object in the array defines the fields to generate predicates from.
     // let predicateGenerators: [PredicateGenerator]
@@ -39,21 +40,20 @@ public struct Proxy: StubResponse, Codable, Equatable {
 }
 
 // TODO: Implement and test Proxy Parameters
-// extension Proxy {
-//    struct Parameters {
-//        /// The SSL client certificate, a PEM-formatted string
-//        let cert: String?
-//        /// The SSL client private key, a PEM-formatted string
-//        let key: String?
-//        /// A valid cipher (see https://nodejs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite)
-//        /// For older (and insecure) https servers, this field allows you to override the cipher used to communicate
-//        let ciphers: String?
-//        /// The SSL method to use
-//        /// A valid OpenSSL protocol method name
-//        let secureProtocol: String?
-//        /// Shared passphrase used for a single private key
-//        let passphrase: String?
-//        /// Key-value pairs of headers to inject into the proxied request.
-//        let injectHeaders: [String: String]
-//    }
-// }
+// see https://github.com/MountebankSwift/MountebankSwift/issues/14
+struct ProxyParameters {
+    /// The SSL client certificate, a PEM-formatted string
+    let cert: String?
+    /// The SSL client private key, a PEM-formatted string
+    let key: String?
+    /// A valid cipher (see https://nodejs.org/api/tls.html#tls_modifying_the_default_tls_cipher_suite)
+    /// For older (and insecure) https servers, this field allows you to override the cipher used to communicate
+    let ciphers: String?
+    /// The SSL method to use
+    /// A valid OpenSSL protocol method name
+    let secureProtocol: String?
+    /// Shared passphrase used for a single private key
+    let passphrase: String?
+    /// Key-value pairs of headers to inject into the proxied request.
+    let injectHeaders: [String: String]
+ }
