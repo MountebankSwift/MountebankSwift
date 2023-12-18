@@ -24,7 +24,7 @@ public struct Imposter: Codable, Equatable {
     /// Allows you to override the default response that Mountebank sends back if no predicate matches a request. Even
     /// if a predicate does match but the response isn't fully specified, these values get merged in to complete the
     /// response.
-    public let defaultResponse: Stub.Response.Is?
+    public let defaultResponse: Is?
 
     /// If set to true, the server will record requests received, for mock verification purposes.
     public let recordRequests: Bool?
@@ -47,7 +47,7 @@ public struct Imposter: Codable, Equatable {
         networkProtocol: NetworkProtocol,
         name: String? = nil,
         stubs: [Stub],
-        defaultResponse: Stub.Response.Is? = nil,
+        defaultResponse: Is? = nil,
         recordRequests: Bool? = nil
     ) {
         self.port = port
@@ -57,5 +57,4 @@ public struct Imposter: Codable, Equatable {
         self.defaultResponse = defaultResponse
         self.recordRequests = recordRequests
     }
-
 }

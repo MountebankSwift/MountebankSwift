@@ -111,8 +111,8 @@ final class MountebankIntegrationTests: XCTestCase {
             name: "Imposter with proxy",
             stubs: [
                 Stub(
-                    responses: [Stub.Response.Examples.proxy.value],
-                    predicates: [Stub.Predicate.Examples.equals.value]
+                    responses: [Proxy.Examples.proxy.value],
+                    predicates: [Predicate.Examples.equals.value]
                 ),
             ]
         ))
@@ -124,6 +124,44 @@ final class MountebankIntegrationTests: XCTestCase {
         let response = try await sut.deleteSavedProxyResponses(port: port)
 
         XCTAssertEqual(response.stubs.count, 1)
+    }
+
+    // Use this test to verify in your browser that all these content types are encoded properly
+    // Put a breakpoint after the `postImposter` call and check for example http://localhost:1234/sample.png
+    func testDiffentResponseBodyTypes() async throws {
+        let sampleFiles = [
+            SampleFile.png,
+            SampleFile.jpg,
+            SampleFile.json,
+            SampleFile.pdf,
+            SampleFile.txt,
+            SampleFile.mp4,
+            SampleFile.html,
+        ]
+
+        let imposter = Imposter(
+            port: 1234,
+            networkProtocol: .http,
+            name: "Imposter with various body Types",
+            stubs: sampleFiles.map { file in
+                Stub(
+                    response: Is(
+                        headers: [HTTPHeaders.contentType.rawValue: file.mimeType],
+                        body: file.body
+                    ),
+                    predicate: .equals(Request(path: "/\(file.rawValue)"))
+                )
+            },
+            recordRequests: true
+        )
+
+        let result = try await sut.postImposter(imposter: imposter)
+
+        let stubBodies = result.stubs.compactMap { stub in
+            (stub.responses.first as? Is)?.body
+        }
+
+        XCTAssertEqual(sampleFiles.map(\.body), stubBodies)
     }
 
     private func postDefaultImposter(imposter: Imposter) async throws -> Int {

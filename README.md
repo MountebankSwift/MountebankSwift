@@ -32,10 +32,8 @@ final class ExampleUITests: XCTestCase {
 
     func testExample() throws {
         let stub = Stub(
-            responses: [
-                Stub.Response.is(Stub.Response.Is(statusCode: 201, body: .text("text")))
-            ],
-            predicates: []
+            response: Is(statusCode: 201, body: .text("text")),
+            predicate: .equals(Request(path: "/test"))
         )
         let imposter = Imposter(networkProtocol: .http, stubs: [stub])
         // Post the imposters to start testing against.
