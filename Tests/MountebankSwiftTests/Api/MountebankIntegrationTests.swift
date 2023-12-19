@@ -58,20 +58,32 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testGetImposter() async throws {
-        let port = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
+        let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
 
         let path = "/text-200"
-        let request = HTTPRequest(url: sut.makeImposterUrl(port: port).appending(path: path), method: .get)
+        let url = sut.makeImposterUrl(port: imposterPort)
+            .appending(path: path)
+            .appending(queryItems: [URLQueryItem(name: "search", value: "test")])
+        let request = HTTPRequest(url: url, method: .get)
 
         _ = try await httpClient.httpRequest(request)
         _ = try await httpClient.httpRequest(request)
 
-        let imposter = try await sut.getImposter(port: port)
+        let imposter = try await sut.getImposter(port: imposterPort)
 
         XCTAssertEqual(imposter.requests?.count, 2)
-        XCTAssertEqual(imposter.requests?.first?.path, path)
-        XCTAssertEqual(imposter.requests?.first?.method, .get)
+
+        let firstRequest = try XCTUnwrap(imposter.requests?.first)
+
+        // Can not check full request because the of the runner will
+        // impact the RecordedRequest contents.
+        XCTAssertEqual(firstRequest.path, path)
+        XCTAssertNil(firstRequest.form)
+        XCTAssertEqual(firstRequest.query, ["search": "test"])
+        XCTAssertEqual(firstRequest.method, .get)
+        XCTAssertFalse(firstRequest.ip.isEmpty)
+        XCTAssertFalse(firstRequest.requestFrom.isEmpty)
     }
 
     func testUpdatingStub() async throws {

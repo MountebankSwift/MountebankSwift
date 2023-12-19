@@ -36,7 +36,7 @@ extension Imposter {
         }
 
         public var debugDescription: String {
-            [method.map { "\($0.rawValue)" }, path]
+            [method.map(\.rawValue), path]
                 .compactMap { $0 }
                 .joined(separator: " ")
         }
