@@ -36,13 +36,54 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testPostImposter() async throws {
-        let imposterResult = try await sut.postImposter(imposter: Imposter.Examples.includingAllStubs.value)
+        let imposterToPost = Imposter.Examples.includingAllStubs.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
         guard imposterResult.port != nil else {
             XCTFail("Port should have been set by now.")
             return
         }
 
-        XCTAssertEqual(imposterResult, Imposter.Examples.includingAllStubs.value)
+        let result = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: imposterToPost.networkProtocol,
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, result)
+    }
+
+    func testGetImposter() async throws {
+        let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
+        let httpClient = HttpClient()
+
+        let path = "/text-200"
+        let url = sut.makeImposterUrl(port: imposterPort)
+            .appending(path: path)
+            .appending(queryItems: [URLQueryItem(name: "search", value: "test")])
+        let request = HTTPRequest(url: url, method: .get)
+
+        _ = try await httpClient.httpRequest(request)
+        _ = try await httpClient.httpRequest(request)
+
+        let imposter = try await sut.getImposter(port: imposterPort)
+
+        XCTAssertEqual(imposter.requests?.count, 2)
+
+        let firstRequest = try XCTUnwrap(imposter.requests?.first)
+
+        // Can not check full request because the of the runner will
+        // impact the RecordedRequest contents.
+        XCTAssertEqual(firstRequest.path, path)
+        XCTAssertNil(firstRequest.form)
+        XCTAssertEqual(firstRequest.query, ["search": "test"])
+        XCTAssertEqual(firstRequest.method, .get)
+        XCTAssertFalse(firstRequest.ip.isEmpty)
+        XCTAssertFalse(firstRequest.requestFrom.isEmpty)
     }
 
     func testUpdatingStub() async throws {
@@ -91,7 +132,7 @@ final class MountebankIntegrationTests: XCTestCase {
             allImposters,
             Imposters(imposters: [
                 Imposters.ImposterRef(networkProtocol: .https, port: port1),
-                Imposters.ImposterRef(networkProtocol: .https, port: port2),
+                Imposters.ImposterRef(networkProtocol: .http, port: port2),
             ])
         )
     }
