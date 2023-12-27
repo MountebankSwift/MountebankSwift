@@ -3,6 +3,20 @@ import Foundation
 /// Imposter as documented on:
 /// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
+
+    public enum ExtraNetworkOptions: Codable, Equatable {
+        case http(allowCORS: Bool?)
+        case https(
+            allowCORS: Bool?,
+            rejectUnauthorized: Bool?,
+            ca: String?,
+            key: String?,
+            cert: String?,
+            mutualAuth: Bool?,
+            ciphers: String?
+        )
+    }
+
     /// The port to run the imposter on.
     ///
     /// Defaults to a randomly assigned port that will be returned in the response
@@ -10,6 +24,9 @@ public struct Imposter: Codable, Equatable {
 
     /// Defines the protocol that the imposter will respond to.
     public let networkProtocol: NetworkProtocol
+
+    /// Extra options for a network protocol
+    public let extraNetworkOptions: ExtraNetworkOptions?
 
     /// Descriptive name that will show up in the logs and the imposters UI.
     public var name: String?
@@ -37,20 +54,10 @@ public struct Imposter: Codable, Equatable {
     /// By retrieving the imposter, your client code can determine if an expected service call was in fact made.
     public let requests: [Imposter.RecordedRequest]?
 
-    enum CodingKeys: String, CodingKey {
-        case port
-        case networkProtocol = "protocol"
-        case name
-        case stubs
-        case recordRequests
-        case defaultResponse
-        case numberOfRequests
-        case requests
-    }
-
     public init(
         port: Int? = nil,
         networkProtocol: NetworkProtocol,
+        extraNetworkOptions: ExtraNetworkOptions? = nil,
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Is? = nil,
@@ -60,6 +67,7 @@ public struct Imposter: Codable, Equatable {
     ) {
         self.port = port
         self.networkProtocol = networkProtocol
+        self.extraNetworkOptions = extraNetworkOptions
         self.name = name
         self.stubs = stubs
         self.defaultResponse = defaultResponse
