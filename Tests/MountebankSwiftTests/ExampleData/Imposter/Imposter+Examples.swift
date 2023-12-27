@@ -89,6 +89,60 @@ extension Imposter {
             ]
         )
 
+        static let withExtraOptionsHttp = Example(
+            value: Imposter(
+                port: 19190,
+                networkProtocol: .http,
+                extraNetworkOptions: .http(allowCORS: true),
+                stubs: [],
+                recordRequests: false,
+                numberOfRequests: 0,
+                requests: []
+            ),
+            json: [
+                "port": 19190,
+                "protocol": "http",
+                "allowCORS": true,
+                "stubs": [],
+                "numberOfRequests": 0,
+                "requests": [],
+                "recordRequests": false,
+            ]
+        )
+
+        static let withExtraOptionsHttps = Example(
+            value: Imposter(
+                port: 19190,
+                networkProtocol: .https,
+                extraNetworkOptions: .https(
+                    allowCORS: true,
+                    rejectUnauthorized: true,
+                    ca: "---CA KEY----",
+                    key: "----PUBLIC KEY----",
+                    cert: "----CERT----",
+                    mutualAuth: false,
+                    ciphers: "TLS_AES_256_GCM_SHA384"
+                ),
+                stubs: [],
+                numberOfRequests: 1,
+                requests: []
+            ),
+            json: [
+                "port": 19190,
+                "protocol": "https",
+                "allowCORS": true,
+                "rejectUnauthorized": true,
+                "ca": "---CA KEY----",
+                "key": "----PUBLIC KEY----",
+                "cert": "----CERT----",
+                "mutualAuth": false,
+                "ciphers": "TLS_AES_256_GCM_SHA384",
+                "stubs": [],
+                "numberOfRequests": 1,
+                "requests": [],
+            ]
+        )
+
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,

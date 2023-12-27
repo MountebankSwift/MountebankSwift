@@ -57,6 +57,28 @@ final class MountebankIntegrationTests: XCTestCase {
         XCTAssertEqual(imposterResult, result)
     }
 
+    func testPostImposterWithExtraOptions() async throws {
+        let imposterToPost = Imposter.Examples.withExtraOptionsHttp.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
+        guard imposterResult.port != nil else {
+            XCTFail("Port should have been set by now.")
+            return
+        }
+
+        let result = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: imposterToPost.networkProtocol,
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, result)
+    }
+
     func testGetImposter() async throws {
         guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
             throw XCTSkip("Test uses api's that are not supported for your platfrom.")

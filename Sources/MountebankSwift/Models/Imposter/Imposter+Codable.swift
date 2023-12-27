@@ -40,7 +40,7 @@ extension Imposter {
             let key = try container.decodeIfPresent(String.self, forKey: .key)
             let cert = try container.decodeIfPresent(String.self, forKey: .cert)
             let mutualAuth = try container.decodeIfPresent(Bool.self, forKey: .mutualAuth)
-            let ciphers = try container.decodeIfPresent(String.self, forKey: .cert)
+            let ciphers = try container.decodeIfPresent(String.self, forKey: .ciphers)
 
             if
                 allowCORS != nil

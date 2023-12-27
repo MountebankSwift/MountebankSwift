@@ -7,13 +7,13 @@ public struct Imposter: Codable, Equatable {
     public enum ExtraNetworkOptions: Codable, Equatable {
         case http(allowCORS: Bool?)
         case https(
-            allowCORS: Bool?,
-            rejectUnauthorized: Bool?,
-            ca: String?,
-            key: String?,
-            cert: String?,
-            mutualAuth: Bool?,
-            ciphers: String?
+            allowCORS: Bool? = nil,
+            rejectUnauthorized: Bool? = nil,
+            ca: String? = nil,
+            key: String? = nil,
+            cert: String? = nil,
+            mutualAuth: Bool? = nil,
+            ciphers: String? = nil
         )
     }
 
