@@ -4,8 +4,28 @@ import Foundation
 /// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
 
+    /// Options for supported protocols by Mountebank.
     public enum ExtraNetworkOptions: Codable, Equatable {
-        case http(allowCORS: Bool?)
+        /// Options for the http protocol documented on:
+        /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
+        /// - Parameters:
+        ///   - allowCORS: If true, mountebank will allow all CORS preflight requests on the imposter.
+        case http(allowCORS: Bool)
+
+        /// Options for the https protocol documented on:
+        /// [mbtest.org/docs/protocols/https](https://www.mbtest.org/docs/protocols/https)
+        /// - Parameters:
+        ///   - allowCORS: When true, mountebank will allow all CORS preflight requests on the imposter.
+        ///   - rejectUnauthorized: When true, mountebank will validate the certificate against the list
+        ///     of supplied CAs.
+        ///   - ca: Use when setting rejectUnauthorized to true to provide a list of certificates to validate against.
+        ///     When rejectUnauthorized is true and mutualAuth is true, mountebank will request a client certificate.
+        ///   - key: The SSL server private key
+        ///   - cert: The SSL server certificate
+        ///   - mutualAuth: When true, the server will request a client certificate. Since the goal is simply to
+        ///     virtualize a server requiring mutual auth, invalid certificates will not be rejected.
+        ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
+        ///     cipher used to communicate.
         case https(
             allowCORS: Bool? = nil,
             rejectUnauthorized: Bool? = nil,
