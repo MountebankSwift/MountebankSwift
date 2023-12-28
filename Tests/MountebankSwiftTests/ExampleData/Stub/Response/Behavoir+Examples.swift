@@ -23,11 +23,11 @@ extension Behavior {
         )
 
         static let copy = Example(
-            value: Behavior.copy([
-                "from": "path",
-                "into": "${code}",
-                "using": ["method": "regex", "selector": "\\d+"],
-            ]),
+            value: Behavior.copy(Copy(
+                from: "path",
+                into: "${code}",
+                using: Behavior.Copy.Using(method: .regex, selector: "\\d+")
+            )),
             json: [
                 "copy": [
                     "from": "path",

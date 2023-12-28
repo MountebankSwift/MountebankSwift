@@ -20,7 +20,7 @@ extension Behavior: Codable {
             self = .wait(miliseconds: miliseconds)
         } else if let javascript = try container.decodeIfPresent(String.self, forKey: .wait) {
             self = .waitJavascript(javascript)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .copy) {
+        } else if let value = try container.decodeIfPresent(Copy.self, forKey: .copy) {
             self = .copy(value)
         } else if let value = try container.decodeIfPresent(JSON.self, forKey: .lookup) {
             self = .lookup(value)
@@ -41,8 +41,8 @@ extension Behavior: Codable {
             try container.encode(miliseconds, forKey: .wait)
         case .waitJavascript(let javascript):
             try container.encode(javascript, forKey: .wait)
-        case .copy(let json):
-            try container.encode(json, forKey: .copy)
+        case .copy(let copy):
+            try container.encode(copy, forKey: .copy)
         case .lookup(let json):
             try container.encode(json, forKey: .lookup)
         case .decorate(let string):
