@@ -57,6 +57,7 @@ final class MountebankIntegrationTests: XCTestCase {
         XCTAssertEqual(imposterResult, result)
     }
 
+    @available(iOS 16.0, *)
     func testGetImposter() async throws {
         let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
