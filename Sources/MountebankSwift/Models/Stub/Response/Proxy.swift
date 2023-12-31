@@ -56,4 +56,4 @@ struct ProxyParameters {
     let passphrase: String?
     /// Key-value pairs of headers to inject into the proxied request.
     let injectHeaders: [String: String]
- }
+}

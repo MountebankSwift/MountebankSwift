@@ -34,7 +34,7 @@ extension MountebankSwift.Predicate {
                     "path": "/test-is-200",
                     "query": ["key": ["first", "second"]],
                     "headers": ["foo": "bar"],
-                    "data": ["baz"]
+                    "data": ["baz"],
                 ],
             ]
         )
