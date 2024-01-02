@@ -12,7 +12,14 @@ public enum Behavior: Equatable {
     case waitJavascript(String)
     /// Copies one or more values from request fields into the response. You can tokenize the response and select
     /// values from request fields using regular expressions, xpath, or jsonpath.
-    case copy(Copy)
+    /// - Parameters:
+    ///    - from: The name of the request field to copy from, or, if the request field is an object, then an object
+    ///      specifying the path to the request field.
+    ///    - into: The token to replace in the response with the selected request value. There is no need to specify
+    ///      which field in the response the token will be in; all response tokens will be replaced in all response
+    ///      fields. Sometimes, the request selection returns multiple values. In those cases, you can add an index
+    ///      to the token, while the unindexed token represents the first match.
+    case copy(from: JSON, into: String, using: BehaviorCopyMethod)
     /// Queries an external data source for data based on a key selected from the request. Like the copy behavior,
     /// you can tokenize the response and select the key from the request using regular expressions, xpath,
     /// or jsonpath.

@@ -39,14 +39,12 @@ internal enum CodableResponse: Codable, Equatable {
 
         if let response = try container.decodeIfPresent(Is.self, forKey: .is) {
             if let parameters = try? ResponseParameters(from: decoder) {
-                self = .is(
-                    Is(
-                        statusCode: response.statusCode,
-                        headers: response.headers,
-                        body: response.body,
-                        parameters: parameters
-                    )
-                )
+                self = .is(Is(
+                    statusCode: response.statusCode,
+                    headers: response.headers,
+                    body: response.body,
+                    parameters: parameters
+                ))
             } else {
                 self = .is(response)
             }
