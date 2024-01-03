@@ -17,11 +17,14 @@ public struct Imposter: Codable, Equatable {
         /// - Parameters:
         ///   - allowCORS: When true, mountebank will allow all CORS preflight requests on the imposter.
         ///   - rejectUnauthorized: When true, mountebank will validate the certificate against the list
-        ///     of supplied CAs.
-        ///   - ca: Use when setting rejectUnauthorized to true to provide a list of certificates to validate against.
-        ///     When rejectUnauthorized is true and mutualAuth is true, mountebank will request a client certificate.
-        ///   - key: The SSL server private key
-        ///   - cert: The SSL server certificate
+        ///     of supplied Certificate Authoritys.
+        ///   - certificateAuthority: Use when setting rejectUnauthorized to true to provide a list of 
+        ///     certificates to validate against. When rejectUnauthorized is true and mutualAuth is true,
+        ///     mountebank will request a client certificate.
+        ///   - key: The SSL private key for creating an https server/ Must be a PEM-formatted string.
+        ///     Defaults to a built-in private key.
+        ///   - certificate: The SSL certificate for creating an https server. Must be a PEM-formatted string.
+        ///     Defaults to a built-in self-signed certificate.
         ///   - mutualAuth: When true, the server will request a client certificate. Since the goal is simply to
         ///     virtualize a server requiring mutual auth, invalid certificates will not be rejected.
         ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
@@ -29,9 +32,9 @@ public struct Imposter: Codable, Equatable {
         case https(
             allowCORS: Bool? = nil,
             rejectUnauthorized: Bool? = nil,
-            ca: String? = nil,
+            certificateAuthority: String? = nil,
             key: String? = nil,
-            cert: String? = nil,
+            certificate: String? = nil,
             mutualAuth: Bool? = nil,
             ciphers: String? = nil
         )

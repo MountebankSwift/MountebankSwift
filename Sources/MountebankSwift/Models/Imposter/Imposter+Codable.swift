@@ -7,9 +7,9 @@ extension Imposter {
         case networkProtocol = "protocol"
         case allowCORS
         case rejectUnauthorized
-        case ca
+        case certificateAuthority = "ca"
         case key
-        case cert
+        case certificate = "cert"
         case mutualAuth
         case ciphers
         case name
@@ -36,27 +36,27 @@ extension Imposter {
         case .https:
             let allowCORS = try container.decodeIfPresent(Bool.self, forKey: .allowCORS)
             let rejectUnauthorized = try container.decodeIfPresent(Bool.self, forKey: .rejectUnauthorized)
-            let ca = try container.decodeIfPresent(String.self, forKey: .ca)
+            let certificateAuthority = try container.decodeIfPresent(String.self, forKey: .certificateAuthority)
             let key = try container.decodeIfPresent(String.self, forKey: .key)
-            let cert = try container.decodeIfPresent(String.self, forKey: .cert)
+            let certificate = try container.decodeIfPresent(String.self, forKey: .certificate)
             let mutualAuth = try container.decodeIfPresent(Bool.self, forKey: .mutualAuth)
             let ciphers = try container.decodeIfPresent(String.self, forKey: .ciphers)
 
             if
                 allowCORS != nil
                 || rejectUnauthorized != nil
-                || ca != nil
+                || certificateAuthority != nil
                 || key != nil
-                || cert != nil
+                || certificate != nil
                 || mutualAuth != nil
                 || ciphers != nil
             {
                 extraNetworkOptions = .https(
                     allowCORS: allowCORS,
                     rejectUnauthorized: rejectUnauthorized,
-                    ca: ca,
+                    certificateAuthority: certificateAuthority,
                     key: key,
-                    cert: cert,
+                    certificate: certificate,
                     mutualAuth: mutualAuth,
                     ciphers: ciphers
                 )
@@ -85,17 +85,17 @@ extension Imposter {
         case .https(
             allowCORS: let allowCORS,
             rejectUnauthorized: let rejectUnauthorized,
-            ca: let ca,
+            certificateAuthority: let certificateAuthority,
             key: let key,
-            cert: let cert,
+            certificate: let certificate,
             mutualAuth: let mutualAuth,
             ciphers: let ciphers
         ):
             try container.encodeIfPresent(allowCORS, forKey: .allowCORS)
             try container.encodeIfPresent(rejectUnauthorized, forKey: .rejectUnauthorized)
-            try container.encodeIfPresent(ca, forKey: .ca)
+            try container.encodeIfPresent(certificateAuthority, forKey: .certificateAuthority)
             try container.encodeIfPresent(key, forKey: .key)
-            try container.encodeIfPresent(cert, forKey: .cert)
+            try container.encodeIfPresent(certificate, forKey: .certificate)
             try container.encodeIfPresent(mutualAuth, forKey: .mutualAuth)
             try container.encodeIfPresent(ciphers, forKey: .ciphers)
         case .none:
