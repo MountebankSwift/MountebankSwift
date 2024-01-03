@@ -19,6 +19,7 @@ public enum Behavior: Equatable {
     ///      which field in the response the token will be in; all response tokens will be replaced in all response
     ///      fields. Sometimes, the request selection returns multiple values. In those cases, you can add an index
     ///      to the token, while the unindexed token represents the first match.
+    ///    - using: The configuration method to select values from the response.
     case copy(from: JSON, into: String, using: BehaviorCopyMethod)
     /// Queries an external data source for data based on a key selected from the request. Like the copy behavior,
     /// you can tokenize the response and select the key from the request using regular expressions, xpath,
