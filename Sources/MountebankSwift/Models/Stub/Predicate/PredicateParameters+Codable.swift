@@ -31,20 +31,9 @@ extension PredicateParameters: Codable {
 
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        if let caseSensitive {
-            try container.encode(caseSensitive, forKey: .caseSensitive)
-        }
-
-        if let except {
-            try container.encode(except, forKey: .except)
-        }
-
-        if let xPath {
-            try container.encode(xPath, forKey: .xPath)
-        }
-
-        if let jsonPath {
-            try container.encode(jsonPath, forKey: .jsonPath)
-        }
+        try container.encodeIfPresent(caseSensitive, forKey: .caseSensitive)
+        try container.encodeIfPresent(except, forKey: .except)
+        try container.encodeIfPresent(xPath, forKey: .xPath)
+        try container.encodeIfPresent(jsonPath, forKey: .jsonPath)
     }
 }

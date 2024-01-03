@@ -18,7 +18,7 @@ public struct Imposter: Codable, Equatable {
         ///   - allowCORS: When true, mountebank will allow all CORS preflight requests on the imposter.
         ///   - rejectUnauthorized: When true, mountebank will validate the certificate against the list
         ///     of supplied Certificate Authoritys.
-        ///   - certificateAuthority: Use when setting rejectUnauthorized to true to provide a list of 
+        ///   - certificateAuthority: Use when setting rejectUnauthorized to true to provide a list of
         ///     certificates to validate against. When rejectUnauthorized is true and mutualAuth is true,
         ///     mountebank will request a client certificate.
         ///   - key: The SSL private key for creating an https server/ Must be a PEM-formatted string.
