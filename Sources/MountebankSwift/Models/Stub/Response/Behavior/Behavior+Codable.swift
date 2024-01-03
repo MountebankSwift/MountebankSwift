@@ -1,6 +1,7 @@
 import Foundation
 
 extension Behavior: Codable {
+
     enum DecodingError: Error {
         case invalidType
     }
@@ -13,6 +14,12 @@ extension Behavior: Codable {
         case shellTransform
     }
 
+    enum CopyCodingKeys: String, CodingKey {
+        case from
+        case into
+        case using
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
@@ -20,8 +27,12 @@ extension Behavior: Codable {
             self = .wait(miliseconds: miliseconds)
         } else if let javascript = try container.decodeIfPresent(String.self, forKey: .wait) {
             self = .waitJavascript(javascript)
-        } else if let value = try container.decodeIfPresent(JSON.self, forKey: .copy) {
-            self = .copy(value)
+        } else if let copyContainer = try? container.nestedContainer(keyedBy: CopyCodingKeys.self, forKey: .copy) {
+            let from = try copyContainer.decode(JSON.self, forKey: .from)
+            let into = try copyContainer.decode(String.self, forKey: .into)
+            let behaviorCopyMethod = try copyContainer.decode(BehaviorCopyMethod.self, forKey: .using)
+
+            self = .copy(from: from, into: into, using: behaviorCopyMethod)
         } else if let value = try container.decodeIfPresent(JSON.self, forKey: .lookup) {
             self = .lookup(value)
         } else if let value = try container.decodeIfPresent(String.self, forKey: .decorate) {
@@ -41,8 +52,11 @@ extension Behavior: Codable {
             try container.encode(miliseconds, forKey: .wait)
         case .waitJavascript(let javascript):
             try container.encode(javascript, forKey: .wait)
-        case .copy(let json):
-            try container.encode(json, forKey: .copy)
+        case .copy(let from, let into, let behaviorCopyMethod):
+            var copyContainer = container.nestedContainer(keyedBy: CopyCodingKeys.self, forKey: .copy)
+            try copyContainer.encode(from, forKey: .from)
+            try copyContainer.encode(into, forKey: .into)
+            try copyContainer.encode(behaviorCopyMethod, forKey: .using)
         case .lookup(let json):
             try container.encode(json, forKey: .lookup)
         case .decorate(let string):
