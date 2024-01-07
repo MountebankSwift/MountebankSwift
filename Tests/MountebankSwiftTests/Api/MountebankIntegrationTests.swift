@@ -57,8 +57,11 @@ final class MountebankIntegrationTests: XCTestCase {
         XCTAssertEqual(imposterResult, result)
     }
 
-    @available(iOS 16.0, *)
     func testGetImposter() async throws {
+        guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
+            throw XCTSkip("Test uses api's that are not supported for your platfrom.")
+        }
+
         let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
 
@@ -77,8 +80,8 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let firstRequest = try XCTUnwrap(imposter.requests?.first)
 
-        // Can not check full request because the of the runner will
-        // impact the RecordedRequest contents.
+        // Can not check full request, because client the runner will
+        // run on will impact the RecordedRequest contents.
         XCTAssertEqual(firstRequest.path, path)
         XCTAssertNil(firstRequest.form)
         XCTAssertEqual(firstRequest.query, ["search": "test"])
