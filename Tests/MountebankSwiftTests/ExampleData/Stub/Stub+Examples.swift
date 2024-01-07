@@ -26,7 +26,7 @@ extension Stub {
 
         static let json = Example(
             value: Stub(
-                responses: [Is.Examples.json.value],
+                response: Is.Examples.json.value,
                 predicates: [Predicate.equals(Request(path: "/json-200"))]
             ),
             json: [
@@ -37,8 +37,8 @@ extension Stub {
 
         static let http404 = Example(
             value: Stub(
-                responses: [Is.Examples.http404.value],
-                predicates: [Predicate.equals(Request(path: "/404"))]
+                response: Is.Examples.http404.value,
+                predicate: Predicate.equals(Request(path: "/404"))
             ),
             json: [
                 "responses": [["is": Is.Examples.http404.json]],
@@ -53,9 +53,7 @@ extension Stub {
                     Is.Examples.http404.value,
                     Is.Examples.text.value,
                 ],
-                predicates: [
-                    Predicate.equals(Request(path: "/404-to-200")),
-                ]
+                predicate: Predicate.equals(Request(path: "/404-to-200"))
             ),
             json: [
                 "responses": [
