@@ -3,9 +3,8 @@ import XCTest
 
 final class MountebankIntegrationTests: XCTestCase {
 
-    // swiftlint:disable implicitly_unwrapped_optional
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var sut: Mountebank!
-    // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
         sut = Mountebank(host: .localhost, port: 2525)
@@ -37,6 +36,28 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testPostImposter() async throws {
         let imposterToPost = Imposter.Examples.includingAllStubs.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
+        guard imposterResult.port != nil else {
+            XCTFail("Port should have been set by now.")
+            return
+        }
+
+        let result = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: imposterToPost.networkProtocol,
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, result)
+    }
+
+    func testPostImposterWithExtraOptions() async throws {
+        let imposterToPost = Imposter.Examples.withExtraOptionsHttp.value
         let imposterResult = try await sut.postImposter(imposter: imposterToPost)
         guard imposterResult.port != nil else {
             XCTFail("Port should have been set by now.")

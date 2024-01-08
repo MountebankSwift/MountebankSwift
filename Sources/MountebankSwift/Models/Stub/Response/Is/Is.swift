@@ -1,6 +1,8 @@
 import Foundation
 
 // swiftlint:disable type_name
+/// The `Is` response type represents a canned response that you define.The response
+/// fields will be those defined with each protocol.
 public struct Is: StubResponse, Equatable {
     public static var defaultBehaviors: [Behavior] = []
     public static var defaultHeaders: [String: String] = [:]
@@ -23,7 +25,7 @@ public struct Is: StubResponse, Equatable {
         self.parameters = Self.makeParameters(parameters)
     }
 
-    static func makeHeaders(
+    private static func makeHeaders(
         _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
@@ -43,7 +45,7 @@ public struct Is: StubResponse, Equatable {
         return result.isEmpty ? nil : result
     }
 
-    static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
+    private static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
         defaultBehaviors.isEmpty
             ? parameters
             : ResponseParameters(
