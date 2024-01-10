@@ -4,37 +4,16 @@ import XCTest
 extension Imposter {
     enum Examples {
 
-        private static let certificate = "-----BEGIN CERTIFICATE-----\nMIIB6TCCAVICCQCZgxbBD0CG4"
-            + "zANBgkqhkiG9w0BAQUFADA5MQswCQYDVQQGEwJV\nUzETMBEGA1UECBMKU29tZS1TdGF0ZTEVMBMGA1UECh"
-            + "MMVGhvdWdodFdvcmtzMB4X\nDTEzMTIyOTE2NDAzN1oXDTE0MDEyODE2NDAzN1owOTELMAkGA1UEBhMCVV"
-            + "MxEzAR\nBgNVBAgTClNvbWUtU3RhdGUxFTATBgNVBAoTDFRob3VnaHRXb3JrczCBnzANBgkq\nhkiG9w0B"
-            + "AQEFAAOBjQAwgYkCgYEAq77HtOGJMbVRmoMrxiQrL7+y03yyubkf2SCS\ng2Ap7hfgagczOJZKPDt/b8fi"
-            + "8/RXxddV5fgjdWmN+2Lqy2DpXt3Qv6rJUm0A3tky\nTe5XFR1bLHj73DuSBMabzRVeS2LZsgjCiR8aZy"
-            + "Ka7/7a1LKOaG6s814RVT1fUkGx\nR/7JyJ8CAwEAATANBgkqhkiG9w0BAQUFAAOBgQCPhixeKxIy+f"
-            + "trfPikwjYo1uxp\ngQ18FdVN1pbI//IIx1o8kJuX8yZzO95PsCOU0GbIRCkFMhBlqHiD9H0/W/GvWz"
-            + "jf\n7WFW15lL61y/kH1J0wqEgoaMrUDjHZvKVr0HrN+vSxHlNQcSNFJ2KdvZ5a9dhpGf\nXOdprCdUU"
-            + "XzSoJWCCg==\n-----END CERTIFICATE-----"
-
-        private static let privateKey = "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCrvse04YkxtVGagyvGJCsvv7LT"
-            + "fLK5uR/ZIJKDYCnuF+BqBzM4\nlko8O39vx+Lz9FfF11Xl+CN1aY37YurLYOle3dC/qslSbQDe2TJN7lcVHVssePvc\nO5IExpv"
-            + "NFV5LYtmyCMKJHxpnIprv/trUso5obqzzXhFVPV9SQbFH/snInwIDAQAB\nAoGARywlqLD6YO4qJiULw+4DM6N2oSwBCPRN3"
-            + "XYhIW59kdy1NFtNf7rQgsuJUTJ9\nu+lbYnKNd2LwltyqaS4h7Sx5KRhpFNmMpyVsBf5J2q3fbfmrsXt+emY7XhVTc1NV\nizUWYy"
-            + "xCoTTeMWvN/6NYpPV0lSxq7jMTFVZrWQUMqJclxpECQQDTlGwALtAX1Y8u\nGKsEHPkoq9bhHA5N9WAboQ4LQCZVC8eBf/XH//2i"
-            + "osYTXRNgII2JLmHmmxJHo5iN\nJPFMbnoHAkEAz81osJf+yHm7PBBJP4zEWZCV25c+iJiPDpj5UoUXEbq47qVfy1mV\nDqy2zoDy"
-            + "nAWitU7PeHyZ8ozfyribPoR2qQJAVmvMhXKZmvKnLivzRpXTC9LMzVwZ\nV6x/Wim5w8yrG5fZIMM0kEG2xwR3pZch/+SsCzl/0"
-            + "aLLn6lp+VT6nr6NZwJBAMxs\nHrvymoLvNeDtiJFK0nHliXafP7YyljDfDg4+vSYE0R57c1RhSQBJqgBV29TeumSw\nJes6cFuqe"
-            + "BE+MAJ9XxkCQDdUdhnA8HHQRNetqK7lygUep7EcHHCB6u/0FypoLw7o\nEUVo5KSEFq93UeMr3B7DDPIz3LOrFXlm7clCh"
-            + "1HFZhQ=\n-----END RSA PRIVATE KEY-----"
-
         static let simple = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http,
+                networkProtocol: .http(allowCORS: false),
                 stubs: [Stub.Examples.text.value]
             ),
             json: [
                 "port": 19190,
                 "protocol": "http",
+                "allowCORS": false,
                 "stubs": [Stub.Examples.text.json],
             ]
         )
@@ -42,12 +21,13 @@ extension Imposter {
         static let json = Example(
             value: Imposter(
                 port: 100,
-                networkProtocol: .http,
+                networkProtocol: .http(),
                 stubs: [Stub.Examples.json.value]
             ),
             json: [
                 "port": 100,
                 "protocol": "http",
+                "allowCORS": false,
                 "stubs": [Stub.Examples.json.json],
             ]
         )
@@ -55,7 +35,7 @@ extension Imposter {
         static let advanced = Example(
             value: Imposter(
                 port: 8080,
-                networkProtocol: .https,
+                networkProtocol: .https(),
                 name: "Single stub",
                 stubs: [
                     Stub.Examples.text.value,
@@ -68,6 +48,7 @@ extension Imposter {
             json: [
                 "port": 8080,
                 "protocol": "https",
+                "allowCORS": false,
                 "name": "Single stub",
                 "stubs": [
                     Stub.Examples.text.json,
@@ -82,7 +63,7 @@ extension Imposter {
         static let withResponseData = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .https,
+                networkProtocol: .https(),
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true,
                 numberOfRequests: 1,
@@ -97,6 +78,7 @@ extension Imposter {
             json: [
                 "port": 19190,
                 "protocol": "https",
+                "allowCORS": false,
                 "stubs": [Stub.Examples.text.json],
                 "recordRequests": true,
                 "numberOfRequests": 1,
@@ -115,8 +97,7 @@ extension Imposter {
         static let withExtraOptionsHttp = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http,
-                extraNetworkOptions: .http(allowCORS: true),
+                networkProtocol: .http(allowCORS: true),
                 stubs: [],
                 recordRequests: false,
                 numberOfRequests: 0,
@@ -136,17 +117,17 @@ extension Imposter {
         static let withExtraOptionsHttps = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .https,
-                extraNetworkOptions: .https(
+                networkProtocol: .https(
                     allowCORS: true,
                     rejectUnauthorized: true,
-                    certificateAuthority: "-----BEGIN RSA KEY---- -----END RSA KEY-----",
-                    key: privateKey,
-                    certificate: certificate,
+                    certificateAuthority: ExampleCert.certificateAuthority,
+                    key: ExampleCert.privateKey,
+                    certificate: ExampleCert.certificate,
                     mutualAuth: false,
                     ciphers: "TLS_AES_256_GCM_SHA384"
                 ),
                 stubs: [],
+                recordRequests: true,
                 numberOfRequests: 1,
                 requests: []
             ),
@@ -155,12 +136,13 @@ extension Imposter {
                 "protocol": "https",
                 "allowCORS": true,
                 "rejectUnauthorized": true,
-                "ca": "-----BEGIN RSA KEY---- -----END RSA KEY-----",
-                "key": .string(privateKey),
-                "cert": .string(certificate),
+                "ca": .string(ExampleCert.certificateAuthority),
+                "key": .string(ExampleCert.privateKey),
+                "cert": .string(ExampleCert.certificate),
                 "mutualAuth": false,
                 "ciphers": "TLS_AES_256_GCM_SHA384",
                 "stubs": [],
+                "recordRequests": true,
                 "numberOfRequests": 1,
                 "requests": [],
             ]
@@ -169,7 +151,7 @@ extension Imposter {
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,
-                networkProtocol: .http,
+                networkProtocol: .http(allowCORS: nil),
                 name: "Single stub",
                 stubs: Stub.Examples.all.map(\.value),
                 defaultResponse: Is(statusCode: 403),
@@ -178,6 +160,7 @@ extension Imposter {
             json: [
                 "port": 8080,
                 "protocol": "http",
+                "allowCORS": nil,
                 "name": "Single stub",
                 "stubs": .array(Stub.Examples.all.map(\.json)),
                 "defaultResponse": ["statusCode": 403],
@@ -188,12 +171,13 @@ extension Imposter {
         static let simpleRecordRequests = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http,
+                networkProtocol: .http(),
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true
             ),
             json: [
                 "port": 19190,
+                "allowCORS": false,
                 "protocol": "http",
                 "stubs": [Stub.Examples.text.json],
                 "recordRequests": true,

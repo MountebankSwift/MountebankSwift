@@ -20,19 +20,21 @@ extension Imposter {
         case requests
     }
 
+    private enum NetworkProtocol: String, Codable {
+        case http
+        case https
+    }
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         port = try container.decode(Int.self, forKey: .port)
-        networkProtocol = try container.decode(NetworkProtocol.self, forKey: .networkProtocol)
+        let networkProtocol = try container.decode(NetworkProtocol.self, forKey: .networkProtocol)
 
         switch networkProtocol {
         case .http:
-            if let extraNetworkOptions = try? container.decodeIfPresent(Bool.self, forKey: .allowCORS) {
-                self.extraNetworkOptions = .http(allowCORS: extraNetworkOptions)
-            } else {
-                extraNetworkOptions = nil
-            }
+            let allowCORS = try container.decodeIfPresent(Bool.self, forKey: .allowCORS)
+            self.networkProtocol = .http(allowCORS: allowCORS)
         case .https:
             let allowCORS = try container.decodeIfPresent(Bool.self, forKey: .allowCORS)
             let rejectUnauthorized = try container.decodeIfPresent(Bool.self, forKey: .rejectUnauthorized)
@@ -51,7 +53,7 @@ extension Imposter {
                 || mutualAuth != nil
                 || ciphers != nil
             {
-                extraNetworkOptions = .https(
+                self.networkProtocol = .https(
                     allowCORS: allowCORS,
                     rejectUnauthorized: rejectUnauthorized,
                     certificateAuthority: certificateAuthority,
@@ -61,7 +63,7 @@ extension Imposter {
                     ciphers: ciphers
                 )
             } else {
-                extraNetworkOptions = nil
+                self.networkProtocol = .http()
             }
         }
 
@@ -77,10 +79,10 @@ extension Imposter {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
         try container.encodeIfPresent(port, forKey: .port)
-        try container.encode(networkProtocol, forKey: .networkProtocol)
 
-        switch extraNetworkOptions {
+        switch networkProtocol {
         case .http(let allowCORS):
+            try container.encode(NetworkProtocol.http.rawValue, forKey: .networkProtocol)
             try container.encode(allowCORS, forKey: .allowCORS)
         case .https(
             allowCORS: let allowCORS,
@@ -91,15 +93,14 @@ extension Imposter {
             mutualAuth: let mutualAuth,
             ciphers: let ciphers
         ):
-            try container.encodeIfPresent(allowCORS, forKey: .allowCORS)
+            try container.encode(NetworkProtocol.https.rawValue, forKey: .networkProtocol)
+            try container.encode(allowCORS, forKey: .allowCORS)
             try container.encodeIfPresent(rejectUnauthorized, forKey: .rejectUnauthorized)
             try container.encodeIfPresent(certificateAuthority, forKey: .certificateAuthority)
             try container.encodeIfPresent(key, forKey: .key)
             try container.encodeIfPresent(certificate, forKey: .certificate)
             try container.encodeIfPresent(mutualAuth, forKey: .mutualAuth)
             try container.encodeIfPresent(ciphers, forKey: .ciphers)
-        case .none:
-            break
         }
 
         try container.encodeIfPresent(name, forKey: .name)

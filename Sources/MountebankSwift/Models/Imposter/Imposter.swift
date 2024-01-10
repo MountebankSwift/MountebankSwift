@@ -4,13 +4,17 @@ import Foundation
 /// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
 
-    /// Options for supported protocols by Mountebank.
-    public enum ExtraNetworkOptions: Codable, Equatable {
+    /// Mountebank does also support `tcp`, `smtp` and custom protocols
+    /// implemented in community plugins.
+    ///
+    /// Please submit a feature request issue on Github for support if you need other protocols
+    public enum ImposterNetworkProtocol: Codable, Equatable {
         /// Options for the http protocol documented on:
         /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
         /// - Parameters:
-        ///   - allowCORS: If true, mountebank will allow all CORS preflight requests on the imposter.
-        case http(allowCORS: Bool)
+        ///   - allowCORS: When true, mountebank will allow all Cross-Origin Resource Sharing preflight
+        ///     requests on the imposter
+        case http(allowCORS: Bool? = false)
 
         /// Options for the https protocol documented on:
         /// [mbtest.org/docs/protocols/https](https://www.mbtest.org/docs/protocols/https)
@@ -30,7 +34,7 @@ public struct Imposter: Codable, Equatable {
         ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
         ///     cipher used to communicate.
         case https(
-            allowCORS: Bool? = nil,
+            allowCORS: Bool? = false,
             rejectUnauthorized: Bool? = nil,
             certificateAuthority: String? = nil,
             key: String? = nil,
@@ -45,11 +49,8 @@ public struct Imposter: Codable, Equatable {
     /// Defaults to a randomly assigned port that will be returned in the response
     public let port: Int?
 
-    /// Defines the protocol that the imposter will respond to.
-    public let networkProtocol: NetworkProtocol
-
     /// Extra options for a network protocol
-    public let extraNetworkOptions: ExtraNetworkOptions?
+    public let networkProtocol: ImposterNetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.
     public var name: String?
@@ -79,8 +80,7 @@ public struct Imposter: Codable, Equatable {
 
     public init(
         port: Int? = nil,
-        networkProtocol: NetworkProtocol,
-        extraNetworkOptions: ExtraNetworkOptions? = nil,
+        networkProtocol: ImposterNetworkProtocol,
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Is? = nil,
@@ -90,7 +90,6 @@ public struct Imposter: Codable, Equatable {
     ) {
         self.port = port
         self.networkProtocol = networkProtocol
-        self.extraNetworkOptions = extraNetworkOptions
         self.name = name
         self.stubs = stubs
         self.defaultResponse = defaultResponse
