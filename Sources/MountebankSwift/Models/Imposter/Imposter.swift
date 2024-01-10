@@ -8,7 +8,7 @@ public struct Imposter: Codable, Equatable {
     /// implemented in community plugins.
     ///
     /// Please submit a feature request issue on Github for support if you need other protocols
-    public enum ImposterNetworkProtocol: Codable, Equatable {
+    public enum NetworkProtocol: Codable, Equatable {
         /// Options for the http protocol documented on:
         /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
         /// - Parameters:
@@ -49,8 +49,9 @@ public struct Imposter: Codable, Equatable {
     /// Defaults to a randomly assigned port that will be returned in the response
     public let port: Int?
 
-    /// Extra options for a network protocol
-    public let networkProtocol: ImposterNetworkProtocol
+    /// Defines the protocol that the imposter will respond to.
+    /// Protocols support addition options, see associated types
+    public let networkProtocol: NetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.
     public var name: String?
@@ -80,7 +81,7 @@ public struct Imposter: Codable, Equatable {
 
     public init(
         port: Int? = nil,
-        networkProtocol: ImposterNetworkProtocol,
+        networkProtocol: NetworkProtocol,
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Is? = nil,
