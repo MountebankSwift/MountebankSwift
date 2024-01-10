@@ -3,9 +3,8 @@ import XCTest
 
 final class MountebankIntegrationTests: XCTestCase {
 
-    // swiftlint:disable implicitly_unwrapped_optional
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var sut: Mountebank!
-    // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
         sut = Mountebank(host: .localhost, port: 2525)
@@ -43,7 +42,7 @@ final class MountebankIntegrationTests: XCTestCase {
             return
         }
 
-        let result = Imposter(
+        let expectedResult = Imposter(
             port: imposterToPost.port,
             networkProtocol: imposterToPost.networkProtocol,
             name: imposterToPost.name,
@@ -54,7 +53,37 @@ final class MountebankIntegrationTests: XCTestCase {
             requests: []
         )
 
-        XCTAssertEqual(imposterResult, result)
+        XCTAssertEqual(imposterResult, expectedResult)
+    }
+
+    func testPostImposterWithExtraOptions() async throws {
+        let imposterToPost = Imposter.Examples.withExtraOptionsHttps.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
+        guard imposterResult.port != nil else {
+            XCTFail("Port should have been set by now.")
+            return
+        }
+
+        let expectedResult = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: .https(
+                allowCORS: nil,
+                rejectUnauthorized: true,
+                certificateAuthority: ExampleCert.certificateAuthority,
+                key: ExampleCert.privateKey,
+                certificate: ExampleCert.certificate,
+                mutualAuth: false,
+                ciphers: "TLS_AES_256_GCM_SHA384"
+            ),
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, expectedResult)
     }
 
     func testGetImposter() async throws {
@@ -152,7 +181,7 @@ final class MountebankIntegrationTests: XCTestCase {
     func testDeleteSavedProxyResponses() async throws {
         let imposterResult = try await sut.postImposter(imposter: Imposter(
             port: nil,
-            networkProtocol: .https,
+            networkProtocol: .https(),
             name: "Imposter with proxy",
             stubs: [
                 Stub(
@@ -186,7 +215,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let imposter = Imposter(
             port: 1234,
-            networkProtocol: .http,
+            networkProtocol: .http(),
             name: "Imposter with various body Types",
             stubs: sampleFiles.map { file in
                 Stub(
