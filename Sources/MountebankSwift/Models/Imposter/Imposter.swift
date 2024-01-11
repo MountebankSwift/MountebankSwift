@@ -1,14 +1,16 @@
 import Foundation
 
-/// Imposter as documented on:
-/// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
+/// A server representing a test double. An imposter is identified by a port and a protocol.
+/// Mountebank is non-modal and can create as many imposters as your test requires.
+///
+/// See: [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
-    /// The port to run the imposter on.
+    /// Port to run the imposter on.
     ///
     /// Defaults to a randomly assigned port that will be returned in the response
     public let port: Int?
 
-    /// Defines the protocol that the imposter will respond to.
+    /// Protocol that the imposter will respond to.
     public let networkProtocol: NetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.
@@ -48,15 +50,51 @@ public struct Imposter: Codable, Equatable {
         case requests
     }
 
+    /// A server representing a test double.
+    ///
+    /// See: [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
+    /// - Parameters:
+    ///   - port: Port to run the imposter on. Defaults to a randomly assigned port that will be returned in the response
+    ///   - networkProtocol: Protocol that the imposter will respond to.
+    ///   - name: Descriptive name that will show up in the logs and the imposters UI.
+    ///   - stubs: A set of behaviors used to generate a response for an imposter. An imposter can have 0 or more stubs,
+    ///     each of which are associated with different predicates and support different responses.
+    ///
+    ///     You would use multiple stubs for an imposter if the types of response you return depends on something in the
+    ///     request, matched with a predicate.
+    ///   - defaultResponse: Allows you to override the default response that Mountebank sends back if no predicate matches
+    ///     a request. Even if a predicate does match but the response isn't fully specified, these values get merged in to complete the
+    ///     response.
+    ///   - recordRequests: If set to true, the server will record requests received, for mock verification purposes.
     public init(
         port: Int? = nil,
         networkProtocol: NetworkProtocol,
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Is? = nil,
-        recordRequests: Bool? = nil,
-        numberOfRequests: Int? = nil,
-        requests: [Imposter.RecordedRequest]? = nil
+        recordRequests: Bool? = nil
+    ) {
+        self.init(
+            port: port,
+            networkProtocol: networkProtocol,
+            name: name,
+            stubs: stubs,
+            defaultResponse: defaultResponse,
+            recordRequests: recordRequests,
+            numberOfRequests: nil,
+            requests: nil
+        )
+    }
+
+    init(
+        port: Int?,
+        networkProtocol: NetworkProtocol,
+        name: String?,
+        stubs: [Stub],
+        defaultResponse: Is?,
+        recordRequests: Bool?,
+        numberOfRequests: Int?,
+        requests: [Imposter.RecordedRequest]?
     ) {
         self.port = port
         self.networkProtocol = networkProtocol
@@ -64,7 +102,7 @@ public struct Imposter: Codable, Equatable {
         self.stubs = stubs
         self.defaultResponse = defaultResponse
         self.recordRequests = recordRequests
-        self.numberOfRequests = numberOfRequests
-        self.requests = requests
+        self.numberOfRequests = nil
+        self.requests = nil
     }
 }

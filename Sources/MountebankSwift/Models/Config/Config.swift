@@ -1,6 +1,6 @@
 import Foundation
 
-/// Config as documented on:
+/// Config of the Mountebank server itself as documented on:
 /// [mbtest.org/docs/api/contracts?type=config](https://www.mbtest.org/docs/api/contracts?type=config)
 public struct Config: Codable, Equatable {
     public struct Options: Codable, Equatable {
