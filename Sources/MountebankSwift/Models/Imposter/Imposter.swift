@@ -5,12 +5,54 @@ import Foundation
 ///
 /// See: [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
+
+    /// Mountebank does also support `tcp`, `smtp` and custom protocols
+    /// implemented in community plugins.
+    ///
+    /// Please submit a feature request issue on Github for support if you need other protocols
+    public enum NetworkProtocol: Codable, Equatable {
+        /// Options for the http protocol documented on:
+        /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
+        /// - Parameters:
+        ///   - allowCORS: When true, mountebank will allow all Cross-Origin Resource Sharing preflight
+        ///     requests on the imposter
+        case http(allowCORS: Bool? = false)
+
+        /// Options for the https protocol documented on:
+        /// [mbtest.org/docs/protocols/https](https://www.mbtest.org/docs/protocols/https)
+        /// - Parameters:
+        ///   - allowCORS: When true, mountebank will allow all CORS preflight requests on the imposter.
+        ///   - rejectUnauthorized: When true, mountebank will validate the certificate against the list
+        ///     of supplied Certificate Authoritys.
+        ///   - certificateAuthority: Use when setting rejectUnauthorized to true to provide a list of
+        ///     certificates to validate against. When rejectUnauthorized is true and mutualAuth is true,
+        ///     mountebank will request a client certificate.
+        ///   - key: The SSL private key for creating an https server/ Must be a PEM-formatted string.
+        ///     Defaults to a built-in private key.
+        ///   - certificate: The SSL certificate for creating an https server. Must be a PEM-formatted string.
+        ///     Defaults to a built-in self-signed certificate.
+        ///   - mutualAuth: When true, the server will request a client certificate. Since the goal is simply to
+        ///     virtualize a server requiring mutual auth, invalid certificates will not be rejected.
+        ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
+        ///     cipher used to communicate.
+        case https(
+            allowCORS: Bool? = false,
+            rejectUnauthorized: Bool? = nil,
+            certificateAuthority: String? = nil,
+            key: String? = nil,
+            certificate: String? = nil,
+            mutualAuth: Bool? = nil,
+            ciphers: String? = nil
+        )
+    }
+
     /// Port to run the imposter on.
     ///
     /// Defaults to a randomly assigned port that will be returned in the response
     public let port: Int?
 
     /// Protocol that the imposter will respond to.
+    /// Protocols support addition options, see associated types
     public let networkProtocol: NetworkProtocol
 
     /// Descriptive name that will show up in the logs and the imposters UI.

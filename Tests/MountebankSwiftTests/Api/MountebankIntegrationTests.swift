@@ -3,9 +3,8 @@ import XCTest
 
 final class MountebankIntegrationTests: XCTestCase {
 
-    // swiftlint:disable implicitly_unwrapped_optional
+    // swiftlint:disable:next implicitly_unwrapped_optional
     private var sut: Mountebank!
-    // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
         sut = Mountebank(host: .localhost, port: 2525)
@@ -43,7 +42,7 @@ final class MountebankIntegrationTests: XCTestCase {
             return
         }
 
-        let result = Imposter(
+        let expectedResult = Imposter(
             port: imposterToPost.port,
             networkProtocol: imposterToPost.networkProtocol,
             name: imposterToPost.name,
@@ -54,11 +53,44 @@ final class MountebankIntegrationTests: XCTestCase {
             requests: []
         )
 
-        XCTAssertEqual(imposterResult, result)
+        XCTAssertEqual(imposterResult, expectedResult)
     }
 
-    @available(iOS 16.0, *)
+    func testPostImposterWithExtraOptions() async throws {
+        let imposterToPost = Imposter.Examples.withExtraOptionsHttps.value
+        let imposterResult = try await sut.postImposter(imposter: imposterToPost)
+        guard imposterResult.port != nil else {
+            XCTFail("Port should have been set by now.")
+            return
+        }
+
+        let expectedResult = Imposter(
+            port: imposterToPost.port,
+            networkProtocol: .https(
+                allowCORS: nil,
+                rejectUnauthorized: true,
+                certificateAuthority: ExampleCert.certificateAuthority,
+                key: ExampleCert.privateKey,
+                certificate: ExampleCert.certificate,
+                mutualAuth: false,
+                ciphers: "TLS_AES_256_GCM_SHA384"
+            ),
+            name: imposterToPost.name,
+            stubs: imposterToPost.stubs,
+            defaultResponse: imposterToPost.defaultResponse,
+            recordRequests: imposterToPost.recordRequests,
+            numberOfRequests: 0,
+            requests: []
+        )
+
+        XCTAssertEqual(imposterResult, expectedResult)
+    }
+
     func testGetImposter() async throws {
+        guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
+            throw XCTSkip("Test uses api's that are not supported for your platfrom.")
+        }
+
         let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
 
@@ -77,8 +109,8 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let firstRequest = try XCTUnwrap(imposter.requests?.first)
 
-        // Can not check full request because the of the runner will
-        // impact the RecordedRequest contents.
+        // Can not check full request, because client the runner will
+        // run on will impact the RecordedRequest contents.
         XCTAssertEqual(firstRequest.path, path)
         XCTAssertNil(firstRequest.form)
         XCTAssertEqual(firstRequest.query, ["search": "test"])
@@ -149,7 +181,7 @@ final class MountebankIntegrationTests: XCTestCase {
     func testDeleteSavedProxyResponses() async throws {
         let imposterResult = try await sut.postImposter(imposter: Imposter(
             port: nil,
-            networkProtocol: .https,
+            networkProtocol: .https(),
             name: "Imposter with proxy",
             stubs: [
                 Stub(
@@ -183,7 +215,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let imposter = Imposter(
             port: 1234,
-            networkProtocol: .http,
+            networkProtocol: .http(),
             name: "Imposter with various body Types",
             stubs: sampleFiles.map { file in
                 Stub(

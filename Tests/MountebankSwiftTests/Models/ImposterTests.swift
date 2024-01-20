@@ -35,6 +35,28 @@ final class ImposterTests: XCTestCase {
         )
     }
 
+    func testWithExtraOptionsDataHttp() throws {
+        try assertEncode(
+            Imposter.Examples.withExtraOptionsHttp.value,
+            Imposter.Examples.withExtraOptionsHttp.json
+        )
+        try assertDecode(
+            Imposter.Examples.withExtraOptionsHttp.json,
+            Imposter.Examples.withExtraOptionsHttp.value
+        )
+    }
+
+    func testWithExtraOptionsDataHttps() throws {
+        try assertEncode(
+            Imposter.Examples.withExtraOptionsHttps.value,
+            Imposter.Examples.withExtraOptionsHttps.json
+        )
+        try assertDecode(
+            Imposter.Examples.withExtraOptionsHttps.json,
+            Imposter.Examples.withExtraOptionsHttps.value
+        )
+    }
+
     func testIncludingAllStubs() throws {
         try assertEncode(
             Imposter.Examples.includingAllStubs.value,

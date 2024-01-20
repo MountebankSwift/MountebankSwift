@@ -25,14 +25,58 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopy() throws {
+    func testCopyCode() throws {
         try assertEncode(
-            Behavior.Examples.copy.value,
-            Behavior.Examples.copy.json
+            Behavior.Examples.copyCode.value,
+            Behavior.Examples.copyCode.json
         )
         try assertDecode(
-            Behavior.Examples.copy.json,
-            Behavior.Examples.copy.value
+            Behavior.Examples.copyCode.json,
+            Behavior.Examples.copyCode.value
+        )
+    }
+
+    func testCopyQuery() throws {
+        try assertEncode(
+            Behavior.Examples.copyQuery.value,
+            Behavior.Examples.copyQuery.json
+        )
+        try assertDecode(
+            Behavior.Examples.copyQuery.json,
+            Behavior.Examples.copyQuery.value
+        )
+    }
+
+    func testCopyHeader() throws {
+        try assertEncode(
+            Behavior.Examples.copyHeader.value,
+            Behavior.Examples.copyHeader.json
+        )
+        try assertDecode(
+            Behavior.Examples.copyHeader.json,
+            Behavior.Examples.copyHeader.value
+        )
+    }
+
+    func testCopyJsonPath() throws {
+        try assertEncode(
+            Behavior.Examples.copyJsonPath.value,
+            Behavior.Examples.copyJsonPath.json
+        )
+        try assertDecode(
+            Behavior.Examples.copyJsonPath.json,
+            Behavior.Examples.copyJsonPath.value
+        )
+    }
+
+    func testCopyXpath() throws {
+        try assertEncode(
+            Behavior.Examples.copyXpath.value,
+            Behavior.Examples.copyXpath.json
+        )
+        try assertDecode(
+            Behavior.Examples.copyXpath.json,
+            Behavior.Examples.copyXpath.value
         )
     }
 

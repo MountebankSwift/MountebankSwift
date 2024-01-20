@@ -7,7 +7,7 @@ let package = Package(
     name: "MountebankSwift",
     platforms: [
         .iOS(.v13),
-        .macOS(.v13),
+        .macOS(.v12),
         .tvOS(.v16),
         .watchOS(.v9),
     ],
