@@ -1,9 +1,11 @@
 import Foundation
 
 /// A server representing a test double. An imposter is identified by a port and a protocol.
-/// Mountebank is non-modal and can create as many imposters as your test requires.
+/// Mountebank can create as many imposters as your test requires at the same time.
 ///
-/// See: [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
+/// In the typical use case, each test will start an imposter during test setup and stop an imposter during test teardown.
+///
+/// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable {
 
     /// Mountebank does also support `tcp`, `smtp` and custom protocols
@@ -81,20 +83,6 @@ public struct Imposter: Codable, Equatable {
     /// By retrieving the imposter, your client code can determine if an expected service call was in fact made.
     public let requests: [Imposter.RecordedRequest]?
 
-    enum CodingKeys: String, CodingKey {
-        case port
-        case networkProtocol = "protocol"
-        case name
-        case stubs
-        case recordRequests
-        case defaultResponse
-        case numberOfRequests
-        case requests
-    }
-
-    /// A server representing a test double.
-    ///
-    /// See: [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
     /// - Parameters:
     ///   - port: Port to run the imposter on. Defaults to a randomly assigned port that will be returned in the response
     ///   - networkProtocol: Protocol that the imposter will respond to.
@@ -129,12 +117,12 @@ public struct Imposter: Codable, Equatable {
     }
 
     init(
-        port: Int?,
+        port: Int? = nil,
         networkProtocol: NetworkProtocol,
-        name: String?,
+        name: String? = nil,
         stubs: [Stub],
-        defaultResponse: Is?,
-        recordRequests: Bool?,
+        defaultResponse: Is? = nil,
+        recordRequests: Bool? = nil,
         numberOfRequests: Int?,
         requests: [Imposter.RecordedRequest]?
     ) {
@@ -144,7 +132,7 @@ public struct Imposter: Codable, Equatable {
         self.stubs = stubs
         self.defaultResponse = defaultResponse
         self.recordRequests = recordRequests
-        self.numberOfRequests = nil
-        self.requests = nil
+        self.numberOfRequests = numberOfRequests
+        self.requests = requests
     }
 }

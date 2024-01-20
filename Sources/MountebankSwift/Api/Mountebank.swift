@@ -1,6 +1,8 @@
 import Foundation
 
 /// Mountebank client to connect to the Mountebank server.
+///
+/// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
 public struct Mountebank {
     private let host: Host
     private let port: Int

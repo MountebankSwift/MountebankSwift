@@ -1,8 +1,10 @@
 import Foundation
 
-/// Proxy as documented on:
+/// A proxy response proxies the request to the specified destination and returns the response.
+///
 /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
 public struct Proxy: StubResponse, Codable, Equatable {
+    /// Replay behavior of the proxy.
     public enum Mode: String, Codable {
         /// proxyOnce mode doesn't require you to explicitly do anything to replay the proxied responses.
         case proxyOnce

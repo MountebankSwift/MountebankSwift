@@ -1,6 +1,11 @@
 import Foundation
 
-/// Predicates as documented on:
+/// Predicates define whether or not a ``Stub`` matches a request. When multiple stubs are set on an imposter,
+/// the first stub that matches is used to create the response.
+///
+/// Each predicate object contains one or more of the request fields as keys.
+/// Predicates are added to a stub in an array, and all predicates are AND'd together.
+///
 /// [mbtest.org/docs/api/predicates](https://www.mbtest.org/docs/api/predicates)
 public indirect enum Predicate: Equatable {
     /// The request field matches the predicate

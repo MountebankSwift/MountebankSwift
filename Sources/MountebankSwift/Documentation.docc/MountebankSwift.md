@@ -12,11 +12,12 @@ to interact with a running Mountebank instance.
 
 ### Connect to Mountebank
 - ``Mountebank``
+- ``Host``
+- ``Config``
 
 ### Creating Imposters
 - ``Imposter``
 - ``Imposters``
-- ``NetworkProtocol``
 
 ### Creating Stubs
 - ``Stub``
@@ -34,13 +35,13 @@ to interact with a running Mountebank instance.
 - ``Fault``
 - ``Proxy``
 
+### Other symbols related to Responses
 - ``StubResponse``
 - ``ResponseParameters``
 - ``Behavior``
 - ``Body``
 
-### Config, Logs, Errors
-- ``Config``
+### Logs, Errors
 - ``Logs``
 - ``LogLevel``
 - ``MountebankValidationError``
@@ -49,4 +50,4 @@ to interact with a running Mountebank instance.
 ### Common
 - ``HTTPMethod``
 - ``JSON``
-- ``Host``
+
