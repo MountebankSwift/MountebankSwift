@@ -1,8 +1,26 @@
 import Foundation
 
-/// Mountebank client to connect to the Mountebank server.
+/// Mountebank client to connect to the Mountebank stub server.
 ///
+/// The client is used to submit imposters to the Mountebank server.
+/// Once imposters are in place your application under test can use the Mountebank stub server instead of real server.
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
+///
+/// ```swift
+/// private var mounteBank = Mountebank(host: .localhost)
+/// try await mounteBank.testConnection()
+///
+/// let stub = Stub(
+///     response: Is(statusCode: 200, body: .text("Hello world!")),
+///     predicate: .equals(Request(path: "/test"))
+/// )
+/// let imposter = Imposter(networkProtocol: .http, stubs: [stub])
+///
+/// let imposterResult = try await mounteBank.postImposter(imposter: imposter)
+/// let imposterURL = mounteBank.makeImposterUrl(port: imposterResult.port!)
+///
+/// // Application under test can now use `imposterURL` to send requests to
+/// ```
 public struct Mountebank {
     private let host: Host
     private let port: Int

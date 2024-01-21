@@ -8,6 +8,8 @@ MountebankSwift is a client library for [Mountebank](https://www.mbtest.org/) - 
 provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.org/docs/api/overview)
 to interact with a running Mountebank instance.
 
+![Mountebank logo holding a bottle with Swift's icon on it](MountebankSwift.jpg)
+
 ## Topics
 
 ### Connect to Mountebank
