@@ -4,25 +4,44 @@ import Foundation
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
 struct Endpoint {
     let method: HTTPMethod
-    let templatePath: String
+
+    private let templatePath: String
+    private let parameters: EndpointParameters?
+
+    private init(method: HTTPMethod, templatePath: String, parameters: EndpointParameters? = nil) {
+        self.method = method
+        self.templatePath = templatePath
+        self.parameters = parameters
+    }
 
     /// Get entry hypermedia
     // static func getHypermedia() = Endpoint(method: .get, templatePath: "/")
 
     /// Get a list of all imposters
-    static func getAllImposters() -> Endpoint { Endpoint(method: .get, templatePath: "/imposters") }
+    static func getAllImposters(parameters: ImposterParameters) -> Endpoint {
+        Endpoint(method: .get, templatePath: "/imposters", parameters: parameters)
+    }
 
     /// Get a single imposter
-    static func getImposter(port: Int) -> Endpoint { Endpoint(method: .get, templatePath: "/imposters/\(port)") }
+    static func getImposter(port: Int, parameters: ImposterParameters) -> Endpoint {
+        Endpoint(method: .get, templatePath: "/imposters/\(port)", parameters: parameters)
+    }
 
     /// Create a single imposter
-    static func postImposter() -> Endpoint { Endpoint(method: .post, templatePath: "/imposters") }
+    static func postImposter(parameters: ImposterParameters) -> Endpoint {
+        Endpoint(method: .post, templatePath: "/imposters", parameters: parameters)
+    }
 
     /// Overwrite all imposters with a new set of imposters
-    static func putImposters() -> Endpoint { Endpoint(method: .put, templatePath: "/imposters") }
+    static func putImposters(parameters: ImposterParameters) -> Endpoint {
+        Endpoint(method: .put, templatePath: "/imposters", parameters: parameters)
+
+    }
 
     /// Delete a single imposter
-    static func deleteImposter(port: Int) -> Endpoint { Endpoint(method: .delete, templatePath: "/imposters/\(port)") }
+    static func deleteImposter(port: Int, parameters: ImposterParameters) -> Endpoint {
+        Endpoint(method: .delete, templatePath: "/imposters/\(port)", parameters: parameters)
+    }
 
     /// Add a stub to an existing imposter
     static func postImposterStub(port: Int) -> Endpoint {
@@ -61,5 +80,18 @@ struct Endpoint {
     static func getConfig() -> Endpoint { Endpoint(method: .get, templatePath: "/config") }
 
     /// Get the logs
-    static func getLogs() -> Endpoint { Endpoint(method: .get, templatePath: "/logs") }
+    static func getLogs(parameters: LogParameters) -> Endpoint {
+        Endpoint(method: .get, templatePath: "/logs", parameters: parameters)
+    }
+
+    /// Create a url with all query parameters appened if available.
+    func makeEndpointUrl(baseUrl: URL) -> URL {
+        let url = baseUrl.appendingPathComponent(templatePath)
+        guard let parameters, let paramarizedUrl = url.appending(parameters.makeQueryParameters()) else {
+            return url
+        }
+
+        return paramarizedUrl
+    }
+
 }

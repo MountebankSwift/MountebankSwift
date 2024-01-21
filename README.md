@@ -53,7 +53,7 @@ The documentation is available on the [Swift Package Index](https://swiftpackage
 
 ### Using Xcode
 
-> **Warning**
+> [!WARNING]
 > By default, Xcode will try to add the MountebankSwift package to your project's main application/framework target.
 > Please ensure that MountebankSwift is added to a _test_ target instead, as documented in the last step, below.
 

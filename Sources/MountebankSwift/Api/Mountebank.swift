@@ -42,12 +42,16 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: A ``Imposter`` that listens to the provided port
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getImposter(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
+    public func getImposter(port: Int, parameters: ImposterParameters = ImposterParameters()) async throws -> Imposter {
+        try await sendDataToEndpoint(
+            body: nil,
+            endpoint: Endpoint.getImposter(port: port, parameters: parameters)
+        )
     }
 
     /// Get a list of all Imposters
@@ -56,12 +60,19 @@ public struct Mountebank {
     /// basic information and hypermedia. If you want more information, either get the single ``Imposter`` or use the
     /// `replayable` flag.
     ///
+    /// - Parameters:
+    ///   - parameters: The parameters for changing the imposter response
+    ///
     /// - Returns: A list of all ``Imposters``
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getAllImposters() async throws -> Imposters {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
+    public func getAllImposters(parameters: ImposterParameters = ImposterParameters()) async throws -> Imposters {
+        try await sendDataToEndpoint(
+            body: nil,
+            endpoint: Endpoint.getAllImposters(parameters: parameters),
+            type: Imposters.self
+        )
     }
 
     /// Create a single Imposter
@@ -73,13 +84,17 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - imposter: ``Imposter`` that will be created
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: The created ``Imposter`` with the port the ``Imposter`` will be available on.
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func postImposter(imposter: Imposter) async throws -> Imposter {
+    public func postImposter(
+        imposter: Imposter,
+        parameters: ImposterParameters = ImposterParameters()
+    ) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
+        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter(parameters: parameters))
     }
 
     /// Overwrite all Imposters with a new set of Imposters
@@ -91,13 +106,21 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - imposter: ``Imposter`` that will be created
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: The created ``Imposter`` with the port the ``Imposter`` will be available on.
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func putImposters(imposters: Imposters) async throws -> Imposters {
+    public func putImposters(
+        imposters: Imposters,
+        parameters: ImposterParameters = ImposterParameters()
+    ) async throws -> Imposters {
         let bodyData = try encodeJson(encodable: imposters)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposters(), type: Imposters.self)
+        return try await sendDataToEndpoint(
+            body: bodyData,
+            endpoint: Endpoint.putImposters(parameters: parameters),
+            type: Imposters.self
+        )
     }
 
     /// Add a stub to an existing Imposter
@@ -131,12 +154,16 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: The deleted ``Imposter``
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func deleteImposter(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
+    public func deleteImposter(
+        port: Int,
+        parameters: ImposterParameters = ImposterParameters()
+    ) async throws -> Imposter {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port, parameters: parameters))
     }
 
     /// Delete all Imposters
@@ -274,11 +301,17 @@ public struct Mountebank {
     /// In the rare scenario where Mountebank is hosted on a different server and you need access to the ``Logs``,
     /// they are accessible through this endpoint.
     ///
+    /// - Parameters:
+    ///   - parameters: The parameters for selecting the logs
     /// - Returns: The ``Logs`` for of the Mountebank server
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
-    public func getLogs(startIndex: Int? = nil, endIndex: Int? = nil) async throws -> Logs {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(), type: Logs.self)
+    public func getLogs(
+        startIndex: Int? = nil,
+        endIndex: Int? = nil,
+        parameters: LogParameters = LogParameters()
+    ) async throws -> Logs {
+        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(parameters: parameters), type: Logs.self)
     }
 
     /// Validate if the Mountebank server is up.
@@ -325,7 +358,7 @@ public struct Mountebank {
 
     private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {
         HTTPRequest(
-            url: mountebankURL.appendingPathComponent(endPoint.templatePath),
+            url: endPoint.makeEndpointUrl(baseUrl: mountebankURL),
             method: endPoint.method,
             body: body,
             headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
