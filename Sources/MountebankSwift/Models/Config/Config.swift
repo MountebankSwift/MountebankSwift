@@ -61,7 +61,7 @@ public struct Config: Codable, Equatable {
         /// parameter will enable them.
         ///
         /// > Note: Be aware that allowing injection means that an attacker can run random code on the machine running
-        /// mb. Please see the security page for tips on securing your system.
+        /// Mountebank. Please see the security page for tips on securing your system.
         public let allowInjection: Bool
 
         /// Include a matches array with each stub in the body of a GET imposter response for debugging why a
@@ -73,7 +73,7 @@ public struct Config: Codable, Equatable {
 
     public struct Process: Codable, Equatable {
 
-        /// The version of node.js witch Mountebank is useing
+        /// The version of node.js which Mountebank is useing
         public let nodeVersion: String
 
         /// The architecture of the machine running Mountebank.

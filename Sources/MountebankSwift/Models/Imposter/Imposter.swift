@@ -13,18 +13,20 @@ public struct Imposter: Codable, Equatable {
     ///
     /// Please submit a feature request issue on Github for support if you need other protocols
     public enum NetworkProtocol: Codable, Equatable {
-        /// Options for the http protocol documented on:
+        /// Options for the http protocol
+        ///
         /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
         /// - Parameters:
-        ///   - allowCORS: When true, mountebank will allow all Cross-Origin Resource Sharing preflight
+        ///   - allowCORS: If true, mountebank will allow all Cross-Origin Resource Sharing preflight
         ///     requests on the imposter
         case http(allowCORS: Bool? = false)
 
-        /// Options for the https protocol documented on:
+        /// Options for the https protocol
+        ///
         /// [mbtest.org/docs/protocols/https](https://www.mbtest.org/docs/protocols/https)
         /// - Parameters:
-        ///   - allowCORS: When true, mountebank will allow all CORS preflight requests on the imposter.
-        ///   - rejectUnauthorized: When true, mountebank will validate the certificate against the list
+        ///   - allowCORS: If true, mountebank will allow all CORS preflight requests on the imposter.
+        ///   - rejectUnauthorized: If true, mountebank will validate the certificate against the list
         ///     of supplied Certificate Authoritys.
         ///   - certificateAuthority: Use when setting rejectUnauthorized to true to provide a list of
         ///     certificates to validate against. When rejectUnauthorized is true and mutualAuth is true,
@@ -33,7 +35,7 @@ public struct Imposter: Codable, Equatable {
         ///     Defaults to a built-in private key.
         ///   - certificate: The SSL certificate for creating an https server. Must be a PEM-formatted string.
         ///     Defaults to a built-in self-signed certificate.
-        ///   - mutualAuth: When true, the server will request a client certificate. Since the goal is simply to
+        ///   - mutualAuth: If true, the server will request a client certificate. Since the goal is simply to
         ///     virtualize a server requiring mutual auth, invalid certificates will not be rejected.
         ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
         ///     cipher used to communicate.
