@@ -1,6 +1,7 @@
 import Foundation
 
-/// Predicate parameter to narrow down the scope of the predicate value to a value matched by the xpath selector, much like the except parameter.
+/// Predicate parameter to narrow down the scope of the predicate value to a value matched by the xpath selector,
+/// much like the except parameter.
 ///
 /// [mbtest.org/docs/api/xpath](https://www.mbtest.org/docs/api/xpath)
 public struct XPath: Codable, Equatable {

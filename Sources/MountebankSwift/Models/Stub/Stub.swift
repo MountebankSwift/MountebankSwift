@@ -20,7 +20,6 @@ public struct Stub: Equatable {
     /// adding more responses to the array without complicating the contract.
     public let responses: [any StubResponse]
 
-
     /// Creates a stub with multiple responses and predicates
     ///
     /// The stub is used if **all** of the predicates match an incoming request.
