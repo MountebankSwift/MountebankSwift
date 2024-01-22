@@ -2,6 +2,8 @@ import Foundation
 
 // Convenience overloads for various body types
 extension Is {
+
+    /// Creates an ``Is`` response from a String
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -16,6 +18,7 @@ extension Is {
         )
     }
 
+    /// Creates an ``Is`` response from JSON
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -30,6 +33,7 @@ extension Is {
         )
     }
 
+    /// Creates an ``Is`` response from Data
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -44,6 +48,7 @@ extension Is {
         )
     }
 
+    /// Creates an ``Is`` response from a codable object
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -61,6 +66,7 @@ extension Is {
 
 // Convenience overloads for various body types
 extension Array where Element == Is {
+    /// Creates an array of ``Is`` responses
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -77,6 +83,7 @@ extension Array where Element == Is {
         }
     }
 
+    /// Creates an array of ``Is`` responses from an array of Strings
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -93,6 +100,7 @@ extension Array where Element == Is {
         }
     }
 
+    /// Creates an array of ``Is`` responses from an array of JSON
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -109,6 +117,7 @@ extension Array where Element == Is {
         }
     }
 
+    /// Creates an array of ``Is`` responses from an array of Data
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
@@ -125,6 +134,7 @@ extension Array where Element == Is {
         }
     }
 
+    /// Creates an array of ``Is`` responses from an array of codable objects
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,

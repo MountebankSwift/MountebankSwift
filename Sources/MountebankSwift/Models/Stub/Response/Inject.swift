@@ -1,13 +1,12 @@
-/// Mountebank allows JavaScript injection for predicates and response types for
-/// situations where the built-in ones are not sufficient.
+/// A JavaScript injection response for dynamic responses when the built-in ones are not sufficient.
 ///
 /// Injection only works if mb is run with the `--allowInjection` flag.
 public struct Inject: StubResponse, Codable, Equatable {
     /// A Javascript string
     public let injection: String
 
-    public init(_ injection: String) {
-        self.injection = injection
+    public init(_ javascript: String) {
+        self.injection = javascript
     }
 
     public init(from decoder: Decoder) throws {
