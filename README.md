@@ -7,6 +7,8 @@ A swift client library for the [Mountebank](https://www.mbtest.org/) - open sour
 provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.org/docs/api/overview)
 to interact with a running Mountebank instance.
 
+![Mountebank logo holding a bottle with Swift's icon on it](MountebankSwift.jpg)
+
 ## Usage
 
 Once [installed](#installation), you need to start the Mountebank server with `mb start`. You can import the

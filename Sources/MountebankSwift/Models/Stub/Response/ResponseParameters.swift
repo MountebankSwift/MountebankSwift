@@ -1,6 +1,6 @@
 import Foundation
 
-/// Responses can be parameterized. Right now, only one parameter is supported (repeatCount)
+/// Parameters that can be added to a response  to finetune it.
 public struct ResponseParameters: Equatable {
     /// Repeats the response the given number of times.
     public let repeatCount: Int?

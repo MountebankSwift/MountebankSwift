@@ -2,12 +2,8 @@ import Foundation
 
 private var jsonEncoder = JSONEncoder()
 
+/// A body for an ``Is`` response
 public enum Body: Equatable {
-    public enum Mode: String, Codable, Equatable {
-        case text
-        case binary
-    }
-
     case text(String)
     case json(JSON)
     case jsonEncodable(Encodable)

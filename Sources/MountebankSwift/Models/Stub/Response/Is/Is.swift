@@ -1,20 +1,19 @@
 import Foundation
 
 // swiftlint:disable type_name
-/// The `Is` response type represents a canned response that you define.The response
-/// fields will be those defined with each protocol.
+/// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
 public struct Is: StubResponse, Equatable {
     public static var defaultBehaviors: [Behavior] = []
     public static var defaultHeaders: [String: String] = [:]
 
-    public let statusCode: Int
+    public let statusCode: Int?
     public let headers: [String: String]?
     public let body: Body?
 
     public let parameters: ResponseParameters?
 
     public init(
-        statusCode: Int = 200,
+        statusCode: Int? = 200,
         headers: [String: String]? = nil,
         body: Body? = nil,
         parameters: ResponseParameters? = nil

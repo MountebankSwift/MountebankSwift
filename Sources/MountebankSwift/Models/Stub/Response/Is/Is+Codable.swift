@@ -1,6 +1,11 @@
 import Foundation
 
 extension Is: Codable {
+    public enum BodyMode: String, Codable, Equatable {
+        case text
+        case binary
+    }
+
     enum DecodingError: Error {
         case invalidBodyForTextBodyMode
         case invalidBodyForBinaryBodyMode
@@ -27,7 +32,7 @@ extension Is: Codable {
         case .json(let json):
             try container.encode(json, forKey: .body)
         case .data(let data):
-            try container.encode(Body.Mode.binary, forKey: .mode)
+            try container.encode(BodyMode.binary, forKey: .mode)
             try container.encode(data, forKey: .body)
         case .jsonEncodable(let value):
             try container.encode(value, forKey: .body)
@@ -41,14 +46,14 @@ extension Is: Codable {
         statusCode = try container.decode(Int.self, forKey: .statusCode)
         headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
 
-        let mode = try container.decodeIfPresent(Body.Mode.self, forKey: .mode)
+        let bodyMode = try container.decodeIfPresent(BodyMode.self, forKey: .mode)
 
         guard container.contains(.body) else {
             body = nil
             return
         }
 
-        switch mode {
+        switch bodyMode {
         case .none, .text:
             if let text = try? container.decode(String.self, forKey: .body) {
                 body = .text(text)
