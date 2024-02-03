@@ -34,8 +34,8 @@ final class EndpointTests: XCTestCase {
             )): "\(Self.exampleBaseUrl.absoluteString)/imposters/123?replayable=true",
             makeUrlFromEndpoint(.getImposter(
                 port: 1111,
-                parameters: ImposterParameters(replayable: true, removeProxies: false)
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/1111?replayable=true&removeProxies=false",
+                parameters: ImposterParameters(removeProxies: false)
+            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/1111?removeProxies=false",
         ].forEach { endpoint, expectedResult in
             XCTAssertEqual(endpoint, URL(string: expectedResult))
         }

@@ -15,7 +15,7 @@ struct Endpoint {
     }
 
     /// Get entry hypermedia
-    // static func getHypermedia() = Endpoint(method: .get, templatePath: "/")
+    // static func getHypermedia() -> Endpoint { Endpoint(method: .get, templatePath: "/") }
 
     /// Get a list of all imposters
     static func getAllImposters(parameters: ImposterParameters) -> Endpoint {
@@ -28,14 +28,13 @@ struct Endpoint {
     }
 
     /// Create a single imposter
-    static func postImposter(parameters: ImposterParameters) -> Endpoint {
-        Endpoint(method: .post, templatePath: "/imposters", parameters: parameters)
+    static func postImposter() -> Endpoint {
+        Endpoint(method: .post, templatePath: "/imposters")
     }
 
     /// Overwrite all imposters with a new set of imposters
-    static func putImposters(parameters: ImposterParameters) -> Endpoint {
-        Endpoint(method: .put, templatePath: "/imposters", parameters: parameters)
-
+    static func putImposters() -> Endpoint {
+        Endpoint(method: .put, templatePath: "/imposters")
     }
 
     /// Delete a single imposter
@@ -74,10 +73,14 @@ struct Endpoint {
     }
 
     /// Delete all imposters
-    static func deleteAllImposters() -> Endpoint { Endpoint(method: .delete, templatePath: "/imposters") }
+    static func deleteAllImposters() -> Endpoint {
+        Endpoint(method: .delete, templatePath: "/imposters")
+    }
 
     /// Get Mountebank configuration and process information
-    static func getConfig() -> Endpoint { Endpoint(method: .get, templatePath: "/config") }
+    static func getConfig() -> Endpoint {
+        Endpoint(method: .get, templatePath: "/config")
+    }
 
     /// Get the logs
     static func getLogs(parameters: LogParameters) -> Endpoint {

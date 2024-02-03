@@ -17,7 +17,7 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     override func tearDown() async throws {
-        _ = try await sut.deleteAllImposters()
+        try await sut.deleteAllImposters()
 
         sut = nil
     }
@@ -158,9 +158,9 @@ final class MountebankIntegrationTests: XCTestCase {
     }
 
     func testDeleteAllImposters() async throws {
-        _ = try await sut.postImposter(imposter: Imposter.Examples.advanced.value)
-        _ = try await sut.postImposter(imposter: Imposter.Examples.simple.value)
-        _ = try await sut.deleteAllImposters()
+        try await sut.postImposter(imposter: Imposter.Examples.advanced.value)
+        try await sut.postImposter(imposter: Imposter.Examples.simple.value)
+        try await sut.deleteAllImposters()
 
         let allImposters = try await sut.getAllImposters()
 
