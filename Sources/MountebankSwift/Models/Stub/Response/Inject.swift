@@ -6,7 +6,7 @@ public struct Inject: StubResponse, Codable, Equatable {
     public let injection: String
 
     public init(_ javascript: String) {
-        self.injection = javascript
+        injection = javascript
     }
 
     public init(from decoder: Decoder) throws {

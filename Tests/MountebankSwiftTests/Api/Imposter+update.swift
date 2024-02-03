@@ -15,7 +15,7 @@ extension Imposter {
             requests: requests
         )
     }
-    
+
     func update(networkProtocol: Imposter.NetworkProtocol) -> Imposter {
         Imposter(
             port: port,
@@ -28,7 +28,7 @@ extension Imposter {
             requests: requests
         )
     }
-    
+
     func update(stubs: [Stub]) -> Imposter {
         Imposter(
             port: port,
@@ -54,7 +54,7 @@ extension Imposter {
             requests: requests
         )
     }
-    
+
     func update(recordRequests: Bool) -> Imposter {
         Imposter(
             port: port,

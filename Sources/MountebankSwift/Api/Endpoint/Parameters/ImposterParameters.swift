@@ -6,8 +6,8 @@ public struct ImposterParameters: EndpointParameters {
     let removeProxies: Bool?
 
     /// - Parameters:
-    ///   - replayable: Set to true to retrieve the minimum amount of information for creating the imposter in the future.
-    ///     This leaves out the requests array and any hypermedia.
+    ///   - replayable: Set to true to retrieve the minimum amount of information for creating the imposter in the
+    ///     future. This leaves out the requests array and any hypermedia.
     ///   - removeProxies: Set to true to remove all proxy responses (and stubs) from the response. This is useful
     ///     in record-playback scenarios where you want to seed the imposters with proxy information but leave it out on
     ///     subsequent test runs. You can recreate the imposter in the future by using the response.

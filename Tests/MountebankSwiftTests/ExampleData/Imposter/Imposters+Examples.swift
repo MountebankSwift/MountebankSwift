@@ -12,7 +12,7 @@ extension Imposters {
                     [
                         "protocol": "http",
                         "port": 3535,
-                        "stubs": []
+                        "stubs": [],
                     ],
                 ],
             ]
