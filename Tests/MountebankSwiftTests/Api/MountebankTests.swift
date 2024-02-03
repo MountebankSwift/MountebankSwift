@@ -31,6 +31,14 @@ class MountebankTests: XCTestCase {
         let result = try await sut.getImposter(port: port)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        XCTAssertEqual(
+            httpClientSpy.httpRequestReceivedRequest,
+            HTTPRequest(
+                url: Endpoint.getImposter(port: port, parameters: ImposterParameters()).makeEndpointUrl(baseUrl: sut.mountebankURL),
+                method: .get,
+                headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
+            )
+        )
         XCTAssertEqual(imposter.value, result)
     }
 
