@@ -62,7 +62,6 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
-    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: A ``Imposter`` that listens to the provided port
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
@@ -87,10 +86,10 @@ public struct Mountebank {
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getAllImposters(parameters: ImposterParameters = ImposterParameters()) async throws -> Imposters {
+    public func getAllImposters() async throws -> Imposters {
         try await sendDataToEndpoint(
             body: nil,
-            endpoint: Endpoint.getAllImposters(parameters: parameters),
+            endpoint: Endpoint.getAllImposters(parameters: ImposterParameters(replayable: true)),
             type: Imposters.self
         )
     }
