@@ -43,8 +43,8 @@ final class MountebankIntegrationTests: XCTestCase {
         }
 
         let expectedResult = imposterToPost
-            .update(numberOfRequests: 0)
-            .update(requests: [])
+            .with(numberOfRequests: 0)
+            .with(requests: [])
 
         XCTAssertEqual(imposterResult, expectedResult)
     }
@@ -58,7 +58,7 @@ final class MountebankIntegrationTests: XCTestCase {
         }
 
         let expectedResult = imposterToPost
-            .update(networkProtocol: .https(
+            .with(networkProtocol: .https(
                 allowCORS: nil,
                 rejectUnauthorized: true,
                 certificateAuthority: ExampleCert.certificateAuthority,
@@ -67,8 +67,8 @@ final class MountebankIntegrationTests: XCTestCase {
                 mutualAuth: false,
                 ciphers: "TLS_AES_256_GCM_SHA384"
             ))
-            .update(numberOfRequests: 0)
-            .update(requests: [])
+            .with(numberOfRequests: 0)
+            .with(requests: [])
 
         XCTAssertEqual(imposterResult, expectedResult)
     }
@@ -121,15 +121,15 @@ final class MountebankIntegrationTests: XCTestCase {
 
     func testPutImposters() async throws {
         _ = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
-        let updatedImpostersResult = try await sut.putImposters(imposters: Imposters.Examples.single.value)
+        let updatedImpostersResult = try await sut.putImposters(imposters: Imposters.Examples.single.value.imposters)
 
         let postedFirstImposter = try XCTUnwrap(Imposters.Examples.single.value.imposters.first)
         let expectedResult = postedFirstImposter
-            .update(numberOfRequests: 0)
-            .update(requests: nil)
+            .with(numberOfRequests: 0)
+            .with(requests: nil)
 
-        XCTAssertEqual(updatedImpostersResult.imposters.count, 1)
-        XCTAssertEqual(updatedImpostersResult.imposters.first, expectedResult)
+        XCTAssertEqual(updatedImpostersResult.count, 1)
+        XCTAssertEqual(updatedImpostersResult.first, expectedResult)
     }
 
     func testUpdatingImposter() async throws {
@@ -149,10 +149,10 @@ final class MountebankIntegrationTests: XCTestCase {
         let imposter2 = try await sut.postImposter(imposter: Imposter.Examples.simple.value)
         let allImposters = try await sut.getAllImposters()
 
-        let expectedResult = Imposters(imposters: [
-            imposter1.update(numberOfRequests: nil).update(requests: nil),
-            imposter2.update(numberOfRequests: nil).update(requests: nil),
-        ])
+        let expectedResult = [
+            imposter1.with(numberOfRequests: nil).with(requests: nil),
+            imposter2.with(numberOfRequests: nil).with(requests: nil),
+        ]
 
         XCTAssertEqual(allImposters, expectedResult)
     }
@@ -164,7 +164,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let allImposters = try await sut.getAllImposters()
 
-        XCTAssertEqual(allImposters.imposters.count, 0)
+        XCTAssertEqual(allImposters.count, 0)
     }
 
     func testDeleteSavedProxyResponses() async throws {

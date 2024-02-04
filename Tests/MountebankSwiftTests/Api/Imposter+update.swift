@@ -3,7 +3,7 @@ import Foundation
 
 extension Imposter {
 
-    func update(port: Int) -> Imposter {
+    func with(port: Int) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
@@ -16,7 +16,7 @@ extension Imposter {
         )
     }
 
-    func update(networkProtocol: Imposter.NetworkProtocol) -> Imposter {
+    func with(networkProtocol: Imposter.NetworkProtocol) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
@@ -29,7 +29,7 @@ extension Imposter {
         )
     }
 
-    func update(stubs: [Stub]) -> Imposter {
+    func with(stubs: [Stub]) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
@@ -42,7 +42,7 @@ extension Imposter {
         )
     }
 
-    func update(requests: [RecordedRequest]?) -> Imposter {
+    func with(requests: [RecordedRequest]?) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
@@ -55,7 +55,7 @@ extension Imposter {
         )
     }
 
-    func update(recordRequests: Bool) -> Imposter {
+    func with(recordRequests: Bool) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
@@ -68,7 +68,7 @@ extension Imposter {
         )
     }
 
-    func update(numberOfRequests: Int?) -> Imposter {
+    func with(numberOfRequests: Int?) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
