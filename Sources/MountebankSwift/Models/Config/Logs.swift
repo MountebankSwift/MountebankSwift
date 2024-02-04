@@ -1,7 +1,7 @@
 import Foundation
 
 /// Logs of the mountebank server
-/// 
+///
 /// [mbtest.org/docs/api/contracts?type=logs](https://www.mbtest.org/docs/api/contracts?type=logs)
 public struct Logs: Codable, Equatable {
 

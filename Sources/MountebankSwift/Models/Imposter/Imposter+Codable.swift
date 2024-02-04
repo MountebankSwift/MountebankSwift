@@ -68,7 +68,7 @@ extension Imposter {
         }
 
         name = try container.decodeIfPresent(String.self, forKey: .name)
-        stubs = try container.decode([Stub].self, forKey: .stubs)
+        stubs = try container.decodeIfPresent([Stub].self, forKey: .stubs) ?? []
         defaultResponse = try container.decodeIfPresent(Is.self, forKey: .defaultResponse)
         recordRequests = try container.decodeIfPresent(Bool.self, forKey: .recordRequests)
         numberOfRequests = try container.decodeIfPresent(Int.self, forKey: .numberOfRequests)

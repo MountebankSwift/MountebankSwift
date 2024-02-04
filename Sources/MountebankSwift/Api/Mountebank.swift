@@ -66,8 +66,8 @@ public struct Mountebank {
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getImposter(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getImposter(port: port))
+    public func getImposter(port: Int, parameters: ImposterParameters = ImposterParameters()) async throws -> Imposter {
+        try await sendDataToEndpoint(endpoint: .getImposter(port: port, parameters: parameters))
     }
 
     /// Get a list of all Imposters
@@ -76,12 +76,18 @@ public struct Mountebank {
     /// basic information and hypermedia. If you want more information, either get the single ``Imposter`` or use the
     /// `replayable` flag.
     ///
+    /// - Parameters:
+    ///   - parameters: The parameters for changing the imposter response
+    ///
     /// - Returns: A list of all ``Imposters``
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getAllImposters() async throws -> Imposters {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getAllImposters(), type: Imposters.self)
+    public func getAllImposters() async throws -> [Imposter] {
+        try await sendDataToEndpoint(
+            endpoint: .getAllImposters(parameters: ImposterParameters(replayable: true)),
+            responseType: Imposters.self
+        ).imposters
     }
 
     /// Create a single Imposter
@@ -99,7 +105,7 @@ public struct Mountebank {
     @discardableResult
     public func postImposter(imposter: Imposter) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposter())
+        return try await sendDataToEndpoint(body: bodyData, endpoint: .postImposter())
     }
 
     /// Overwrite all Imposters with a new set of Imposters
@@ -111,13 +117,18 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - imposter: ``Imposter`` that will be created
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: The created ``Imposter`` with the port the ``Imposter`` will be available on.
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func putImposters(imposters: Imposters) async throws -> Imposters {
-        let bodyData = try encodeJson(encodable: imposters)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposters(), type: Imposters.self)
+    public func putImposters(imposters: [Imposter]) async throws -> [Imposter] {
+        let bodyData = try encodeJson(encodable: Imposters(imposters: imposters))
+        return try await sendDataToEndpoint(
+            body: bodyData,
+            endpoint: .putImposters(),
+            responseType: Imposters.self
+        ).imposters
     }
 
     /// Add a stub to an existing Imposter
@@ -139,7 +150,7 @@ public struct Mountebank {
     public func postImposterStub(stub: Stub, index: Int? = nil, port: Int) async throws -> Imposter {
         let addStub = AddStub(index: index, stub: stub)
         let bodyData = try encodeJson(encodable: addStub)
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.postImposterStub(port: port))
+        return try await sendDataToEndpoint(body: bodyData, endpoint: .postImposterStub(port: port))
     }
 
     /// Delete a single Imposter
@@ -151,12 +162,16 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: The deleted ``Imposter``
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func deleteImposter(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteImposter(port: port))
+    public func deleteImposter(
+        port: Int,
+        parameters: ImposterParameters = ImposterParameters()
+    ) async throws -> Imposter {
+        try await sendDataToEndpoint(endpoint: .deleteImposter(port: port, parameters: parameters))
     }
 
     /// Delete all Imposters
@@ -165,12 +180,12 @@ public struct Mountebank {
     /// sockets Mountebank has open will be closed, and the response body will contain exactly what
     /// you need to mass create the same ``Imposters`` in the future.
     ///
-    /// - Returns: The deleted ``Imposter``
+    /// - Returns: The deleted ``Imposters``
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func deleteAllImposters() async throws -> Imposters {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteAllImposters(), type: Imposters.self)
+    public func deleteAllImposters() async throws -> [Imposter] {
+        try await sendDataToEndpoint(endpoint: .deleteAllImposters(), responseType: Imposters.self).imposters
     }
 
     /// Create a Imposter url
@@ -199,7 +214,7 @@ public struct Mountebank {
     @discardableResult
     public func putImposterStubs(stubs: [Stub], port: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: Stubs(stubs: stubs))
-        return try await sendDataToEndpoint(body: bodyData, endpoint: Endpoint.putImposterStubs(port: port))
+        return try await sendDataToEndpoint(body: bodyData, endpoint: .putImposterStubs(port: port))
     }
 
     /// Remove a single stub from an existing Imposter
@@ -215,7 +230,7 @@ public struct Mountebank {
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteStub(port: Int, stubIndex: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteStub(port: port, stubIndex: stubIndex))
+        try await sendDataToEndpoint(endpoint: .deleteStub(port: port, stubIndex: stubIndex))
     }
 
     /// Change a Stub in an existing Imposter
@@ -236,7 +251,7 @@ public struct Mountebank {
         let bodyData = try encodeJson(encodable: stub)
         return try await sendDataToEndpoint(
             body: bodyData,
-            endpoint: Endpoint.putImposterStub(port: port, stubIndex: stubIndex)
+            endpoint: .putImposterStub(port: port, stubIndex: stubIndex)
         )
     }
 
@@ -256,7 +271,7 @@ public struct Mountebank {
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteSavedProxyResponses(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedProxyResponses(port: port))
+        try await sendDataToEndpoint(endpoint: .deleteSavedProxyResponses(port: port))
     }
 
     /// Delete saved requests from an Imposter
@@ -272,7 +287,7 @@ public struct Mountebank {
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteSavedRequests(port: Int) async throws -> Imposter {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.deleteSavedRequests(port: port))
+        try await sendDataToEndpoint(endpoint: .deleteSavedRequests(port: port))
     }
 
     // MARK: - Util
@@ -286,7 +301,7 @@ public struct Mountebank {
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     public func getConfig() async throws -> Config {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getConfig(), type: Config.self)
+        try await sendDataToEndpoint(endpoint: .getConfig(), responseType: Config.self)
     }
 
     /// Get the logs from the current session.
@@ -294,11 +309,17 @@ public struct Mountebank {
     /// In the rare scenario where Mountebank is hosted on a different server and you need access to the ``Logs``,
     /// they are accessible through this endpoint.
     ///
+    /// - Parameters:
+    ///   - parameters: The parameters for selecting the logs
     /// - Returns: The ``Logs`` for of the Mountebank server
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
-    public func getLogs(startIndex: Int? = nil, endIndex: Int? = nil) async throws -> Logs {
-        try await sendDataToEndpoint(body: nil, endpoint: Endpoint.getLogs(), type: Logs.self)
+    public func getLogs(
+        startIndex: Int? = nil,
+        endIndex: Int? = nil,
+        parameters: LogParameters = LogParameters()
+    ) async throws -> Logs {
+        try await sendDataToEndpoint(endpoint: .getLogs(parameters: parameters), responseType: Logs.self)
     }
 
     /// Validate if the Mountebank server is up.
@@ -308,10 +329,7 @@ public struct Mountebank {
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     public func testConnection() async throws {
-        _ = try await httpClient.httpRequest(HTTPRequest(
-            url: mountebankURL,
-            method: .get
-        ))
+        _ = try await httpClient.httpRequest(HTTPRequest(url: mountebankURL, method: .get))
     }
 
     // MARK: - Internal
@@ -319,7 +337,7 @@ public struct Mountebank {
     private func sendDataToEndpoint<T: Decodable>(
         body: Data? = nil,
         endpoint: Endpoint,
-        type: T.Type = Imposter.self
+        responseType: T.Type = Imposter.self
     ) async throws -> T {
         let request = makeRequest(body: body, endPoint: endpoint)
         let httpResponse = try await httpClient.httpRequest(request)
@@ -327,7 +345,7 @@ public struct Mountebank {
         return imposterResponse
     }
 
-    private func mapHttpResponse<T: Decodable>(response: HTTPResponse, type: T.Type = Imposter.self) throws -> T {
+    private func mapHttpResponse<T: Decodable>(response: HTTPResponse, type: T.Type) throws -> T {
         guard response.statusCode.responseType == .success else {
             throw mapMountebankErrors(data: response.body)
         }
@@ -345,7 +363,7 @@ public struct Mountebank {
 
     private func makeRequest(body: Data?, endPoint: Endpoint) -> HTTPRequest {
         HTTPRequest(
-            url: mountebankURL.appendingPathComponent(endPoint.templatePath),
+            url: endPoint.makeEndpointUrl(baseUrl: mountebankURL),
             method: endPoint.method,
             body: body,
             headers: [HTTPHeaders.contentType: MimeType.json.rawValue]

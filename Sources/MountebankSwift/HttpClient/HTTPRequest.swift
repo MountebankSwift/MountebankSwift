@@ -1,6 +1,6 @@
 import Foundation
 
-struct HTTPRequest {
+struct HTTPRequest: Equatable {
     let url: URL
     let method: HTTPMethod
     let body: Data?

@@ -31,6 +31,15 @@ class MountebankTests: XCTestCase {
         let result = try await sut.getImposter(port: port)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        XCTAssertEqual(
+            httpClientSpy.httpRequestReceivedRequest,
+            HTTPRequest(
+                url: Endpoint.getImposter(port: port, parameters: ImposterParameters())
+                    .makeEndpointUrl(baseUrl: sut.mountebankURL),
+                method: .get,
+                headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
+            )
+        )
         XCTAssertEqual(imposter.value, result)
     }
 
@@ -42,7 +51,7 @@ class MountebankTests: XCTestCase {
         let result = try await sut.getAllImposters()
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value, result)
+        XCTAssertEqual(imposters.value.imposters, result)
     }
 
     func testGetAllImposterRemoteError() async throws {
@@ -109,10 +118,10 @@ class MountebankTests: XCTestCase {
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let result = try await sut.putImposters(imposters: imposters.value)
+        let result = try await sut.putImposters(imposters: imposters.value.imposters)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value, result)
+        XCTAssertEqual(imposters.value.imposters, result)
     }
 
     func testPostImposterStub() async throws {
@@ -148,7 +157,7 @@ class MountebankTests: XCTestCase {
         let result = try await sut.deleteAllImposters()
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value, result)
+        XCTAssertEqual(imposters.value.imposters, result)
     }
 
     func testMakeImposterUrl() async throws {

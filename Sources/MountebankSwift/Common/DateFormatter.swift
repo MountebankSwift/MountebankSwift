@@ -22,7 +22,6 @@ final class DateFormatter {
     }
 
     func formatFromDate(_ date: Date) -> String {
-        // swiftlint:disable:next force_unwrapping
         Self.isoDateFormatter.string(from: date)
     }
 }
