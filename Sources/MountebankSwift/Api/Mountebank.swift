@@ -314,11 +314,7 @@ public struct Mountebank {
     /// - Returns: The ``Logs`` for of the Mountebank server
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
-    public func getLogs(
-        startIndex: Int? = nil,
-        endIndex: Int? = nil,
-        parameters: LogParameters = LogParameters()
-    ) async throws -> Logs {
+    public func getLogs(parameters: LogParameters = LogParameters()) async throws -> Logs {
         try await sendDataToEndpoint(endpoint: .getLogs(parameters: parameters), responseType: Logs.self)
     }
 
