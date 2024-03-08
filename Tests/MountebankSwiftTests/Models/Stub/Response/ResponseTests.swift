@@ -36,10 +36,17 @@ final class ResponseTests: XCTestCase {
         )
     }
 
-    func testCodable() throws {
+    func testEncodable() throws {
         try assertEncode(
             Is.Examples.jsonEncodable.value,
             Is.Examples.jsonEncodable.json
+        )
+        // Not possible to decode json back into codable
+    }
+    func testEncodableCustomDateFormatAndKeyEncodingStrategy() throws {
+        try assertEncode(
+            Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.value,
+            Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.json
         )
         // Not possible to decode json back into codable
     }
