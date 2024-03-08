@@ -53,12 +53,13 @@ extension Is {
         statusCode: Int = 200,
         headers: [String: String]? = nil,
         body: any Codable,
+        encoder: JSONEncoder? = nil,
         parameters: ResponseParameters? = nil
     ) {
         self.init(
             statusCode: statusCode,
             headers: headers,
-            body: .jsonEncodable(body),
+            body: .jsonEncodable(body, encoder),
             parameters: parameters
         )
     }

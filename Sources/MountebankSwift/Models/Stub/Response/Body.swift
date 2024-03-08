@@ -1,12 +1,14 @@
 import Foundation
 
-private var jsonEncoder = JSONEncoder()
-
 /// A body for an ``Is`` response
 public enum Body: Equatable {
     case text(String)
+    /// A JSON body that will be encoded to a text response
     case json(JSON)
-    case jsonEncodable(Encodable)
+    /// An Encodable body that will be encoded to a text response
+    /// Custom encoding strategies are supported by providing a custom JSONEncoder
+    case jsonEncodable(Encodable, JSONEncoder? = nil)
+    /// A Data response that will be base64 encoded
     case data(Data)
 
     public static func == (lhs: Body, rhs: Body) -> Bool {
@@ -17,11 +19,14 @@ public enum Body: Equatable {
             return lhs == rhs
         case (.data(let lhs), .data(let rhs)):
             return lhs == rhs
-        case (.jsonEncodable(let lhs), .jsonEncodable(let rhs)):
+        case (.jsonEncodable(let lhs, let lhsEncoder), .jsonEncodable(let rhs, let rhsEncoder)):
+            guard lhsEncoder === rhsEncoder else {
+                return false
+            }
             do {
-                return try jsonEncoder.encode(lhs) == jsonEncoder.encode(rhs)
+                return try (lhsEncoder ?? jsonEncoder).encode(lhs) == (rhsEncoder ?? jsonEncoder).encode(rhs)
             } catch {
-                print("Failed to decode object: \(error)")
+                print("Failed to encode object: \(error)")
                 return false
             }
         case (.text, _), (.json, _), (.jsonEncodable, _), (.data, _):

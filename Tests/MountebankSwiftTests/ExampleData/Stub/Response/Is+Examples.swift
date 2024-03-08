@@ -73,6 +73,13 @@ extension Is {
             ]
         )
 
+        static let customJSONEncoder: JSONEncoder = {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            return encoder
+        }()
+
         static let jsonEncodableCustomDateFormatAndKeyEncodingStrategy = Example(
             value: Is(
                 statusCode: 200,
@@ -82,7 +89,8 @@ extension Is {
                     bar: SomeCodableObject.Bar(
                         dateOfBirth: Date(timeIntervalSinceReferenceDate: 0)
                     )
-                )
+                ),
+                encoder: customJSONEncoder
             ),
             json: [
                 "statusCode": 200,
