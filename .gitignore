@@ -12,3 +12,4 @@ DerivedData/
 # Mountebank
 mb.log
 mb*.log
+mb*.pid
