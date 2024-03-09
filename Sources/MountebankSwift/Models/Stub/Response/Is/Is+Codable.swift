@@ -34,8 +34,14 @@ extension Is: Codable {
         case .data(let data):
             try container.encode(BodyMode.binary, forKey: .mode)
             try container.encode(data, forKey: .body)
-        case .jsonEncodable(let value):
-            try container.encode(value, forKey: .body)
+        case .jsonEncodable(let value, let customJsonEncoder):
+            if let customJsonEncoder {
+                let data = try customJsonEncoder.encode(value)
+                let json = try jsonDecoder.decode(JSON.self, from: data)
+                try container.encode(json, forKey: .body)
+            } else {
+                try container.encode(value, forKey: .body)
+            }
         }
     }
 

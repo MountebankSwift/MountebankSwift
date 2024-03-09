@@ -31,7 +31,7 @@ enum SampleFile: String {
             return .data(data)
         case .json:
             // swiftlint:disable:next force_try
-            return .json(try! testDecoder.decode(JSON.self, from: data))
+            return .json(try! jsonDecoder.decode(JSON.self, from: data))
         case .txt, .html:
             return .text(string)
         }

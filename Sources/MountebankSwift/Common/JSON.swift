@@ -24,6 +24,12 @@
 
 import Foundation
 
+fileprivate let prettyPrintingJSONEncoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted]
+    return encoder
+}()
+
 /// A JSON value representation. This is a bit more useful than the naïve `[String:Any]` type
 /// for JSON values, since it makes sure only valid JSON values are present
 ///
@@ -87,10 +93,8 @@ public enum JSON: Codable, Hashable {
         case .null:
             return "null"
         default:
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = [.prettyPrinted]
             // swiftlint:disable:next force_try force_unwrapping
-            return try! String(data: encoder.encode(self), encoding: .utf8)!
+            return try! String(data: prettyPrintingJSONEncoder.encode(self), encoding: .utf8)!
         }
     }
 }
@@ -245,8 +249,8 @@ extension JSON {
     /// Create a JSON value from an `Encodable`. This will give you access to the “raw”
     /// encoded JSON value the `Encodable` is serialized into.
     public init<T: Encodable>(encodable: T) throws {
-        let encoded = try JSONEncoder().encode(encodable)
-        self = try JSONDecoder().decode(JSON.self, from: encoded)
+        let encoded = try jsonEncoder.encode(encodable)
+        self = try jsonDecoder.decode(JSON.self, from: encoded)
     }
 }
 

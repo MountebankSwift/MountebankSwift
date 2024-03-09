@@ -1,5 +1,9 @@
 import Foundation
 
+// Project wide en/decoders
+let jsonDecoder = JSONDecoder()
+let jsonEncoder = JSONEncoder()
+
 /// Mountebank client to connect to the Mountebank stub server.
 ///
 /// The client is used to submit imposters to the Mountebank server.
@@ -32,8 +36,6 @@ public struct Mountebank {
     }
 
     private let httpClient: HttpClientProtocol
-    private let jsonEncoder = JSONEncoder()
-    private let jsonDecoder = JSONDecoder()
 
     /// - Parameters:
     ///   - host: The Mountebank server host address
@@ -381,5 +383,4 @@ public struct Mountebank {
             throw MountebankValidationError.invalidResponseData
         }
     }
-
 }

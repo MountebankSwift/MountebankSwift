@@ -43,7 +43,7 @@ extension Is {
 
         struct SomeCodableObject: Codable {
             struct Bar: Codable {
-                let baz: String
+                let dateOfBirth: Date
             }
 
             let foo: String
@@ -54,12 +54,53 @@ extension Is {
             value: Is(
                 statusCode: 200,
                 headers: ["Content-Type": "application/json"],
-                body: SomeCodableObject(foo: "Foo", bar: SomeCodableObject.Bar(baz: "Baz"))
+                body: SomeCodableObject(
+                    foo: "Foo",
+                    bar: SomeCodableObject.Bar(
+                        dateOfBirth: Date(timeIntervalSinceReferenceDate: 10_000_00)
+                    )
+                )
             ),
             json: [
                 "statusCode": 200,
                 "headers": ["Content-Type": "application/json"],
-                "body": ["foo": "Foo", "bar": ["baz": "Baz"]],
+                "body": [
+                    "foo": "Foo",
+                    "bar": [
+                        "dateOfBirth": 1000000
+                    ]
+                ],
+            ]
+        )
+
+        static let customJSONEncoder: JSONEncoder = {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            return encoder
+        }()
+
+        static let jsonEncodableCustomDateFormatAndKeyEncodingStrategy = Example(
+            value: Is(
+                statusCode: 200,
+                headers: ["Content-Type": "application/json"],
+                body: SomeCodableObject(
+                    foo: "Foo",
+                    bar: SomeCodableObject.Bar(
+                        dateOfBirth: Date(timeIntervalSinceReferenceDate: 0)
+                    )
+                ),
+                encoder: customJSONEncoder
+            ),
+            json: [
+                "statusCode": 200,
+                "headers": ["Content-Type": "application/json"],
+                "body": [
+                    "foo": "Foo",
+                    "bar": [
+                        "date_of_birth": "2001-01-01T00:00:00Z"
+                    ]
+                ],
             ]
         )
 

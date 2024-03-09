@@ -7,19 +7,16 @@ class MountebankTests: XCTestCase {
     // swiftlint:disable implicitly_unwrapped_optional
     private var sut: Mountebank!
     private var httpClientSpy: HttpClientSpy!
-    private var jsonEncoder: JSONEncoder!
     // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
         httpClientSpy = HttpClientSpy()
-        jsonEncoder = JSONEncoder()
         sut = Mountebank(host: .localhost, port: 2525, httpClient: httpClientSpy)
     }
 
     override func tearDown() async throws {
         httpClientSpy = nil
         sut = nil
-        jsonEncoder = nil
     }
 
     func testGetImposter() async throws {
@@ -257,6 +254,6 @@ class MountebankTests: XCTestCase {
     }
 
     private func makeDataFromJSON(_ json: JSON) throws -> Data {
-        try jsonEncoder.encode(json)
+        try testEncoder.encode(json)
     }
 }
