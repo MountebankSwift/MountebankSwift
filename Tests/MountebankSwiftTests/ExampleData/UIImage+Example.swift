@@ -11,6 +11,15 @@ import UIKit
 
 typealias StubImage = UIImage
 
+#elseif os(Linux)
+
+struct StubImage {
+    var data: Data
+
+    init?(data: Data) {
+        self.data = data
+    }
+}
 #endif
 
 // swiftlint:disable force_unwrapping

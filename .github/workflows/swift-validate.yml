@@ -40,11 +40,13 @@ jobs:
       - name: Setup Mountebank
         run: |
           RUNNER_TRACKING_ID="" && mb start --allowInjection &
+      - name: Resolve packages
+        run: swift package resolve
       - name: Build Package
         env:
           SWIFTPM_ENABLE_PLUGINS: 1
         run: swift build -v
       - name: Run tests
-        run: swift test
+        run: swift test --parallel
         env:
           SWIFTPM_ENABLE_PLUGINS: 1
