@@ -47,6 +47,6 @@ jobs:
           SWIFTPM_ENABLE_PLUGINS: 1
         run: swift build -v
       - name: Run tests
-        run: swift test --parallel
+        run: swift test
         env:
           SWIFTPM_ENABLE_PLUGINS: 1
