@@ -67,8 +67,8 @@ extension Is {
                 "body": [
                     "foo": "Foo",
                     "bar": [
-                        "dateOfBirth": 1000000
-                    ]
+                        "dateOfBirth": 1000000,
+                    ],
                 ],
             ]
         )
@@ -98,8 +98,8 @@ extension Is {
                 "body": [
                     "foo": "Foo",
                     "bar": [
-                        "date_of_birth": "2001-01-01T00:00:00Z"
-                    ]
+                        "date_of_birth": "2001-01-01T00:00:00Z",
+                    ],
                 ],
             ]
         )

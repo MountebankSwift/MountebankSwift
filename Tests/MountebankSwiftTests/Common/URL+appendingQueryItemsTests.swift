@@ -1,3 +1,6 @@
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 import Foundation
 import XCTest
 @testable import MountebankSwift
@@ -17,7 +20,7 @@ class URLAppendingQueryItemsTestsTests: XCTestCase {
     }
 
     func testMultipleQueryItems() {
-        let sut = URL(string: "http://localhost")?.appending(queryItems: [
+        let sut = URL(string: "http://localhost")?.appending([
             URLQueryItem(name: "name1", value: "value1"),
             URLQueryItem(name: "name2", value: "value2"),
         ])
