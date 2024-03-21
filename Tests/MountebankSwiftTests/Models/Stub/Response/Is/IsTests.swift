@@ -58,4 +58,38 @@ class IsTests: XCTestCase {
             Is.Examples.http404.value
         )
     }
+
+    func testEncodable() throws {
+        try assertEncode(
+            Is.Examples.jsonEncodable.value,
+            Is.Examples.jsonEncodable.json
+        )
+        // Not possible to decode json back into codable
+    }
+    func testEncodableCustomDateFormatAndKeyEncodingStrategy() throws {
+        try assertEncode(
+            Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.value,
+            Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.json
+        )
+        // Not possible to decode json back into codable
+    }
+
+    func testHttpResponse404() throws {
+        try assertEncode(
+            Is.Examples.http404.value,
+            Is.Examples.http404.json
+        )
+        try assertDecode(
+            Is.Examples.http404.json,
+            Is.Examples.http404.value
+        )
+    }
+
+    func testResponseParameters() throws {
+        // Parameters should not be encoded to the json here but on a higher level, so no decode test here
+        try assertEncode(
+            Is.Examples.withResponseParameters.value,
+            Is.Examples.withResponseParameters.json
+        )
+    }
 }

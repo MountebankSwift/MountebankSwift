@@ -68,4 +68,15 @@ final class StubTests: XCTestCase {
             Stub.Examples.withResponseParameters.value
         )
     }
+    
+    func testNoPredicates() throws {
+        try assertEncode(
+            Stub.Examples.noPredicates.value,
+            Stub.Examples.noPredicates.json
+        )
+        try assertDecode(
+            Stub.Examples.noPredicates.json,
+            Stub.Examples.noPredicates.value
+        )
+    }
 }

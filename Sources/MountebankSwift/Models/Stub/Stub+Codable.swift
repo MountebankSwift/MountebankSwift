@@ -8,13 +8,15 @@ extension Stub: Codable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(predicates, forKey: .predicates)
+        if !predicates.isEmpty {
+            try container.encode(predicates, forKey: .predicates)
+        }
         try container.encode(responses.map(\.codable), forKey: .responses)
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        predicates = try container.decode([Predicate].self, forKey: .predicates)
+        predicates = try container.decodeIfPresent([Predicate].self, forKey: .predicates) ?? []
         responses = try container.decode([CodableResponse].self, forKey: .responses)
             .map(\.stubResponse)
     }

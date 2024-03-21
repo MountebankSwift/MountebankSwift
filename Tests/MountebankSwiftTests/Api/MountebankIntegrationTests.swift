@@ -173,7 +173,7 @@ final class MountebankIntegrationTests: XCTestCase {
             networkProtocol: .https(),
             name: "Imposter with proxy",
             stubs: [Stub(
-                responses: [Proxy.Examples.proxy.value],
+                responses: [Proxy.Examples.simple.value],
                 predicates: [Predicate.Examples.equals.value]
             )]
         ))
@@ -207,7 +207,7 @@ final class MountebankIntegrationTests: XCTestCase {
             stubs: sampleFiles.map { file in
                 Stub(
                     response: Is(
-                        headers: [HTTPHeaders.contentType.rawValue: file.mimeType],
+                        headers: [HTTPHeaders.contentType.rawValue: .string(file.mimeType)],
                         body: file.body
                     ),
                     predicate: .equals(Request(path: "/\(file.rawValue)"))

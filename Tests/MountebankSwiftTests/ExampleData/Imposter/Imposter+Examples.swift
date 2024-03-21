@@ -3,6 +3,16 @@ import XCTest
 
 extension Imposter {
     enum Examples {
+        static let all: [Example] = [
+            simple,
+            json,
+            advanced,
+            withResponseData,
+            withExtraOptionsHttp,
+            withExtraOptionsHttps,
+            includingAllStubs,
+            simpleRecordRequests
+        ]
 
         static let simple = Example(
             value: Imposter(

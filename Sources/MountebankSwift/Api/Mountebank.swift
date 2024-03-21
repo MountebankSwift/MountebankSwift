@@ -64,11 +64,15 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
+    ///   - parameters: The parameters for changing the imposter response
     /// - Returns: A ``Imposter`` that listens to the provided port
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getImposter(port: Int, parameters: ImposterParameters = ImposterParameters()) async throws -> Imposter {
+    public func getImposter(
+        port: Int,
+        parameters: ImposterParameters = ImposterParameters(replayable: true, removeProxies: true)
+    ) async throws -> Imposter {
         try await sendDataToEndpoint(endpoint: .getImposter(port: port, parameters: parameters))
     }
 
@@ -85,9 +89,11 @@ public struct Mountebank {
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
-    public func getAllImposters() async throws -> [Imposter] {
+    public func getAllImposters(
+        parameters: ImposterParameters = ImposterParameters(replayable: true, removeProxies: true)
+    ) async throws -> [Imposter] {
         try await sendDataToEndpoint(
-            endpoint: .getAllImposters(parameters: ImposterParameters(replayable: true)),
+            endpoint: .getAllImposters(parameters: parameters),
             responseType: Imposters.self
         ).imposters
     }
@@ -380,7 +386,7 @@ public struct Mountebank {
         do {
             return try jsonDecoder.decode(type.self, from: data)
         } catch {
-            throw MountebankValidationError.invalidResponseData
+            throw MountebankValidationError.jsonDecodeError(error)
         }
     }
 }

@@ -17,5 +17,12 @@ extension Imposters {
                 ],
             ]
         )
+
+        static let multiple = Example(
+            value: Imposters(imposters: Imposter.Examples.all.map(\.value)),
+            json: [
+                "imposters": .array(Imposter.Examples.all.map(\.json)),
+            ]
+        )
     }
 }
