@@ -81,3 +81,25 @@ extension Predicate {
         )
     }
 }
+
+extension Predicate: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        switch self {
+        case .equals(let request, let predicateParameters),
+                .deepEquals(let request, let predicateParameters),
+                .contains(let request, let predicateParameters),
+                .startsWith(let request, let predicateParameters),
+                .endsWith(let request, let predicateParameters),
+                .matches(let request, let predicateParameters),
+                .exists(let request, let predicateParameters):
+            return enumSwiftString(depth: depth, [request, predicateParameters])
+        case .not(let predicate, let predicateParameters):
+            return enumSwiftString(depth: depth, [predicate, predicateParameters])
+        case .or(let array, let predicateParameters),
+                .and(let array, let predicateParameters):
+            return enumSwiftString(depth: depth, [array, predicateParameters])
+        case .inject(let string):
+            return enumSwiftString(depth: depth, [string])
+        }
+    }
+}

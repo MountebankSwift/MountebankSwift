@@ -140,3 +140,44 @@ public struct Imposter: Codable, Equatable {
         self.requests = requests
     }
 }
+
+extension Imposter: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("port", port),
+            ("networkProtocol", networkProtocol),
+            ("name", name),
+            ("stubs", stubs),
+            ("defaultResponse", defaultResponse),
+            ("recordRequests", recordRequests),
+            // numberOfRequests and requests are not included on purpose
+        ])
+    }
+}
+
+extension Imposter.NetworkProtocol: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        switch self {
+        case .http(allowCORS: let allowCORS):
+            return enumSwiftString(depth: depth, [("allowCORS", allowCORS)])
+        case .https(
+            allowCORS: let allowCORS,
+            rejectUnauthorized: let rejectUnauthorized,
+            certificateAuthority: let certificateAuthority,
+            key: let key,
+            certificate: let certificate,
+            mutualAuth: let mutualAuth,
+            ciphers: let ciphers
+        ):
+            return enumSwiftString(depth: depth, [
+                ("allowCORS", allowCORS),
+                ("rejectUnauthorized", rejectUnauthorized),
+                ("certificateAuthority", certificateAuthority),
+                ("key", key),
+                ("certificate", certificate),
+                ("mutualAuth", mutualAuth),
+                ("ciphers", ciphers),
+            ])
+        }
+    }
+}

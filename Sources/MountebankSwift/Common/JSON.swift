@@ -81,7 +81,9 @@ public enum JSON: Codable, Hashable {
             )
         }
     }
+}
 
+extension JSON: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .string(let str):
@@ -93,8 +95,32 @@ public enum JSON: Codable, Hashable {
         case .null:
             return "null"
         default:
-            // swiftlint:disable:next force_try force_unwrapping
             return try! String(data: prettyPrintingJSONEncoder.encode(self), encoding: .utf8)!
+        }
+    }
+}
+
+extension JSON: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        switch self {
+        case .string(let str):
+            return str.debugDescription
+        case .number(let num):
+            return try! String(data: jsonEncoder.encode(num), encoding: .utf8)!
+        case .bool(let bool):
+            return bool.description
+        case .null:
+            return ".null"
+        case .object(let items):
+            let result = items
+                .map { "\($0.debugDescription): \($1.debugDescription)" }
+                .joined(separator: DELIMITER)
+            return "[\(result)]"
+        case .array(let items):
+            let result = items
+                .map { $0.debugDescription }
+                .joined(separator: DELIMITER)
+            return "[\(result)]"
         }
     }
 }

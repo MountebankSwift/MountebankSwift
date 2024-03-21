@@ -12,3 +12,10 @@ public struct JSONPath: Codable, Equatable {
         self.selector = selector
     }
 }
+
+extension JSONPath: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        "JSONPath(selector: \(selector.debugDescription))"
+    }
+}
+

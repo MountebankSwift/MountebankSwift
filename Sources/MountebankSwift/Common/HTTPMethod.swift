@@ -8,3 +8,9 @@ public enum HTTPMethod: String, Codable, Equatable {
     case put = "PUT"
     case delete = "DELETE"
 }
+
+extension HTTPMethod: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        enumSwiftString(depth: depth)
+    }
+}
