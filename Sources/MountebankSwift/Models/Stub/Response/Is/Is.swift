@@ -53,3 +53,14 @@ public struct Is: StubResponse, Equatable {
             )
     }
 }
+
+extension Is: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("statusCode", statusCode),
+            ("headers", headers),
+            ("body", body),
+            ("parameters", parameters),
+        ])
+    }
+}

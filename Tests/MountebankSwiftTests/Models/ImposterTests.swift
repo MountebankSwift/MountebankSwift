@@ -1,5 +1,6 @@
 import XCTest
 @testable import MountebankSwift
+import InlineSnapshotTesting
 
 final class ImposterTests: XCTestCase {
     func testSimple() throws {
@@ -66,5 +67,36 @@ final class ImposterTests: XCTestCase {
             Imposter.Examples.includingAllStubs.json,
             Imposter.Examples.includingAllStubs.value
         )
+    }
+
+    func testRecreatable() {
+        assertInlineSnapshot(
+            of: Imposter.Examples.simple.value.debugSwiftString,
+            as: .lines
+        ) {
+            """
+            Imposter(
+                port: 19190,
+                networkProtocol: .http(
+                    allowCORS: false
+                ),
+                stubs: [
+                    Stub(
+                        response: Is(
+                            statusCode: 200,
+                            body: .text(
+                                "Hello world"
+                            )
+                        ),
+                        predicate: .equals(
+                            Request(
+                                path: "/text-200"
+                            )
+                        )
+                    )
+                ]
+            )
+            """
+        }
     }
 }

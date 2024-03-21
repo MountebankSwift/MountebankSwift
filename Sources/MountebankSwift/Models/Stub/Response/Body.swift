@@ -34,3 +34,26 @@ public enum Body: Equatable {
         }
     }
 }
+
+extension Body: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        switch self {
+        case .text(let string):
+            return enumSwiftString(depth: depth, [string])
+        case .json(let json):
+            return enumSwiftString(depth: depth, [json])
+        case .jsonEncodable(let encodable, let encoder):
+            do {
+                let data = try (encoder ?? jsonEncoder).encode(encodable)
+                guard let string = String(bytes: data, encoding: .utf8) else {
+                    return ">>>> FAILED TO ENCODE ENCODABLE <<<<"
+                }
+                return Body.json("").enumSwiftString(depth: depth, [string.swiftString(depth: depth)])
+            } catch {
+                return ">>>> FAILED TO ENCODE ENCODABLE <<<<"
+            }
+        case .data(let data):
+            return enumSwiftString(depth: depth, [data])
+        }
+    }
+}

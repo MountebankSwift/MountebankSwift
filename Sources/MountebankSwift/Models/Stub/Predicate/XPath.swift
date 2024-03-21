@@ -21,3 +21,12 @@ public struct XPath: Codable, Equatable {
         self.namespace = namespace
     }
 }
+
+extension XPath: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("selector", selector),
+            ("namespace", namespace)
+        ])
+    }
+}

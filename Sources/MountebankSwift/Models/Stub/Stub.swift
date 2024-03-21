@@ -58,3 +58,25 @@ public struct Stub: Equatable {
         self.init(responses: [response], predicates: [])
     }
 }
+
+extension Stub: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [responseProperty, predicateProperty])
+    }
+
+    private var responseProperty: (String, Recreatable) {
+        responses.count == 1
+            ? ("response", responses[0])
+            : ("responses", responses)
+    }
+
+    private var predicateProperty: (String, Recreatable) {
+        guard !predicates.isEmpty else {
+            return ("predicates", [Predicate]())
+        }
+
+        return predicates.count == 1
+            ? ("predicate", predicates[0])
+            : ("predicates", predicates)
+    }
+}

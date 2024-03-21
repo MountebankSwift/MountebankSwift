@@ -121,3 +121,36 @@ public struct PredicateGenerator: Codable, Equatable {
         self.ignore = ignore
     }
 }
+
+extension Proxy: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("to", to),
+            ("mode", mode),
+            ("predicateGenerators", predicateGenerators),
+            ("addWaitBehavior", addWaitBehavior),
+            ("addDecorateBehavior", addDecorateBehavior)
+        ])
+    }
+}
+
+extension PredicateGenerator: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("matches", matches),
+            ("caseSensitive", caseSensitive),
+            ("except", except),
+            ("xpath", xpath),
+            ("jsonpath", jsonpath),
+            ("predicateOperator", predicateOperator),
+            ("inject", inject),
+            ("ignore", ignore)
+        ])
+    }
+}
+
+extension Proxy.Mode: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        enumSwiftString(depth: depth)
+    }
+}

@@ -35,3 +35,15 @@ public struct PredicateParameters: Equatable {
         }
     }
 }
+
+extension PredicateParameters: Recreatable {
+    public func swiftString(depth: Int) -> String {
+        structSwiftString(depth: depth, [
+            ("caseSensitive", caseSensitive),
+            ("except", except),
+            ("xPath", xPath),
+            ("jsonPath", jsonPath)
+        ])
+    }
+}
+

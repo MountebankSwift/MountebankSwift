@@ -13,7 +13,7 @@ final class StubTests: XCTestCase {
             Stub.Examples.text.value
         )
     }
-
+    
     func testJSON() throws {
         try assertEncode(
             Stub.Examples.json.value,
@@ -24,7 +24,7 @@ final class StubTests: XCTestCase {
             Stub.Examples.json.value
         )
     }
-
+    
     func testHTTP404() throws {
         try assertEncode(
             Stub.Examples.http404.value,
@@ -35,7 +35,7 @@ final class StubTests: XCTestCase {
             Stub.Examples.http404.value
         )
     }
-
+    
     func testMultipleResponses() throws {
         try assertEncode(
             Stub.Examples.textWhenRefresh404.value,
@@ -46,7 +46,7 @@ final class StubTests: XCTestCase {
             Stub.Examples.textWhenRefresh404.value
         )
     }
-
+    
     func testMultiplePredicatesAndResponses() throws {
         try assertEncode(
             Stub.Examples.multiplePredicatesAndResponses.value,
@@ -57,7 +57,7 @@ final class StubTests: XCTestCase {
             Stub.Examples.multiplePredicatesAndResponses.value
         )
     }
-
+    
     func testWithResponseParameters() throws {
         try assertEncode(
             Stub.Examples.withResponseParameters.value,
