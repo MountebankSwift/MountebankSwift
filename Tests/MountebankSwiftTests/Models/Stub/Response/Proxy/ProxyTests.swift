@@ -25,7 +25,6 @@ final class ProxyTests: XCTestCase {
         )
     }
 
-
     func testPredicateGeneratorsProxy() throws {
         try assertEncode(
             Proxy.Examples.predicateGenerators.value,
@@ -35,5 +34,5 @@ final class ProxyTests: XCTestCase {
             Proxy.Examples.predicateGenerators.json,
             Proxy.Examples.predicateGenerators.value
         )
-    } 
+    }
 }

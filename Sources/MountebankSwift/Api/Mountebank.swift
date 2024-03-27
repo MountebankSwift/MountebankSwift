@@ -64,16 +64,26 @@ public struct Mountebank {
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
-    ///   - parameters: The parameters for changing the imposter response
+    ///   - replayable: Set to `true` to retrieve the minimum amount of information for creating the imposter in the
+    ///     future. This leaves out the requests array and any hypermedia.
+    ///   - removeProxies: Set to `true` to remove all proxy responses (and ``Stubs``) from the response. This is useful
+    ///     in record-playback scenarios where you want to seed the imposters with proxy information but leave it out on
+    ///     subsequent test runs. You can recreate the ``Imposter`` in the future by using the response.
     /// - Returns: A ``Imposter`` that listens to the provided port
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
     public func getImposter(
         port: Int,
-        parameters: ImposterParameters = ImposterParameters()
+        replayable: Bool = false,
+        removeProxies: Bool = false
     ) async throws -> Imposter {
-        try await sendDataToEndpoint(endpoint: .getImposter(port: port, parameters: parameters))
+        try await sendDataToEndpoint(
+            endpoint: .getImposter(port: port, parameters: ImposterParameters(
+                replayable: replayable,
+                removeProxies: removeProxies
+            ))
+        )
     }
 
     /// Get a list of all Imposters
@@ -90,10 +100,14 @@ public struct Mountebank {
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     @discardableResult
     public func getAllImposters(
-        parameters: ImposterParameters = ImposterParameters(replayable: true, removeProxies: true)
+        replayable: Bool = false,
+        removeProxies: Bool = false
     ) async throws -> [Imposter] {
         try await sendDataToEndpoint(
-            endpoint: .getAllImposters(parameters: parameters),
+            endpoint: .getAllImposters(parameters: ImposterParameters(
+                replayable: replayable,
+                removeProxies: removeProxies
+            )),
             responseType: Imposters.self
         ).imposters
     }
@@ -177,9 +191,15 @@ public struct Mountebank {
     @discardableResult
     public func deleteImposter(
         port: Int,
-        parameters: ImposterParameters = ImposterParameters()
+        replayable: Bool = false,
+        removeProxies: Bool = false
     ) async throws -> Imposter {
-        try await sendDataToEndpoint(endpoint: .deleteImposter(port: port, parameters: parameters))
+        try await sendDataToEndpoint(
+            endpoint: .deleteImposter(port: port, parameters: ImposterParameters(
+                replayable: replayable,
+                removeProxies: removeProxies
+            ))
+        )
     }
 
     /// Delete all Imposters

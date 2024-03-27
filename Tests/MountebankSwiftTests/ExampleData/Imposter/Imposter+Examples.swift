@@ -11,7 +11,7 @@ extension Imposter {
             withExtraOptionsHttp,
             withExtraOptionsHttps,
             includingAllStubs,
-            simpleRecordRequests
+            simpleRecordRequests,
         ]
 
         static let simple = Example(

@@ -114,8 +114,8 @@ extension Stub {
             ),
             json: [
                 "responses": [
-                    ["is": Is.Examples.text.json]
-                ]
+                    ["is": Is.Examples.text.json],
+                ],
             ]
         )
     }

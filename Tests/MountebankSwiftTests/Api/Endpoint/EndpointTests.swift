@@ -9,14 +9,11 @@ final class EndpointTests: XCTestCase {
     func testGetAllImposters() {
         [
             makeUrlFromEndpoint(.getAllImposters(
-                parameters: ImposterParameters()
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters",
+                parameters: ImposterParameters(replayable: false, removeProxies: false)
+            )): "\(Self.exampleBaseUrl.absoluteString)/imposters?removeProxies=false&replayable=false",
             makeUrlFromEndpoint(.getAllImposters(
-                parameters: ImposterParameters(replayable: true)
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters?replayable=true",
-            makeUrlFromEndpoint(.getAllImposters(
-                parameters: ImposterParameters(removeProxies: false)
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters?removeProxies=false",
+                parameters: ImposterParameters(replayable: true, removeProxies: true)
+            )): "\(Self.exampleBaseUrl.absoluteString)/imposters?removeProxies=true&replayable=true",
         ].forEach { endpoint, expectedResult in
             XCTAssertEqual(endpoint, URL(string: expectedResult))
         }
@@ -26,16 +23,12 @@ final class EndpointTests: XCTestCase {
         [
             makeUrlFromEndpoint(.getImposter(
                 port: 10,
-                parameters: ImposterParameters()
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/10",
+                parameters: ImposterParameters(replayable: false, removeProxies: false)
+            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/10?removeProxies=false&replayable=false",
             makeUrlFromEndpoint(.getImposter(
                 port: 123,
-                parameters: ImposterParameters(replayable: true)
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/123?replayable=true",
-            makeUrlFromEndpoint(.getImposter(
-                port: 1111,
-                parameters: ImposterParameters(removeProxies: false)
-            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/1111?removeProxies=false",
+                parameters: ImposterParameters(replayable: true, removeProxies: true)
+            )): "\(Self.exampleBaseUrl.absoluteString)/imposters/123?removeProxies=true&replayable=true",
         ].forEach { endpoint, expectedResult in
             XCTAssertEqual(endpoint, URL(string: expectedResult))
         }

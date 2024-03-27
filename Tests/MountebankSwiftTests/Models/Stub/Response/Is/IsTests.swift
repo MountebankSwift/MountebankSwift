@@ -66,6 +66,7 @@ class IsTests: XCTestCase {
         )
         // Not possible to decode json back into codable
     }
+
     func testEncodableCustomDateFormatAndKeyEncodingStrategy() throws {
         try assertEncode(
             Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.value,

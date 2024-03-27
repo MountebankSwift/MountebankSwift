@@ -1,7 +1,7 @@
 import Foundation
 
 struct DateFormatter {
-    init () {}
+    init() {}
 
     static let shared = DateFormatter()
 

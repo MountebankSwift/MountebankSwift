@@ -29,11 +29,13 @@ extension Proxy {
         let ciphers = try container.decodeIfPresent(String.self, forKey: .ciphers)
         let secureProtocol = try container.decodeIfPresent(String.self, forKey: .secureProtocol)
         let passphrase = try container.decodeIfPresent(String.self, forKey: .passphrase)
-        if key != nil ||
+        if
+            key != nil ||
             certificate != nil ||
             ciphers != nil ||
             secureProtocol != nil ||
-            passphrase != nil {
+            passphrase != nil
+        {
             networkProtocolParameters = .https(
                 injectHeaders: injectHeaders,
                 key: key,

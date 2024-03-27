@@ -10,7 +10,7 @@ extension Proxy {
             ),
             json: [
                 "to": "https://www.somesite.com:3000",
-                "mode": "proxyAlways"
+                "mode": "proxyAlways",
             ]
         )
 
@@ -27,7 +27,7 @@ extension Proxy {
                 "mode": "proxyAlways",
                 "addDecorateBehavior" : "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }",
                 "addWaitBehavior" : true,
-                "injectHeaders" : [ "Custom-Header-X" : "Custom value" ]
+                "injectHeaders" : ["Custom-Header-X" : "Custom value"],
             ]
         )
 
@@ -38,7 +38,7 @@ extension Proxy {
             ),
             json: [
                 "to": "https://www.somesite.com:3000",
-                "predicateGenerators": .array(PredicateGenerator.Examples.all.map(\.json))
+                "predicateGenerators": .array(PredicateGenerator.Examples.all.map(\.json)),
             ]
         )
     }
