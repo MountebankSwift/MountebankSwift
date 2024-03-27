@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 protocol HttpClientProtocol {
     func httpRequest(_ request: HTTPRequest) async throws -> HTTPResponse
