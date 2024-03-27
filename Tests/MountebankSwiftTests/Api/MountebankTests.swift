@@ -37,6 +37,7 @@ class MountebankTests: XCTestCase {
                 headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
             )
         )
+
         XCTAssertEqual(imposter.value, result)
     }
 

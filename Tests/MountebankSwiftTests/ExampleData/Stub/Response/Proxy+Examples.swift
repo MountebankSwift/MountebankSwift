@@ -10,7 +10,35 @@ extension Proxy {
             ),
             json: [
                 "to": "https://www.somesite.com:3000",
+                "mode": "proxyAlways"
+            ]
+        )
+
+        static let advanced = Example(
+            value: Proxy(
+                to: "https://www.somesite.com:3000",
+                networkProtocolParameters: .http(injectHeaders: ["Custom-Header-X": "Custom value"]),
+                mode: .proxyAlways,
+                addWaitBehavior: true,
+                addDecorateBehavior: "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"
+            ),
+            json: [
+                "to": "https://www.somesite.com:3000",
                 "mode": "proxyAlways",
+                "addDecorateBehavior" : "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }",
+                "addWaitBehavior" : true,
+                "injectHeaders" : [ "Custom-Header-X" : "Custom value" ]
+            ]
+        )
+
+        static let predicateGenerators = Example(
+            value: Proxy(
+                to: "https://www.somesite.com:3000",
+                predicateGenerators: PredicateGenerator.Examples.all.map(\.value)
+            ),
+            json: [
+                "to": "https://www.somesite.com:3000",
+                "predicateGenerators": .array(PredicateGenerator.Examples.all.map(\.json))
             ]
         )
     }

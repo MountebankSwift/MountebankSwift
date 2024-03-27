@@ -71,7 +71,7 @@ public struct Mountebank {
     @discardableResult
     public func getImposter(
         port: Int,
-        parameters: ImposterParameters = ImposterParameters(replayable: true, removeProxies: true)
+        parameters: ImposterParameters = ImposterParameters()
     ) async throws -> Imposter {
         try await sendDataToEndpoint(endpoint: .getImposter(port: port, parameters: parameters))
     }
@@ -386,7 +386,7 @@ public struct Mountebank {
         do {
             return try jsonDecoder.decode(type.self, from: data)
         } catch {
-            throw MountebankValidationError.jsonDecodeError(error)
+            throw MountebankValidationError.invalidResponseData
         }
     }
 }
