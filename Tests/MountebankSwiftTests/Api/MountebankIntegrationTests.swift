@@ -112,6 +112,28 @@ final class MountebankIntegrationTests: XCTestCase {
         XCTAssertFalse(firstRequest.requestFrom.isEmpty)
     }
 
+    func testGetImposterReplayable() async throws {
+        guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
+            throw XCTSkip("Test uses api's that are not supported for your platfrom.")
+        }
+
+        let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
+        let httpClient = HttpClient()
+
+        let path = "/text-200"
+        let url = sut.makeImposterUrl(port: imposterPort)
+            .appending(path: path)
+            .appending(queryItems: [URLQueryItem(name: "search", value: "test")])
+        let request = HTTPRequest(url: url, method: .get)
+
+        _ = try await httpClient.httpRequest(request)
+        _ = try await httpClient.httpRequest(request)
+
+        let imposter = try await sut.getImposter(port: imposterPort, replayable: true)
+
+        XCTAssertNil(imposter.requests)
+    }
+
     func testUpdatingStub() async throws {
         let port = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
         let updatedImposterResult = try await sut.postImposterStub(
@@ -153,7 +175,7 @@ final class MountebankIntegrationTests: XCTestCase {
     func testGetAllImposters() async throws {
         let imposter1 = try await sut.postImposter(imposter: Imposter.Examples.advanced.value)
         let imposter2 = try await sut.postImposter(imposter: Imposter.Examples.simple.value)
-        let allImposters = try await sut.getAllImposters()
+        let allImposters = try await sut.getAllImposters(replayable: true)
 
         let expectedResult = [
             imposter1.with(numberOfRequests: nil).with(requests: nil),
@@ -179,7 +201,7 @@ final class MountebankIntegrationTests: XCTestCase {
             networkProtocol: .https(),
             name: "Imposter with proxy",
             stubs: [Stub(
-                responses: [Proxy.Examples.proxy.value],
+                responses: [Proxy.Examples.simple.value],
                 predicates: [Predicate.Examples.equals.value]
             )]
         ))
@@ -213,7 +235,7 @@ final class MountebankIntegrationTests: XCTestCase {
             stubs: sampleFiles.map { file in
                 Stub(
                     response: Is(
-                        headers: [HTTPHeaders.contentType.rawValue: file.mimeType],
+                        headers: [HTTPHeaders.contentType.rawValue: .string(file.mimeType)],
                         body: file.body
                     ),
                     predicate: .equals(Request(path: "/\(file.rawValue)"))

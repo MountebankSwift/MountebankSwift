@@ -4,17 +4,17 @@ import Foundation
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
 public struct Is: StubResponse, Equatable {
     public static var defaultBehaviors: [Behavior] = []
-    public static var defaultHeaders: [String: String] = [:]
+    public static var defaultHeaders: [String: JSON] = [:]
 
     public let statusCode: Int?
-    public let headers: [String: String]?
+    public let headers: [String: JSON]?
     public let body: Body?
 
     public let parameters: ResponseParameters?
 
     public init(
         statusCode: Int? = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         body: Body? = nil,
         parameters: ResponseParameters? = nil
     ) {
@@ -25,16 +25,16 @@ public struct Is: StubResponse, Equatable {
     }
 
     private static func makeHeaders(
-        _ headers: [String: String]?,
+        _ headers: [String: JSON]?,
         body: Body?
-    ) -> [String: String]? {
+    ) -> [String: JSON]? {
         var result = Self.defaultHeaders
 
         switch body {
         case .none, .text, .data:
             break
         case .json, .jsonEncodable:
-            result[HTTPHeaders.contentType.rawValue] = MimeType.json.rawValue
+            result[HTTPHeaders.contentType.rawValue] = .string(MimeType.json.rawValue)
         }
 
         if let headers {

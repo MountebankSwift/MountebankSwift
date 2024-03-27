@@ -38,7 +38,7 @@ public struct Imposter: Codable, Equatable {
         ///     Defaults to a built-in self-signed certificate.
         ///   - mutualAuth: If true, the server will request a client certificate. Since the goal is simply to
         ///     virtualize a server requiring mutual auth, invalid certificates will not be rejected.
-        ///   - ciphers: For older (and insecure) https servers, this field allows you to override the
+        ///   - ciphers: For older (and insecure) https servers. This field allows you to override the
         ///     cipher used to communicate.
         case https(
             allowCORS: Bool? = false,

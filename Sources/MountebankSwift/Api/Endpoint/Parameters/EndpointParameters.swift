@@ -6,11 +6,10 @@ public protocol EndpointParameters {
 
 extension EndpointParameters {
     func mapQueryParameters(_ parameters: [String: LosslessStringConvertible?]) -> [URLQueryItem] {
-        parameters.map { key, value in
-            guard let value else {
-                return nil
+        parameters
+            .sorted(by: { $0.key < $1.key })
+            .compactMap { key, value in
+                value.map { URLQueryItem(name: key, value: String($0)) }
             }
-            return URLQueryItem(name: key, value: String(value))
-        }.compactMap { $0 }
     }
 }

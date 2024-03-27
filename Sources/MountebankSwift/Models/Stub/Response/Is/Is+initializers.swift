@@ -6,7 +6,7 @@ extension Is {
     /// Creates an ``Is`` response from a String
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         body: String,
         parameters: ResponseParameters? = nil
     ) {
@@ -21,7 +21,7 @@ extension Is {
     /// Creates an ``Is`` response from JSON
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         body: JSON,
         parameters: ResponseParameters? = nil
     ) {
@@ -36,7 +36,7 @@ extension Is {
     /// Creates an ``Is`` response from Data
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         body: Data,
         parameters: ResponseParameters? = nil
     ) {
@@ -51,7 +51,7 @@ extension Is {
     /// Creates an ``Is`` response from a codable object
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         body: any Codable,
         encoder: JSONEncoder? = nil,
         parameters: ResponseParameters? = nil
@@ -70,7 +70,7 @@ extension Array where Element == Is {
     /// Creates an array of ``Is`` responses
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         bodies: [Body],
         parameters: ResponseParameters? = nil
     ) {
@@ -87,7 +87,7 @@ extension Array where Element == Is {
     /// Creates an array of ``Is`` responses from an array of Strings
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         bodies: [String],
         parameters: ResponseParameters
     ) {
@@ -104,7 +104,7 @@ extension Array where Element == Is {
     /// Creates an array of ``Is`` responses from an array of JSON
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         bodies: [JSON],
         parameters: ResponseParameters
     ) {
@@ -121,7 +121,7 @@ extension Array where Element == Is {
     /// Creates an array of ``Is`` responses from an array of Data
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         bodies: [Data],
         parameters: ResponseParameters
     ) {
@@ -138,7 +138,7 @@ extension Array where Element == Is {
     /// Creates an array of ``Is`` responses from an array of codable objects
     public init(
         statusCode: Int = 200,
-        headers: [String: String]? = nil,
+        headers: [String: JSON]? = nil,
         bodies: [any Codable],
         parameters: ResponseParameters
     ) {
