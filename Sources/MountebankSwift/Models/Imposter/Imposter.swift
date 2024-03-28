@@ -20,7 +20,7 @@ public struct Imposter: Codable, Equatable {
         /// - Parameters:
         ///   - allowCORS: If true, mountebank will allow all Cross-Origin Resource Sharing preflight
         ///     requests on the imposter
-        case http(allowCORS: Bool? = false)
+        case http(allowCORS: Bool? = nil)
 
         /// Options for the https protocol
         ///
@@ -41,7 +41,7 @@ public struct Imposter: Codable, Equatable {
         ///   - ciphers: For older (and insecure) https servers. This field allows you to override the
         ///     cipher used to communicate.
         case https(
-            allowCORS: Bool? = false,
+            allowCORS: Bool? = nil,
             rejectUnauthorized: Bool? = nil,
             certificateAuthority: String? = nil,
             key: String? = nil,

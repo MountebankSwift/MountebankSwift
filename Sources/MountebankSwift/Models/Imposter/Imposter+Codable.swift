@@ -85,7 +85,7 @@ extension Imposter {
         switch networkProtocol {
         case .http(let allowCORS):
             try container.encode(ImposterNetworkProtocol.http.rawValue, forKey: .networkProtocol)
-            try container.encode(allowCORS, forKey: .allowCORS)
+            try container.encodeIfPresent(allowCORS, forKey: .allowCORS)
         case .https(
             allowCORS: let allowCORS,
             rejectUnauthorized: let rejectUnauthorized,
@@ -96,7 +96,7 @@ extension Imposter {
             ciphers: let ciphers
         ):
             try container.encode(ImposterNetworkProtocol.https.rawValue, forKey: .networkProtocol)
-            try container.encode(allowCORS, forKey: .allowCORS)
+            try container.encodeIfPresent(allowCORS, forKey: .allowCORS)
             try container.encodeIfPresent(rejectUnauthorized, forKey: .rejectUnauthorized)
             try container.encodeIfPresent(certificateAuthority, forKey: .certificateAuthority)
             try container.encodeIfPresent(key, forKey: .key)

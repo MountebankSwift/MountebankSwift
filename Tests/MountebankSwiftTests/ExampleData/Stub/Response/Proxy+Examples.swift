@@ -20,12 +20,12 @@ extension Proxy {
                 networkProtocolParameters: .http(injectHeaders: ["Custom-Header-X": "Custom value"]),
                 mode: .proxyAlways,
                 addWaitBehavior: true,
-                addDecorateBehavior: "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }"
+                addDecorateBehavior: "(config) => { config.response.headers['X-Test-token'] = Math.random() * 42; }"
             ),
             json: [
                 "to": "https://www.somesite.com:3000",
                 "mode": "proxyAlways",
-                "addDecorateBehavior" : "(config) => { config.response.headers['X-Test-token'] = Math.random() * 100; }",
+                "addDecorateBehavior" : "(config) => { config.response.headers['X-Test-token'] = Math.random() * 42; }",
                 "addWaitBehavior" : true,
                 "injectHeaders" : ["Custom-Header-X" : "Custom value"],
             ]

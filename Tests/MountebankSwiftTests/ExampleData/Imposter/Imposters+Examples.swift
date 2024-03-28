@@ -5,7 +5,7 @@ extension Imposters {
     enum Examples {
         static let single = Example(
             value: Imposters(imposters: [
-                Imposter(port: 3535, networkProtocol: .http(allowCORS: nil), stubs: []),
+                Imposter(port: 3535, networkProtocol: .http(), stubs: []),
             ]),
             json: [
                 "imposters": [

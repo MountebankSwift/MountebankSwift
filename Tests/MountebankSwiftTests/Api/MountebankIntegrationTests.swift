@@ -121,9 +121,11 @@ final class MountebankIntegrationTests: XCTestCase {
         let httpClient = HttpClient()
 
         let path = "/text-200"
-        let url = sut.makeImposterUrl(port: imposterPort)
-            .appending(path: path)
-            .appending(queryItems: [URLQueryItem(name: "search", value: "test")])
+        let url = try XCTUnwrap(
+            sut.makeImposterUrl(port: imposterPort)
+                .appendingPathComponent(path)
+                .appending([URLQueryItem(name: "search", value: "test")])
+        )
         let request = HTTPRequest(url: url, method: .get)
 
         _ = try await httpClient.httpRequest(request)
@@ -132,6 +134,10 @@ final class MountebankIntegrationTests: XCTestCase {
         let imposter = try await sut.getImposter(port: imposterPort, replayable: true)
 
         XCTAssertNil(imposter.requests)
+        XCTAssertEqual(
+            imposter,
+            Imposter.Examples.simpleRecordRequests.value
+        )
     }
 
     func testUpdatingStub() async throws {
@@ -182,6 +188,7 @@ final class MountebankIntegrationTests: XCTestCase {
             imposter2.with(numberOfRequests: nil).with(requests: nil),
         ]
 
+        XCTAssertEqual(allImposters, expectedResult)
         XCTAssertEqual(allImposters, expectedResult)
     }
 

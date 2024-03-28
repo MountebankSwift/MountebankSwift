@@ -55,7 +55,7 @@ extension Imposter {
         )
     }
 
-    func with(recordRequests: Bool) -> Imposter {
+    func with(recordRequests: Bool?) -> Imposter {
         Imposter(
             port: port,
             networkProtocol: networkProtocol,
