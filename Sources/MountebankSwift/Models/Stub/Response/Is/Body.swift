@@ -1,13 +1,15 @@
 import Foundation
 
 /// A body for an ``Is`` response
-public enum Body: Equatable {
+public enum Body: Equatable, Sendable {
+    public typealias JsonEncodable = Encodable & Sendable
+    
     case text(String)
     /// A JSON body that will be encoded to a text response
     case json(JSON)
     /// An Encodable body that will be encoded to a text response
     /// Custom encoding strategies are supported by providing a custom JSONEncoder
-    case jsonEncodable(Encodable, JSONEncoder? = nil)
+    case jsonEncodable(JsonEncodable, JSONEncoder? = nil)
     /// A Data response that will be base64 encoded
     case data(Data)
 

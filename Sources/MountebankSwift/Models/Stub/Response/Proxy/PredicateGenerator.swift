@@ -1,6 +1,6 @@
 import Foundation
 
-public enum PredicateOperator: String, Codable {
+public enum PredicateOperator: String, Codable, Sendable {
     case exists
     case equals
     case deepEquals
@@ -10,7 +10,7 @@ public enum PredicateOperator: String, Codable {
     case matches
 }
 
-public enum PredicateGenerator: Equatable {
+public enum PredicateGenerator: Equatable, Sendable {
     /// Defines a template for the generated predicates
     /// [mbtest.org/docs/api/proxies#proxy-predicate-generators](https://www.mbtest.org/docs/api/proxies#proxy-predicate-generators)
     /// - Parameters:

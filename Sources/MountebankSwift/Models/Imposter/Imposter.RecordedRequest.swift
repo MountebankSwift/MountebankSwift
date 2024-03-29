@@ -1,7 +1,7 @@
 import Foundation
 
 extension Imposter {
-    public struct RecordedRequest: Equatable, Codable {
+    public struct RecordedRequest: Equatable, Codable, Sendable {
         public let method: HTTPMethod?
         public let path: String?
         public let query: [String: String]?

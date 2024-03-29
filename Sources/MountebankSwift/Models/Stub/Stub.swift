@@ -5,7 +5,7 @@ import Foundation
 /// Every time the stub is used it will return the next response in the list of its responses.
 ///
 /// [mbtest.org/docs/api/contracts?type=stub](https://www.mbtest.org/docs/api/contracts?type=stub)
-public struct Stub: Equatable {
+public struct Stub: Equatable, Sendable {
     /// In the absence of a predicate, a stub always matches, and there's never a reason to add more than one stub to
     /// an imposter. Predicates allow imposters to have much richer behavior by defining whether or not a stub matches
     /// a request. When multiple stubs are created on an imposter, the first stub that matches is selected.
@@ -65,9 +65,8 @@ extension Stub: Recreatable {
     }
 
     private var responseProperty: (String, Recreatable) {
-        if responses.count == 1 {
-            // swiftlint:disable:next force_unwrapping
-            switch responses.first!.codable {
+        if responses.count == 1, let codable = responses.first?.codable {
+            switch codable {
             case .is(let response):
                 return ("response", response)
             case .proxy(let response):

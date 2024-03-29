@@ -7,7 +7,7 @@ import Foundation
 /// Predicates are added to a stub in an array, and all predicates are AND'd together.
 ///
 /// [mbtest.org/docs/api/predicates](https://www.mbtest.org/docs/api/predicates)
-public indirect enum Predicate: Equatable {
+public indirect enum Predicate: Equatable, Sendable {
     /// The request field matches the predicate
     /// [mbtest.org/docs/api/predicates#predicates-equals](https://www.mbtest.org/docs/api/predicates#predicates-equals)
     case equals(Request, PredicateParameters? = nil)

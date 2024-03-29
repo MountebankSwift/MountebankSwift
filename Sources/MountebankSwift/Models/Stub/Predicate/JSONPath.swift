@@ -4,7 +4,7 @@ import Foundation
 /// much like the except parameter.
 ///
 /// [mbtest.org/docs/api/jsonpath](https://www.mbtest.org/docs/api/jsonpath)
-public struct JSONPath: Codable, Equatable {
+public struct JSONPath: Codable, Equatable, Sendable {
     /// The JSONPath selector
     public let selector: String
 

@@ -7,13 +7,13 @@ import Foundation
 /// and stop an imposter during test teardown.
 ///
 /// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
-public struct Imposter: Codable, Equatable {
+public struct Imposter: Codable, Equatable, Sendable {
 
     /// Mountebank does also support `tcp`, `smtp` and custom protocols
     /// implemented in community plugins.
     ///
     /// Please submit a feature request issue on Github for support if you need other protocols
-    public enum NetworkProtocol: Codable, Equatable {
+    public enum NetworkProtocol: Codable, Equatable, Sendable {
         /// Options for the http protocol
         ///
         /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)

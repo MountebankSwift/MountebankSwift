@@ -3,9 +3,9 @@ import Foundation
 /// Configuration of the Mountebank server
 ///
 /// [mbtest.org/docs/api/contracts?type=config](https://www.mbtest.org/docs/api/contracts?type=config)
-public struct Config: Codable, Equatable {
-    public struct Options: Codable, Equatable {
-        public struct Log: Codable, Equatable {
+public struct Config: Codable, Equatable, Sendable {
+    public struct Options: Codable, Equatable, Sendable {
+        public struct Log: Codable, Equatable, Sendable {
             let level: LogLevel
         }
 
@@ -71,9 +71,9 @@ public struct Config: Codable, Equatable {
         public let debug: Bool
     }
 
-    public struct Process: Codable, Equatable {
+    public struct Process: Codable, Equatable, Sendable {
 
-        /// The version of node.js which Mountebank is useing
+        /// The version of Nodejs which Mountebank is using
         public let nodeVersion: String
 
         /// The architecture of the machine running Mountebank.

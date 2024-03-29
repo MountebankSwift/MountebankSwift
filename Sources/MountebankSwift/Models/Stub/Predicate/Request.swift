@@ -2,7 +2,7 @@ import Foundation
 
 /// The predicate will use all the optional fields in this request to try to match an incoming request made by the
 /// application under test
-public struct Request: Equatable, Codable {
+public struct Request: Equatable, Codable, CustomDebugStringConvertible, Sendable {
     public let method: HTTPMethod?
     public let path: String?
     public let query: [String: JSON]?

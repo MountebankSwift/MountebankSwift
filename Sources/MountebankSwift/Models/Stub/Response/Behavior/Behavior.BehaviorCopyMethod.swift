@@ -2,8 +2,8 @@ import Foundation
 
 extension Behavior {
     /// The method used to select values from the request.
-    public enum BehaviorCopyMethod: Equatable, Codable {
-        public struct Options: OptionSet, Equatable, Codable {
+    public enum BehaviorCopyMethod: Equatable, Codable, Sendable {
+        public struct Options: OptionSet, Equatable, Codable, Sendable {
             public let rawValue: UInt
 
             public init(rawValue: UInt) {

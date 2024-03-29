@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol EndpointParameters {
+public protocol EndpointParameters: Sendable {
     func makeQueryParameters() -> [URLQueryItem]
 }
 

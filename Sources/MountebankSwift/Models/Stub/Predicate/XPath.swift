@@ -4,7 +4,7 @@ import Foundation
 /// much like the except parameter.
 ///
 /// [mbtest.org/docs/api/xpath](https://www.mbtest.org/docs/api/xpath)
-public struct XPath: Codable, Equatable {
+public struct XPath: Codable, Equatable, Sendable {
     enum CodingKeys: String, CodingKey {
         case selector
         case namespace = "ns"

@@ -3,9 +3,9 @@ import Foundation
 /// A proxy response proxies the request to the specified destination and returns the response.
 ///
 /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
-public struct Proxy: StubResponse, Codable, Equatable {
+public struct Proxy: StubResponse, Codable, Equatable, Sendable {
     /// Replay behavior of the proxy.
-    public enum Mode: String, Codable {
+    public enum Mode: String, Codable, Sendable {
         /// proxyOnce mode doesn't require you to explicitly do anything to replay the proxied responses.
         case proxyOnce
         /// The proxyAlways mode requires you to run the mb replay command (or equivalent) to
@@ -16,7 +16,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
     }
 
     /// Protocol specific parameters for this proxy
-    public enum NetworkProtocolParameters: Equatable {
+    public enum NetworkProtocolParameters: Equatable, Sendable {
         /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
         /// - Parameters:
         ///   - injectHeaders: Key-value pairs of headers to inject into the proxied request.
