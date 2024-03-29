@@ -50,7 +50,10 @@ extension Is: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         statusCode = try container.decode(Int.self, forKey: .statusCode)
-        headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
+        headers = try container.decodeIfPresent(
+            FailableDictionaryDecodable<String, String>.self,
+            forKey: .headers
+        )?.value
 
         let bodyMode = try container.decodeIfPresent(BodyMode.self, forKey: .mode)
 

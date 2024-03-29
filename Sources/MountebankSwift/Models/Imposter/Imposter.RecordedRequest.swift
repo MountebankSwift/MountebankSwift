@@ -1,7 +1,7 @@
 import Foundation
 
 extension Imposter {
-    public struct RecordedRequest: Equatable, Codable, CustomDebugStringConvertible {
+    public struct RecordedRequest: Equatable, Codable {
         public let method: HTTPMethod?
         public let path: String?
         public let query: [String: String]?
@@ -33,12 +33,6 @@ extension Imposter {
             self.requestFrom = requestFrom
             self.ip = ip
             self.timestamp = timestamp
-        }
-
-        public var debugDescription: String {
-            [method.map(\.rawValue), path]
-                .compactMap { $0 }
-                .joined(separator: " ")
         }
     }
 }

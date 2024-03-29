@@ -93,4 +93,20 @@ class IsTests: XCTestCase {
             Is.Examples.withResponseParameters.json
         )
     }
+
+    func testInvalidHeaders() throws {
+        try assertDecode(
+            [
+                "statusCode" : 404,
+                "headers": [
+                    "X-My-Invalid-header-type-should-be-string" : 42,
+                    "X-Invalid-headers.." : "should be ignored",
+                ]
+            ],
+            Is(
+                statusCode: 404,
+                headers: ["X-Invalid-headers.." : "should be ignored"]
+            )
+        )
+    }
 }
