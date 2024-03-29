@@ -242,7 +242,7 @@ final class MountebankIntegrationTests: XCTestCase {
             stubs: sampleFiles.map { file in
                 Stub(
                     response: Is(
-                        headers: [HTTPHeaders.contentType.rawValue: .string(file.mimeType)],
+                        headers: [HTTPHeaders.contentType.rawValue: file.mimeType],
                         body: file.body
                     ),
                     predicate: .equals(Request(path: "/\(file.rawValue)"))
