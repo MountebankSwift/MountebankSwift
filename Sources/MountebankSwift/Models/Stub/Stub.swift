@@ -50,4 +50,11 @@ public struct Stub: Equatable {
     public init(response: any StubResponse, predicates: [Predicate]) {
         self.init(responses: [response], predicates: predicates)
     }
+
+    /// Creates a stub with a single response and no predicates
+    ///
+    /// The response is always used
+    public init(response: any StubResponse) {
+        self.init(responses: [response], predicates: [])
+    }
 }

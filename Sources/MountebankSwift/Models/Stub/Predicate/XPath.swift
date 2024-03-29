@@ -16,7 +16,7 @@ public struct XPath: Codable, Equatable {
     /// The XPath namespace map, aliasing a prefix to a URL, which allows you to use the prefix in the selector.
     public let namespace: [String: String]?
 
-    public init(selector: String, namespace: [String: String]?) {
+    public init(selector: String, namespace: [String: String]? = nil) {
         self.selector = selector
         self.namespace = namespace
     }

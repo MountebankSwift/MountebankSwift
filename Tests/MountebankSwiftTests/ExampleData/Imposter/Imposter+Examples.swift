@@ -3,17 +3,26 @@ import XCTest
 
 extension Imposter {
     enum Examples {
+        static let all: [Example] = [
+            simple,
+            json,
+            advanced,
+            withResponseData,
+            withExtraOptionsHttp,
+            withExtraOptionsHttps,
+            includingAllStubs,
+            simpleRecordRequests,
+        ]
 
         static let simple = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http(allowCORS: false),
+                networkProtocol: .http(),
                 stubs: [Stub.Examples.text.value]
             ),
             json: [
                 "port": 19190,
                 "protocol": "http",
-                "allowCORS": false,
                 "stubs": [Stub.Examples.text.json],
             ]
         )
@@ -27,7 +36,6 @@ extension Imposter {
             json: [
                 "port": 100,
                 "protocol": "http",
-                "allowCORS": false,
                 "stubs": [Stub.Examples.json.json],
             ]
         )
@@ -48,7 +56,6 @@ extension Imposter {
             json: [
                 "port": 8080,
                 "protocol": "https",
-                "allowCORS": false,
                 "name": "Single stub",
                 "stubs": [
                     Stub.Examples.text.json,
@@ -63,7 +70,7 @@ extension Imposter {
         static let withResponseData = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .https(),
+                networkProtocol: .https(allowCORS: false),
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true,
                 numberOfRequests: 1,
@@ -151,7 +158,7 @@ extension Imposter {
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,
-                networkProtocol: .http(allowCORS: nil),
+                networkProtocol: .http(),
                 name: "Single stub",
                 stubs: Stub.Examples.all.map(\.value),
                 defaultResponse: Is(statusCode: 403),
@@ -160,7 +167,6 @@ extension Imposter {
             json: [
                 "port": 8080,
                 "protocol": "http",
-                "allowCORS": nil,
                 "name": "Single stub",
                 "stubs": .array(Stub.Examples.all.map(\.json)),
                 "defaultResponse": ["statusCode": 403],
@@ -177,7 +183,6 @@ extension Imposter {
             ),
             json: [
                 "port": 19190,
-                "allowCORS": false,
                 "protocol": "http",
                 "stubs": [Stub.Examples.text.json],
                 "recordRequests": true,

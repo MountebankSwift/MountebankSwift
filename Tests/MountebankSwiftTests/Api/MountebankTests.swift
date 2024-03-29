@@ -31,12 +31,17 @@ class MountebankTests: XCTestCase {
         XCTAssertEqual(
             httpClientSpy.httpRequestReceivedRequest,
             HTTPRequest(
-                url: Endpoint.getImposter(port: port, parameters: ImposterParameters())
+                url: Endpoint
+                    .getImposter(
+                        port: port,
+                        parameters: ImposterParameters(replayable: false, removeProxies: false)
+                    )
                     .makeEndpointUrl(baseUrl: sut.mountebankURL),
                 method: .get,
                 headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
             )
         )
+
         XCTAssertEqual(imposter.value, result)
     }
 

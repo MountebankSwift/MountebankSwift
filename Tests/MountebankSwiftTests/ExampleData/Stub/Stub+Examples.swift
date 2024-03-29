@@ -6,6 +6,7 @@ extension Stub {
         static let all: [Example] = [
             text,
             json,
+            noPredicates,
             http404,
             textWhenRefresh404,
             multiplePredicatesAndResponses,
@@ -71,7 +72,7 @@ extension Stub {
                 responses:
                 Is.Examples.allWithoutParameters.map(\.value) +
                     [
-                        Proxy.Examples.proxy.value,
+                        Proxy.Examples.simple.value,
                         Fault.Examples.connectionResetByPeer.value,
                         Inject.Examples.injectBody.value,
                     ]
@@ -84,7 +85,7 @@ extension Stub {
                         .map(\.json)
                         .map { ["is" : $0] } +
                         [
-                            ["proxy": Proxy.Examples.proxy.json],
+                            ["proxy": Proxy.Examples.simple.json],
                             ["fault": Fault.Examples.connectionResetByPeer.json],
                             ["inject": Inject.Examples.injectBody.json],
                         ]
@@ -104,6 +105,17 @@ extension Stub {
                         .merging(with: ResponseParameters.Examples.full.json),
                 ],
                 "predicates": .array(Predicate.Examples.all.map(\.json)),
+            ]
+        )
+
+        static let noPredicates = Example(
+            value: Stub(
+                response: Is.Examples.text.value
+            ),
+            json: [
+                "responses": [
+                    ["is": Is.Examples.text.json],
+                ],
             ]
         )
     }

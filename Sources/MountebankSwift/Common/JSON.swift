@@ -24,7 +24,7 @@
 
 import Foundation
 
-fileprivate let prettyPrintingJSONEncoder: JSONEncoder = {
+private let prettyPrintingJSONEncoder: JSONEncoder = {
     let encoder = JSONEncoder()
     encoder.outputFormatting = [.prettyPrinted]
     return encoder

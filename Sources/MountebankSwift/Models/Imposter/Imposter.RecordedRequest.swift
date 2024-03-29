@@ -7,7 +7,7 @@ extension Imposter {
         public let query: [String: String]?
         public let headers: [String: String]?
         public let body: JSON?
-        public let form: String?
+        public let form: JSON?
 
         public let timestamp: Date
         public let requestFrom: String
@@ -19,7 +19,7 @@ extension Imposter {
             query: [String: String]? = nil,
             headers: [String: String]? = nil,
             body: JSON? = nil,
-            form: String? = nil,
+            form: JSON? = nil,
             requestFrom: String,
             ip: String,
             timestamp: Date

@@ -1,6 +1,8 @@
 import Foundation
 
-final class DateFormatter {
+struct DateFormatter {
+    init() {}
+
     static let shared = DateFormatter()
 
     static let isoDateFormatter: ISO8601DateFormatter = {
