@@ -5,7 +5,7 @@ extension Imposter {
         public let method: HTTPMethod?
         public let path: String?
         public let query: [String: String]?
-        public let headers: [String: JSON]?
+        public let headers: [String: String]?
         public let body: JSON?
         public let form: JSON?
 
@@ -17,7 +17,7 @@ extension Imposter {
             method: HTTPMethod,
             path: String,
             query: [String: String]? = nil,
-            headers: [String: JSON]? = nil,
+            headers: [String: String]? = nil,
             body: JSON? = nil,
             form: JSON? = nil,
             requestFrom: String,
