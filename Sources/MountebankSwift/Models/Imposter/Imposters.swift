@@ -5,3 +5,9 @@ import Foundation
 struct Imposters: Codable, Equatable {
     public let imposters: [Imposter]
 }
+
+extension Imposters: Recreatable {
+    var recreatable: String {
+        structSwiftString([("imposters", imposters)])
+    }
+}

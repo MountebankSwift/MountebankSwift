@@ -3,6 +3,12 @@ import MountebankSwift
 
 extension Proxy {
     enum Examples {
+        static let all: [Example] = [
+            simple,
+            advanced,
+            predicateGenerators,
+        ]
+
         static let simple = Example(
             value: Proxy(
                 to: "https://www.somesite.com:3000",

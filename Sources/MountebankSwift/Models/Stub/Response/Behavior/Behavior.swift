@@ -41,3 +41,24 @@ public enum Behavior: Equatable {
     /// The `--allowInjection` command line flag must be set to support this behavior.
     case shellTransform(String)
 }
+
+extension Behavior: Recreatable {
+    var recreatable: String {
+        switch self {
+        case .wait(let miliseconds):
+            return enumSwiftString([("miliseconds", miliseconds)])
+        case .copy(let from, let into, let using):
+            return enumSwiftString([
+                ("from", from),
+                ("into", into),
+                ("using", using),
+            ])
+        case .lookup(let json):
+            return enumSwiftString([json])
+        case .waitJavascript(let string),
+             .decorate(let string),
+             .shellTransform(let string):
+            return enumSwiftString([string])
+        }
+    }
+}

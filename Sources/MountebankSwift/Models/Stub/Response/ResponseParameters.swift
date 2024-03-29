@@ -20,3 +20,12 @@ public struct ResponseParameters: Equatable {
         }
     }
 }
+
+extension ResponseParameters: Recreatable {
+    var recreatable: String {
+        structSwiftString([
+            ("repeatCount", repeatCount),
+            ("behaviors", behaviors),
+        ])
+    }
+}

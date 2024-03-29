@@ -12,3 +12,9 @@ public enum HTTPMethod: String, Codable, Equatable {
     case trace = "TRACE"
     case patch = "PATCH"
 }
+
+extension HTTPMethod: Recreatable {
+    var recreatable: String {
+        enumSwiftString()
+    }
+}

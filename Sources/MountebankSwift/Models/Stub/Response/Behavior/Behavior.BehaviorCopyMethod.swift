@@ -42,3 +42,31 @@ extension Behavior {
         case jsonpath(selector: String)
     }
 }
+
+extension Behavior.BehaviorCopyMethod: Recreatable {
+    var recreatable: String {
+        var properties: [(String, Recreatable?)] = []
+        switch self {
+        case .regex(let selector, let options):
+            properties.append(("selector", selector))
+            properties.append(("options", options))
+        case .xpath(let selector, let namespace):
+            properties.append(("selector", selector))
+            properties.append(("namespace", namespace))
+        case .jsonpath(let selector):
+            properties.append(("selector", selector))
+        }
+
+        return enumSwiftString(properties)
+    }
+}
+
+extension Behavior.BehaviorCopyMethod.Options: Recreatable {
+    var recreatable: String {
+        let values = [
+            contains(Self.ignoreCase) ? ".ignoreCase" : nil,
+            contains(Self.multiline) ? ".multiline" : nil,
+        ].compactMap { $0 }.joined(separator: ", ")
+        return "Options([\(values)])"
+    }
+}

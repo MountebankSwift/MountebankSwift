@@ -85,9 +85,9 @@ final class ImposterTests: XCTestCase {
                         "headers": [
                             "X-My-Invalid-header-type-should-be-string" : 42,
                             "X-Invalid-headers.." : "should be ignored",
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
             Imposter(
                 port: 123,
@@ -102,7 +102,7 @@ final class ImposterTests: XCTestCase {
                         requestFrom: "127.0.0.1",
                         ip: "127.0.0.1",
                         timestamp: Date(timeIntervalSince1970: 1702066146.263)
-                    )
+                    ),
                 ]
             )
         )

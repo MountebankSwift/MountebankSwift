@@ -81,7 +81,9 @@ public enum JSON: Codable, Hashable {
             )
         }
     }
+}
 
+extension JSON: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .string(let str):
@@ -95,6 +97,21 @@ public enum JSON: Codable, Hashable {
         default:
             // swiftlint:disable:next force_try force_unwrapping
             return try! String(data: prettyPrintingJSONEncoder.encode(self), encoding: .utf8)!
+        }
+    }
+}
+
+extension JSON: Recreatable {
+    var recreatable: String {
+        switch self {
+        case .string(let value as Recreatable),
+             .number(let value as Recreatable),
+             .bool(let value as Recreatable),
+             .object(let value as Recreatable),
+             .array(let value as Recreatable):
+            return value.recreatable
+        case .null:
+            return enumSwiftString()
         }
     }
 }
