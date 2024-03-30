@@ -1,6 +1,6 @@
 import Foundation
 
-struct FailableDecodable<Value : Decodable> : Decodable {
+struct FailableDecodable<Value: Decodable>: Decodable {
     let value: Value?
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -13,7 +13,7 @@ struct FailableDecodable<Value : Decodable> : Decodable {
     }
 }
 
-struct FailableDictionaryDecodable<Key: Decodable & Hashable, Value : Decodable> : Decodable {
+struct FailableDictionaryDecodable<Key: Decodable & Hashable, Value: Decodable>: Decodable {
     let value: [Key: Value]
     init(from decoder: Decoder) throws {
         value = try decoder

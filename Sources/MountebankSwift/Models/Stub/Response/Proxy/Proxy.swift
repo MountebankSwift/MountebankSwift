@@ -22,7 +22,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
         ///   - injectHeaders: Key-value pairs of headers to inject into the proxied request.
         case http(
             /// Key-value pairs of headers to inject into the proxied request.
-            injectHeaders: [String: JSON]? = nil
+            injectHeaders: [String: String]? = nil
         )
 
         /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
@@ -35,7 +35,7 @@ public struct Proxy: StubResponse, Codable, Equatable {
         ///   - secureProtocol: The SSL method to use. A valid OpenSSL protocol method name
         ///   - passphrase: Shared passphrase used for a single private key
         case https(
-            injectHeaders: [String: JSON]? = nil,
+            injectHeaders: [String: String]? = nil,
             key: String? = nil,
             certificate: String? = nil,
             ciphers: String? = nil,
