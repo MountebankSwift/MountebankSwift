@@ -23,7 +23,10 @@ extension Proxy {
         addWaitBehavior = try container.decodeIfPresent(Bool.self, forKey: .addWaitBehavior)
         addDecorateBehavior = try container.decodeIfPresent(String.self, forKey: .addDecorateBehavior)
 
-        let injectHeaders = try container.decodeIfPresent([String: JSON].self, forKey: .injectHeaders)
+        let injectHeaders = try container.decodeIfPresent(
+            FailableDictionaryDecodable<String, String>.self,
+            forKey: .injectHeaders
+        )?.value
         let key = try container.decodeIfPresent(String.self, forKey: .key)
         let certificate = try container.decodeIfPresent(String.self, forKey: .certificate)
         let ciphers = try container.decodeIfPresent(String.self, forKey: .ciphers)
