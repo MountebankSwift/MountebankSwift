@@ -35,7 +35,9 @@ extension Imposter.RecordedRequest {
         path = try container.decodeIfPresent(String.self, forKey: .path)
         query = try container.decodeIfPresent([String: String].self, forKey: .query)
 
-        headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
+        headers = try container.decodeIfPresent(
+            FailableDictionaryDecodable<String, String>.self, forKey: .headers
+        )?.value
         body = try container.decodeIfPresent(JSON.self, forKey: .body)
         form = try container.decodeIfPresent(JSON.self, forKey: .form)
 

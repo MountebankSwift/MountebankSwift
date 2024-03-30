@@ -26,7 +26,7 @@ public enum Body: Equatable {
             do {
                 return try (lhsEncoder ?? jsonEncoder).encode(lhs) == (rhsEncoder ?? jsonEncoder).encode(rhs)
             } catch {
-                print("Failed to encode object: \(error)")
+                print("[Mountebank]: ❌ Failed to encode object: \(error)")
                 return false
             }
         case (.text, _), (.json, _), (.jsonEncodable, _), (.data, _):

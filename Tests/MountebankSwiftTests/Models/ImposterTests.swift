@@ -67,4 +67,44 @@ final class ImposterTests: XCTestCase {
             Imposter.Examples.includingAllStubs.value
         )
     }
+
+    func testInvalidHeaders() throws {
+        try assertDecode(
+            [
+                "port": 123,
+                "protocol" : "http",
+                "stubs": [],
+                "numberOfRequests": 1,
+                "requests": [
+                    [
+                        "method": "GET",
+                        "path": "/test-path",
+                        "requestFrom": "127.0.0.1",
+                        "ip": "127.0.0.1",
+                        "timestamp": "2023-12-08T20:09:06.263Z",
+                        "headers": [
+                            "X-My-Invalid-header-type-should-be-string" : 42,
+                            "X-Invalid-headers.." : "should be ignored",
+                        ]
+                    ]
+                ]
+            ],
+            Imposter(
+                port: 123,
+                networkProtocol: .http(),
+                stubs: [],
+                numberOfRequests: 1,
+                requests: [
+                    Imposter.RecordedRequest(
+                        method: .get,
+                        path: "/test-path",
+                        headers: ["X-Invalid-headers.." : "should be ignored"],
+                        requestFrom: "127.0.0.1",
+                        ip: "127.0.0.1",
+                        timestamp: Date(timeIntervalSince1970: 1702066146.263)
+                    )
+                ]
+            )
+        )
+    }
 }
