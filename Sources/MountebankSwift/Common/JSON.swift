@@ -81,9 +81,7 @@ public enum JSON: Codable, Hashable {
             )
         }
     }
-}
 
-extension JSON: CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .string(let str):

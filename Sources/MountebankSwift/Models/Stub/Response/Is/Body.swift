@@ -48,7 +48,7 @@ extension Body: Recreatable {
                 let json = try jsonDecoder.decode(JSON.self, from: data)
                 return Body.json("").enumSwiftString([json])
             } catch {
-                return ">>>> FAILED TO ENCODE ENCODABLE <<<<"
+                return "[Mountebank]: ❌ Failed to encode object: \(error)"
             }
         case .data(let data):
             return enumSwiftString([data])
