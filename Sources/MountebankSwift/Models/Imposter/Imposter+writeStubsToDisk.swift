@@ -13,28 +13,29 @@ extension Imposter {
         let stubsFor\(name.map(sanitizeName)?.capitalized ?? ""): [Stub] = \(stubs.recreatable)
         """
 
-        do {
-            let dirURL = URL(fileURLWithPath: "\(directoryName)", isDirectory: false)
-            let dirName = dirURL.deletingPathExtension().lastPathComponent
-            let directory = dirURL
-                .deletingLastPathComponent()
-                .appendingPathComponent("Imposters")
-                .appendingPathComponent(dirName)
+        let dirURL = URL(fileURLWithPath: "\(directoryName)", isDirectory: false)
+        let dirName = dirURL.deletingPathExtension().lastPathComponent
+        let directory = dirURL
+            .deletingLastPathComponent()
+            .appendingPathComponent("Imposters")
+            .appendingPathComponent(dirName)
 
-            let fileName = [
-                sanitizePathComponent(testName),
-                name.map(sanitizePathComponent),
-                "swift",
-            ]
+        let fileName = [
+            sanitizePathComponent(testName),
+            name.map(sanitizePathComponent),
+            "swift",
+        ]
             .compactMap { $0 }
             .filter { !$0.isEmpty }
             .joined(separator: ".")
 
-            let fileURL = directory.appendingPathComponent(fileName)
+        let fileURL = directory.appendingPathComponent(fileName)
+
+        do {
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             try imposters.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
-            print(error)
+            print("[Mountebank]: ❌ Failed to write stubs to \(fileURL): \(error)")
         }
     }
 
