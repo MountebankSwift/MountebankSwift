@@ -10,9 +10,9 @@ protocol Recreatable {
 
 // MARK: - Public Helpers
 
-private let DELIMITER = ",\n"
-private let WHITESPACE = "    "
-private var INDENT = 0
+private let delimiter = ",\n"
+private let whitespace = "    "
+private var indent = 0
 
 extension Recreatable {
     /// Helper to create a recreatable string for a struct
@@ -37,10 +37,10 @@ extension Recreatable {
             return ".\(enumCaseWithoutAssociatedValues)"
         }
 
-        let increaseIndent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
-        INDENT += increaseIndent
+        let increaseindent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
+        indent += increaseindent
         defer {
-            INDENT -= increaseIndent
+            indent -= increaseindent
         }
 
         let propertyList = properties
@@ -51,14 +51,12 @@ extension Recreatable {
         case 0:
             return ".\(enumCaseWithoutAssociatedValues)()"
         case 1:
-            return ".\(enumCaseWithoutAssociatedValues)(\(propertyList.joined(separator: DELIMITER)))"
+            return ".\(enumCaseWithoutAssociatedValues)(\(propertyList.joined(separator: delimiter)))"
         default:
-            let indent = String(repeating: WHITESPACE, count: INDENT)
-            let string = propertyList.map { indent + $0 }.joined(separator: DELIMITER)
             return """
             .\(enumCaseWithoutAssociatedValues)(
-            \(string)
-            \(String(repeating: WHITESPACE, count: INDENT - 1)))
+            \(indentedList(propertyList))
+            \(String(repeating: whitespace, count: indent - 1)))
             """
         }
     }
@@ -68,10 +66,10 @@ extension Recreatable {
 
 extension Recreatable {
     private func structOrClassSwiftString(properties: [(String?, Recreatable?)]) -> String {
-        let increaseIndent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
-        INDENT += increaseIndent
+        let increaseindent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
+        indent += increaseindent
         defer {
-            INDENT -= increaseIndent
+            indent -= increaseindent
         }
 
         let propertyList = properties
@@ -82,14 +80,12 @@ extension Recreatable {
         case 0:
             return "\(Self.self)()"
         case 1:
-            return "\(Self.self)(\(propertyList.joined(separator: DELIMITER)))"
+            return "\(Self.self)(\(propertyList.joined(separator: delimiter)))"
         default:
-            let indent = String(repeating: WHITESPACE, count: INDENT)
-            let string = propertyList.map { indent + $0 }.joined(separator: DELIMITER)
             return """
             \(Self.self)(
-            \(string)
-            \(String(repeating: WHITESPACE, count: INDENT - 1)))
+            \(indentedList(propertyList))
+            \(String(repeating: whitespace, count: indent - 1)))
             """
         }
     }
@@ -150,10 +146,10 @@ extension Dictionary: Recreatable {
             return "[:]"
         }
 
-        let increaseIndent = filter({ $0.value is Recreatable }).count > 1 ? 1 : 0
-        INDENT += increaseIndent
+        let increaseindent = filter({ $0.value is Recreatable }).count > 1 ? 1 : 0
+        indent += increaseindent
         defer {
-            INDENT -= increaseIndent
+            indent -= increaseindent
         }
 
         let keyValuePairs = map { key, value in
@@ -171,14 +167,12 @@ extension Dictionary: Recreatable {
         case 0:
             return "[:]"
         case 1:
-            return "[\(keyValuePairs.joined(separator: DELIMITER))]"
+            return "[\(keyValuePairs.joined(separator: delimiter))]"
         default:
-            let indent = String(repeating: WHITESPACE, count: INDENT)
-            let string = keyValuePairs.map { indent + $0 }.joined(separator: DELIMITER)
             return """
             [
-            \(string)
-            \(String(repeating: WHITESPACE, count: INDENT - 1))]
+            \(indentedList(keyValuePairs))
+            \(String(repeating: whitespace, count: indent - 1))]
             """
         }
     }
@@ -190,10 +184,10 @@ extension Array: Recreatable {
             return "[]"
         }
 
-        let increaseIndent = filter({ $0 is Recreatable }).count > 1 ? 1 : 0
-        INDENT += increaseIndent
+        let increaseindent = filter({ $0 is Recreatable }).count > 1 ? 1 : 0
+        indent += increaseindent
         defer {
-            INDENT -= increaseIndent
+            indent -= increaseindent
         }
 
         let elements = compactMap { element in
@@ -208,15 +202,19 @@ extension Array: Recreatable {
         case 0:
             return "[]"
         case 1:
-            return "[\(elements.joined(separator: DELIMITER))]"
+            return "[\(elements.joined(separator: delimiter))]"
         default:
-            let indent = String(repeating: WHITESPACE, count: INDENT)
-            let string = elements.map { indent + $0 }.joined(separator: DELIMITER)
             return """
             [
-            \(string)
-            \(String(repeating: WHITESPACE, count: INDENT - 1))]
+            \(indentedList(elements))
+            \(String(repeating: whitespace, count: indent - 1))]
             """
         }
     }
+}
+
+private func indentedList(_ list: [String]) -> String {
+    list
+        .map { String(repeating: whitespace, count: indent) + $0 }
+        .joined(separator: delimiter)
 }
