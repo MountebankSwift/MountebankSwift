@@ -5,7 +5,7 @@ extension Imposter {
         directoryName: StaticString = #file,
         testName: String = #function,
         line: UInt = #line
-    ) {
+    ) throws {
         let imposters = """
         import Foundation
         import MountebankSwift
@@ -31,12 +31,8 @@ extension Imposter {
 
         let fileURL = directory.appendingPathComponent(fileName)
 
-        do {
-            try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-            try imposters.write(to: fileURL, atomically: true, encoding: .utf8)
-        } catch {
-            print("[Mountebank]: ❌ Failed to write stubs to \(fileURL): \(error)")
-        }
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        try imposters.write(to: fileURL, atomically: true, encoding: .utf8)
     }
 
     private func sanitizePathComponent(_ string: String) -> String {
