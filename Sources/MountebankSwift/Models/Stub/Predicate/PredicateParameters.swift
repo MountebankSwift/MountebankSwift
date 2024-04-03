@@ -4,21 +4,27 @@ import Foundation
 public struct PredicateParameters: Equatable {
     /// Determines if the match is case sensitive or not.
     /// This includes keys for objects such as query parameters.
-    let caseSensitive: Bool?
+    public let caseSensitive: Bool?
     /// Defines a regular expression that is stripped out of the request field before matching.
-    let except: String?
+    public let except: String?
     /// Defines an object containing a selector string and, optionally, an namespace map.
     /// The predicate's scope is limited to the selected value in the request field.
-    let xPath: XPath?
+    public let xPath: XPath?
     /// Defines an object containing a selector string.
     /// The predicate's scope is limited to the selected value in the request field.
-    let jsonPath: JSONPath?
+    public let jsonPath: JSONPath?
 
     var isEmpty: Bool {
         // A bit overkill, but future proof
         !Mirror(reflecting: self).children.contains(where: { "\($0.value)" != "nil" })
     }
 
+    /// - Parameters:
+    ///   - caseSensitive: Determines if the match is case sensitive or not.
+    ///       This includes keys for objects such as query parameters.
+    ///   - except: Defines a regular expression that is stripped out of the request field before matching.
+    ///   - xPath: Narrow down the scope of the predicate value with an xPath selector.
+    ///   - jsonPath: Narrow down the scope of the predicate value with an jsonPath selector.
     public init?(
         caseSensitive: Bool? = nil,
         except: String? = nil,
