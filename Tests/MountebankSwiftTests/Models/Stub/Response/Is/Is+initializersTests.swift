@@ -26,18 +26,21 @@ class IsInitializersTests: XCTestCase {
     }
 
     func testInitWithJsonEncodableBody() throws {
-        struct SomeCodableObject: Codable {
-            struct Bar: Codable {
-                let baz: String
-            }
-
-            let foo: String
-            let bar: Bar
-        }
-
-        let bodyJsonEncodable = SomeCodableObject(foo: "foo", bar: SomeCodableObject.Bar(baz: "baz"))
+        let bodyJsonEncodable = SomeCodableObject(
+            foo: "foo",
+            bar: SomeCodableObject.Bar(baz: "baz")
+        )
         let sut = Is(body: bodyJsonEncodable)
 
         XCTAssertEqual(sut.body, .jsonEncodable(bodyJsonEncodable))
     }
+}
+
+private struct SomeCodableObject: Equatable, Codable {
+    struct Bar: Equatable, Codable {
+        let baz: String
+    }
+
+    let foo: String
+    let bar: Bar
 }
