@@ -99,6 +99,21 @@ public enum JSON: Codable, Hashable {
     }
 }
 
+extension JSON: Recreatable {
+    var recreatable: String {
+        switch self {
+        case .string(let value as Recreatable),
+             .number(let value as Recreatable),
+             .bool(let value as Recreatable),
+             .object(let value as Recreatable),
+             .array(let value as Recreatable):
+            return value.recreatable
+        case .null:
+            return enumSwiftString()
+        }
+    }
+}
+
 // MARK: - Querying
 
 extension JSON {

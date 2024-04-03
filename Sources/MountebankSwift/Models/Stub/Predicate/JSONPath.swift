@@ -12,3 +12,9 @@ public struct JSONPath: Codable, Equatable {
         self.selector = selector
     }
 }
+
+extension JSONPath: Recreatable {
+    var recreatable: String {
+        "JSONPath(selector: \(selector.recreatable))"
+    }
+}

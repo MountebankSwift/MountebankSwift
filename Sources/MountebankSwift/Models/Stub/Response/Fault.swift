@@ -6,9 +6,16 @@ import Foundation
 /// respond as expected due to network failures. Mountebank already has the ability to specify delays
 /// via `wait` but we may also want to test when the connection is abruptly reset or garbage data is
 /// returned, similar to some of Wiremock's fault simulation functionality
-public enum Fault: String, StubResponse, Codable, Equatable { // TODO convert to struct? To add parameters
+public enum Fault: String, StubResponse, Codable, Equatable {
+    // TODO convert to struct? To add parameters
     /// Close the connection.
     case connectionResetByPeer = "CONNECTION_RESET_BY_PEER"
     /// Send garbage then close the connection.
     case randomDataThenClose = "RANDOM_DATA_THEN_CLOSE"
+}
+
+extension Fault: Recreatable {
+    var recreatable: String {
+        "Fault.\(self)"
+    }
 }

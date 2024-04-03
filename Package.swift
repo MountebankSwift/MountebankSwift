@@ -19,6 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.15.4"),
     ],
     targets: [
         .target(
@@ -27,7 +28,11 @@ let package = Package(
         ),
         .testTarget(
             name: "MountebankSwiftTests",
-            dependencies: ["MountebankSwift"],
+            dependencies: [
+                "MountebankSwift",
+                .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
             resources: [
                 .copy("ExampleData/Files"),
             ]

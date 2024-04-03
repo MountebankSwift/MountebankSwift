@@ -58,3 +58,37 @@ public struct Stub: Equatable {
         self.init(responses: [response], predicates: [])
     }
 }
+
+extension Stub: Recreatable {
+    var recreatable: String {
+        structSwiftString([responseProperty, predicateProperty])
+    }
+
+    private var responseProperty: (String, Recreatable) {
+        if responses.count == 1 {
+            // swiftlint:disable:next force_unwrapping
+            switch responses.first!.codable {
+            case .is(let response):
+                return ("response", response)
+            case .proxy(let response):
+                return ("response", response)
+            case .inject(let response):
+                return ("response", response)
+            case .fault(let response):
+                return ("response", response)
+            }
+        } else {
+            return ("responses", responses)
+        }
+    }
+
+    private var predicateProperty: (String, Recreatable) {
+        guard !predicates.isEmpty else {
+            return ("predicates", [Predicate]())
+        }
+
+        return predicates.count == 1
+            ? ("predicate", predicates[0])
+            : ("predicates", predicates)
+    }
+}

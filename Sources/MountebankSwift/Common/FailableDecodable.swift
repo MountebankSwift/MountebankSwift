@@ -5,10 +5,10 @@ struct FailableDecodable<Value: Decodable>: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         do {
-            self.value = try container.decode(Value.self)
+            value = try container.decode(Value.self)
         } catch {
             print("[Mountebank]: ❌ Unable to decode \(decoder.codingPath.map(\.stringValue)) as \(Value.self)")
-            self.value = nil
+            value = nil
         }
     }
 }

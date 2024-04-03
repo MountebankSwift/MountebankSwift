@@ -6,6 +6,9 @@ extension Stub {
         static let all: [Example] = [
             text,
             json,
+            simpleProxy,
+            advancedProxy,
+            predicateGeneratorsProxy,
             noPredicates,
             http404,
             textWhenRefresh404,
@@ -64,6 +67,33 @@ extension Stub {
                 "predicates": [
                     ["equals" : ["path": "/404-to-200"]],
                 ],
+            ]
+        )
+
+        static let simpleProxy = Example(
+            value: Stub(
+                response: Proxy.Examples.simple.value
+            ),
+            json: [
+                "responses": [["proxy": Proxy.Examples.simple.json]],
+            ]
+        )
+
+        static let advancedProxy = Example(
+            value: Stub(
+                response: Proxy.Examples.advanced.value
+            ),
+            json: [
+                "responses": [["proxy": Proxy.Examples.advanced.json]],
+            ]
+        )
+
+        static let predicateGeneratorsProxy = Example(
+            value: Stub(
+                response: Proxy.Examples.predicateGenerators.value
+            ),
+            json: [
+                "responses": [["proxy": Proxy.Examples.predicateGenerators.json]],
             ]
         )
 

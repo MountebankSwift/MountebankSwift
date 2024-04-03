@@ -101,7 +101,7 @@ class IsTests: XCTestCase {
                 "headers": [
                     "X-My-Invalid-header-type-should-be-string" : 42,
                     "X-Invalid-headers.." : "should be ignored",
-                ]
+                ],
             ],
             Is(
                 statusCode: 404,

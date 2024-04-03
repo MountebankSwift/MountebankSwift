@@ -110,3 +110,21 @@ public struct Proxy: StubResponse, Codable, Equatable {
         self.addDecorateBehavior = addDecorateBehavior
     }
 }
+
+extension Proxy: Recreatable {
+    var recreatable: String {
+        structSwiftString([
+            ("to", to),
+            ("mode", mode),
+            ("predicateGenerators", predicateGenerators),
+            ("addWaitBehavior", addWaitBehavior),
+            ("addDecorateBehavior", addDecorateBehavior),
+        ])
+    }
+}
+
+extension Proxy.Mode: Recreatable {
+    var recreatable: String {
+        enumSwiftString()
+    }
+}

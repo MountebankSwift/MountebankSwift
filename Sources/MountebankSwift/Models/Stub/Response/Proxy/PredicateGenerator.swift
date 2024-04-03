@@ -39,3 +39,36 @@ public enum PredicateGenerator: Equatable {
     /// Defines a JavaScript function that allows programmatic creation of the predicates.
     case inject(String)
 }
+
+extension PredicateGenerator: Recreatable {
+    var recreatable: String {
+        switch self {
+        case .inject(let inject):
+            return enumSwiftString([inject])
+        case .matches(
+            let fields,
+            let predicateOperator,
+            let caseSensitive,
+            let except,
+            let xPath,
+            let jsonPath,
+            let ignore
+        ):
+            return enumSwiftString([
+                ("fields", fields),
+                ("predicateOperator", predicateOperator),
+                ("caseSensitive", caseSensitive),
+                ("except", except),
+                ("xPath", xPath),
+                ("jsonPath", jsonPath),
+                ("ignore", ignore),
+            ])
+        }
+    }
+}
+
+extension PredicateOperator: Recreatable {
+    var recreatable: String {
+        enumSwiftString()
+    }
+}

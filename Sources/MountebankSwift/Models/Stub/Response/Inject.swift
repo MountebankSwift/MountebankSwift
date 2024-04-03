@@ -18,3 +18,9 @@ public struct Inject: StubResponse, Codable, Equatable {
         try injection.encode(to: encoder)
     }
 }
+
+extension Inject: Recreatable {
+    var recreatable: String {
+        "Inject(\(injection.recreatable))"
+    }
+}
