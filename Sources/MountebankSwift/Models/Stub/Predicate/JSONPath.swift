@@ -15,6 +15,6 @@ public struct JSONPath: Codable, Equatable {
 
 extension JSONPath: Recreatable {
     var recreatable: String {
-        "JSONPath(selector: \(selector.debugDescription))"
+        "JSONPath(selector: \(selector.recreatable))"
     }
 }

@@ -136,7 +136,7 @@ extension Bool: Recreatable {
 
 extension Data: Recreatable {
     var recreatable: String {
-        "Data(base64Encoded: \(base64EncodedString().debugDescription))!"
+        "Data(base64Encoded: \(base64EncodedString().recreatable))!"
     }
 }
 

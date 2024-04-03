@@ -21,6 +21,6 @@ public struct Inject: StubResponse, Codable, Equatable {
 
 extension Inject: Recreatable {
     var recreatable: String {
-        "Inject(\(injection.debugDescription))"
+        "Inject(\(injection.recreatable))"
     }
 }
