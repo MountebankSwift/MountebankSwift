@@ -107,4 +107,8 @@ final class ImposterTests: XCTestCase {
             )
         )
     }
+
+    func testWriteToDisk() throws {
+        try Imposter.Examples.includingAllStubs.value.writeStubsToDisk()
+    }
 }
