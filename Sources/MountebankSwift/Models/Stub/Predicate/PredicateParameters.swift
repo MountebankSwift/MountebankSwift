@@ -1,7 +1,7 @@
 import Foundation
 
-/// Parameters that can be added to a ``Predicate`` to finetune it
-public struct PredicateParameters: Equatable {
+/// Parameters that can be added to a ``Predicate`` to fine-tune it
+public struct PredicateParameters: Equatable, Sendable {
     /// Determines if the match is case sensitive or not.
     /// This includes keys for objects such as query parameters.
     let caseSensitive: Bool?

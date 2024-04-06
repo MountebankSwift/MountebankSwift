@@ -52,7 +52,7 @@ extension Is {
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
-        body: any Codable,
+        body: any Codable & Sendable,
         encoder: JSONEncoder? = nil,
         parameters: ResponseParameters? = nil
     ) {
@@ -139,7 +139,7 @@ extension Array where Element == Is {
     public init(
         statusCode: Int = 200,
         headers: [String: String]? = nil,
-        bodies: [any Codable],
+        bodies: [any Codable & Sendable],
         parameters: ResponseParameters
     ) {
         self = bodies.map { body in

@@ -35,7 +35,7 @@ private let prettyPrintingJSONEncoder: JSONEncoder = {
 ///
 /// From  [github.com/iwill/generic-json-swift](https://github.com/iwill/generic-json-swift/)
 @dynamicMemberLookup
-public enum JSON: Codable, Hashable {
+public enum JSON: Codable, Hashable, Sendable {
     case string(String)
     case number(Double)
     case object([String: JSON])

@@ -1,7 +1,7 @@
 import Foundation
 
 /// A  HTTP request method
-public enum HTTPMethod: String, Codable, Equatable {
+public enum HTTPMethod: String, Codable, Equatable, Sendable {
     case get = "GET"
     case head = "HEAD"
     case post = "POST"

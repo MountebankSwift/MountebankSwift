@@ -1,7 +1,7 @@
 import Foundation
 
-/// Parameters that can be added to a response  to finetune it.
-public struct ResponseParameters: Equatable {
+/// Parameters that can be added to a response to fine-tune it.
+public struct ResponseParameters: Equatable, Sendable {
     /// Repeats the response the given number of times.
     public let repeatCount: Int?
     public let behaviors: [Behavior]?

@@ -3,7 +3,7 @@ import Foundation
 /// Behaviors act as a middleware pipeline of transformations to alter the created response of a stub.
 ///
 /// [mbtest.org/docs/api/behaviors](https://www.mbtest.org/docs/api/behaviors)
-public enum Behavior: Equatable {
+public enum Behavior: Equatable, Sendable {
 
     /// Adds latency to a response by waiting a specified number of milliseconds before sending the response.
     case wait(miliseconds: Int)

@@ -3,8 +3,9 @@ import Foundation
 // swiftlint:disable type_name
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
 public struct Is: StubResponse, Equatable {
-    public static var defaultBehaviors: [Behavior] = []
-    public static var defaultHeaders: [String: String] = [:]
+    
+    public private(set) static var defaultBehaviors: [Behavior] = []
+    public private(set) static var defaultHeaders: [String: String] = [:]
 
     public let statusCode: Int?
     public let headers: [String: String]?
@@ -28,7 +29,7 @@ public struct Is: StubResponse, Equatable {
         _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
-        var result = Self.defaultHeaders
+        var result = defaultHeaders
 
         switch body {
         case .none, .text, .data:

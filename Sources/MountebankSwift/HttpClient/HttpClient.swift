@@ -3,7 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-protocol HttpClientProtocol {
+protocol HttpClientProtocol: Sendable {
     func httpRequest(_ request: HTTPRequest) async throws -> HTTPResponse
 }
 

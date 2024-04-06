@@ -1,7 +1,7 @@
 import Foundation
 
 /// Host of the Mountebank server
-public enum Host {
+public enum Host: Sendable {
     public typealias RawValue = String
     case localhost
     case custom(String)

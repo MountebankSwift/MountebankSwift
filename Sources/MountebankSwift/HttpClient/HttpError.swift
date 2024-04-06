@@ -1,5 +1,5 @@
 import Foundation
 
-enum HttpError: Error {
+enum HttpError: Error, Sendable {
     case requestFailed
 }

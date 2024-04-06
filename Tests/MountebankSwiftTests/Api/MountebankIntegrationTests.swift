@@ -224,7 +224,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
     // Use this test to verify in your browser that all these content types are encoded properly
     // Put a breakpoint after the `postImposter` call and check for example http://localhost:1234/sample.png
-    func testDiffentResponseBodyTypes() async throws {
+    func testDifferentResponseBodyTypes() async throws {
         let sampleFiles = [
             SampleFile.png,
             SampleFile.jpg,
