@@ -10,7 +10,6 @@ protocol Recreatable {
 
 // MARK: - Public Helpers
 
-private let delimiter = ",\n"
 private let whitespace = "    "
 private var indent = 0
 func increaseRecreatableIndent() { indent += 1 }
@@ -53,11 +52,11 @@ extension Recreatable {
         case 0:
             return ".\(enumCaseWithoutAssociatedValues)()"
         case 1:
-            return ".\(enumCaseWithoutAssociatedValues)(\(propertyList.joined(separator: delimiter)))"
+            return ".\(enumCaseWithoutAssociatedValues)(\(propertyList.joined()))"
         default:
             return """
             .\(enumCaseWithoutAssociatedValues)(
-            \(indentedList(propertyList))
+            \(indentedList(propertyList, trailingComma: false))
             \(String(repeating: whitespace, count: indent - 1)))
             """
         }
@@ -82,11 +81,11 @@ extension Recreatable {
         case 0:
             return "\(Self.self)()"
         case 1:
-            return "\(Self.self)(\(propertyList.joined(separator: delimiter)))"
+            return "\(Self.self)(\(propertyList.joined()))"
         default:
             return """
             \(Self.self)(
-            \(indentedList(propertyList))
+            \(indentedList(propertyList, trailingComma: false))
             \(String(repeating: whitespace, count: indent - 1)))
             """
         }
@@ -114,7 +113,24 @@ extension Recreatable {
 
 extension String: Recreatable {
     var recreatable: String {
-        debugDescription
+        contains(where: \.isNewline)
+            ? multilineRecreatable
+            : debugDescription
+    }
+
+    private var multilineRecreatable: String {
+        let description = description
+            .split(separator: "\n")
+            .map {
+                String(repeating: whitespace, count: indent) + $0
+            }
+            .joined(separator: "\n")
+
+        return """
+        \"\"\"
+        \(description)
+        \(String(repeating: whitespace, count: indent))\"\"\"
+        """
     }
 }
 
@@ -138,7 +154,15 @@ extension Bool: Recreatable {
 
 extension Data: Recreatable {
     var recreatable: String {
-        "Data(base64Encoded: \(base64EncodedString().recreatable))!"
+        indent += 1
+        defer {
+            indent -= 1
+        }
+        return """
+        Data(
+        \(String(repeating: whitespace, count: indent))base64Encoded: \(base64EncodedString().recreatable)
+        \(String(repeating: whitespace, count: indent - 1)))!
+        """
     }
 }
 
@@ -169,11 +193,11 @@ extension Dictionary: Recreatable {
         case 0:
             return "[:]"
         case 1:
-            return "[\(keyValuePairs.joined(separator: delimiter))]"
+            return "[\(keyValuePairs.joined())]"
         default:
             return """
             [
-            \(indentedList(keyValuePairs))
+            \(indentedList(keyValuePairs, trailingComma: true))
             \(String(repeating: whitespace, count: indent - 1))]
             """
         }
@@ -204,19 +228,23 @@ extension Array: Recreatable {
         case 0:
             return "[]"
         case 1:
-            return "[\(elements.joined(separator: delimiter))]"
+            return "[\(elements.joined())]"
         default:
             return """
             [
-            \(indentedList(elements))
+            \(indentedList(elements, trailingComma: true))
             \(String(repeating: whitespace, count: indent - 1))]
             """
         }
     }
 }
 
-private func indentedList(_ list: [String]) -> String {
-    list
+private func indentedList(_ list: [String], trailingComma: Bool) -> String {
+    let result = list
         .map { String(repeating: whitespace, count: indent) + $0 }
-        .joined(separator: delimiter)
+        .joined(separator: ",\n")
+
+    return trailingComma
+        ? result + ","
+        : result
 }

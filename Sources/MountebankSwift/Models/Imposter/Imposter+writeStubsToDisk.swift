@@ -17,11 +17,10 @@ extension Imposter {
         let propertyName = [
             sansanitisedMethod,
             "Stubs",
-            name.map { sanitizeName($0).capitalized }
+            name.map { sanitizeName($0).capitalized },
         ]
-            .compactMap { $0 }
-            .joined()
-
+        .compactMap { $0 }
+        .joined()
 
         increaseRecreatableIndent()
         let stubsString = stubs.recreatable
@@ -35,6 +34,7 @@ extension Imposter {
         extension \(dirName) {
             static let \(propertyName): [Stub] = \(stubsString)
         }
+
         // swiftlint:enable line_length force_unwrapping
         """
 
