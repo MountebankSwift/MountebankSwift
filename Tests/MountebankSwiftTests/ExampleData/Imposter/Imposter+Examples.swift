@@ -156,7 +156,7 @@ extension Imposter {
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,
-                name: "Single stub",
+                name: "all",
                 stubs: Stub.Examples.all.map(\.value),
                 defaultResponse: Is(statusCode: 403),
                 recordRequests: true
@@ -164,7 +164,7 @@ extension Imposter {
             json: [
                 "port": 8080,
                 "protocol": "http",
-                "name": "Single stub",
+                "name": "all",
                 "stubs": .array(Stub.Examples.all.map(\.json)),
                 "defaultResponse": ["statusCode": 403],
                 "recordRequests": true,

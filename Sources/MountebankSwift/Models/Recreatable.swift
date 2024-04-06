@@ -13,6 +13,8 @@ protocol Recreatable {
 private let delimiter = ",\n"
 private let whitespace = "    "
 private var indent = 0
+func increaseRecreatableIndent() { indent += 1 }
+func decreaseRecreatableIndent() { indent -= 1 }
 
 extension Recreatable {
     /// Helper to create a recreatable string for a struct

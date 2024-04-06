@@ -5,22 +5,38 @@ extension Imposter {
         directoryName: StaticString = #file,
         methodName: String = #function
     ) throws {
-        let imposters = """
-        import Foundation
-        import MountebankSwift
-
-        // swiftlint:disable line_length force_unwrapping
-        let stubsFor\(name.map(sanitizeName)?.capitalized ?? ""): [Stub] = \(stubs.recreatable)
-        // swiftlint:enable line_length force_unwrapping
-
-        """
-
         let dirURL = URL(fileURLWithPath: "\(directoryName)", isDirectory: false)
         let dirName = dirURL.deletingPathExtension().lastPathComponent
         let directory = dirURL
             .deletingLastPathComponent()
             .appendingPathComponent("__Imposters__")
             .appendingPathComponent(dirName)
+
+        let sansanitisedMethod = sanitizePathComponent(methodName)
+
+        let propertyName = [
+            sansanitisedMethod,
+            "Stubs",
+            name.map { sanitizeName($0).capitalized }
+        ]
+            .compactMap { $0 }
+            .joined()
+
+
+        increaseRecreatableIndent()
+        let stubsString = stubs.recreatable
+        decreaseRecreatableIndent()
+
+        let imposters = """
+        import Foundation
+        import MountebankSwift
+
+        // swiftlint:disable line_length force_unwrapping
+        extension \(dirName) {
+            static let \(propertyName): [Stub] = \(stubsString)
+        }
+        // swiftlint:enable line_length force_unwrapping
+        """
 
         try writeToDisk(
             content: imposters,
@@ -36,6 +52,7 @@ extension Imposter {
     ) throws {
         let fileName = [
             sanitizePathComponent(methodName),
+            "stubs",
             name.map(sanitizePathComponent),
             "swift",
         ]
