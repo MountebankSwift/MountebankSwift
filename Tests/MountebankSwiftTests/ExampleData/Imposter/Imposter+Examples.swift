@@ -17,7 +17,6 @@ extension Imposter {
         static let simple = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http(),
                 stubs: [Stub.Examples.text.value]
             ),
             json: [
@@ -30,7 +29,6 @@ extension Imposter {
         static let json = Example(
             value: Imposter(
                 port: 100,
-                networkProtocol: .http(),
                 stubs: [Stub.Examples.json.value]
             ),
             json: [
@@ -158,7 +156,6 @@ extension Imposter {
         static let includingAllStubs = Example(
             value: Imposter(
                 port: 8080,
-                networkProtocol: .http(),
                 name: "Single stub",
                 stubs: Stub.Examples.all.map(\.value),
                 defaultResponse: Is(statusCode: 403),
@@ -177,7 +174,6 @@ extension Imposter {
         static let simpleRecordRequests = Example(
             value: Imposter(
                 port: 19190,
-                networkProtocol: .http(),
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true
             ),

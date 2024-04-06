@@ -102,7 +102,7 @@ public struct Imposter: Codable, Equatable {
     ///   - recordRequests: If set to true, the server will record requests received, for mock verification purposes.
     public init(
         port: Int? = nil,
-        networkProtocol: NetworkProtocol,
+        networkProtocol: NetworkProtocol = .http(),
         name: String? = nil,
         stubs: [Stub],
         defaultResponse: Is? = nil,
