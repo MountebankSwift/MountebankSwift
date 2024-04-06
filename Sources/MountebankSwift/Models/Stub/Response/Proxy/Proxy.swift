@@ -46,23 +46,23 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
 
     /// Defines the origin server that the request should proxy to.
     /// A URL without the path (e.g. http://someserver:3000 or tcp://someserver:3000)
-    let to: String
+    public let to: String
 
     /// Defines the replay behavior of the proxy.
-    let mode: Mode?
+    public let mode: Mode?
 
     /// Protocol specific parameters for this proxy
-    let networkProtocolParameters: NetworkProtocolParameters?
+    public let networkProtocolParameters: NetworkProtocolParameters?
 
     /// An array of objects that defines how the predicates for new stubs are created.
     /// Each object in the array defines the fields to generate predicates from.
-    let predicateGenerators: [PredicateGenerator]?
+    public let predicateGenerators: [PredicateGenerator]?
 
     /// If true, mountebank will add a wait behavior to the response
     /// with the same latency that the proxied call took.
     /// This is useful in performance testing scenarios where you want to
     /// simulate the actual latency of downstream services that you're virtualizing.
-    let addWaitBehavior: Bool?
+    public let addWaitBehavior: Bool?
 
     /// If defined, mountebank will add a decorate behavior to the saved response
     ///
@@ -73,7 +73,7 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
     /// altogether new response.
     ///
     /// The `--allowInjection` command line flag must be set to support this behavior.
-    let addDecorateBehavior: String?
+    public let addDecorateBehavior: String?
 
     /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
     /// - Parameters:
