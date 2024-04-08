@@ -5,8 +5,8 @@ import XCTest
 class MountebankTests: XCTestCase {
 
     // swiftlint:disable implicitly_unwrapped_optional
-    private var sut: Mountebank!
-    private var httpClientSpy: HttpClientSpy!
+    var sut: Mountebank!
+    var httpClientSpy: HttpClientSpy!
     // swiftlint:enable implicitly_unwrapped_optional
 
     override func setUp() async throws {
@@ -61,7 +61,7 @@ class MountebankTests: XCTestCase {
         let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .badRequest)
 
-        await XCTAssertThrowsError(try await sut.getAllImposters()) { error in
+        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
             XCTAssertEqual(
                 error as? MountebankValidationError,
                 MountebankValidationError.remoteError(mounteBankErrors.value)
@@ -74,7 +74,7 @@ class MountebankTests: XCTestCase {
         let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .accepted)
 
-        await XCTAssertThrowsError(try await sut.getAllImposters()) { error in
+        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
             XCTAssertEqual(
                 error as? MountebankValidationError,
                 MountebankValidationError.invalidResponseData
@@ -85,7 +85,7 @@ class MountebankTests: XCTestCase {
     func testInvalidErrorMapping() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("[]".utf8), statusCode: .internalServerError)
 
-        await XCTAssertThrowsError(try await sut.getAllImposters()) { error in
+        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
             XCTAssertEqual(
                 error as? MountebankValidationError,
                 MountebankValidationError.invalidResponseData
@@ -96,7 +96,7 @@ class MountebankTests: XCTestCase {
     func testInvalidResponseFromInvalidStringGetAllImposter() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("invalid".utf8), statusCode: .accepted)
 
-        await XCTAssertThrowsError(try await sut.getAllImposters()) { error in
+        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
             XCTAssertEqual(
                 error as? MountebankValidationError,
                 MountebankValidationError.invalidResponseData
