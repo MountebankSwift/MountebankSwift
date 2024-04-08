@@ -3,7 +3,7 @@ import Foundation
 /// A body for an ``Is`` response
 public enum Body: Equatable, Sendable {
     public typealias JsonEncodable = Encodable & Sendable
-    
+
     case text(String)
     /// A JSON body that will be encoded to a text response
     case json(JSON)
