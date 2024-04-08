@@ -56,12 +56,12 @@ public struct Is: StubResponse, Equatable {
 }
 
 extension Is: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("statusCode", statusCode),
             ("headers", headers),
             ("body", body),
             ("parameters", parameters),
-        ])
+        ], indent: indent)
     }
 }

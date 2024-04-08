@@ -9,13 +9,13 @@ final class RecreatableTests: XCTestCase {
         let enumValue: MyEnum
         let json: JSON?
 
-        var recreatable: String {
+        func recreatable(indent: Int) -> String {
             structSwiftString([
                 ("foo", foo),
                 ("bar", bar),
                 ("enumValue", enumValue),
                 ("json", json),
-            ])
+            ], indent: indent)
         }
     }
 
@@ -25,22 +25,22 @@ final class RecreatableTests: XCTestCase {
         case namedAssociatedValues(foo: String, bar: String)
         case structValue(structValue: MyStruct)
 
-        var recreatable: String {
+        func recreatable(indent: Int) -> String {
             switch self {
             case .simple:
-                return enumSwiftString()
+                return enumSwiftString(indent: indent)
             case .associatedValue(let string):
-                return enumSwiftString([string])
+                return enumSwiftString([string], indent: indent)
             case .namedAssociatedValues(let foo, let bar):
-                return enumSwiftString([("foo", foo), ("bar", bar)])
+                return enumSwiftString([("foo", foo), ("bar", bar)], indent: indent)
             case .structValue(let structValue):
-                return enumSwiftString([("structValue", structValue)])
+                return enumSwiftString([("structValue", structValue)], indent: indent)
             }
         }
     }
 
     func testString() {
-        assertInlineSnapshot(of: "some string value".recreatable, as: .lines) {
+        assertInlineSnapshot(of: "some string value".recreatable(indent: 0), as: .lines) {
             """
             "some string value"
             """
@@ -48,7 +48,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testInt() {
-        assertInlineSnapshot(of: 42.recreatable, as: .lines) {
+        assertInlineSnapshot(of: 42.recreatable(indent: 0), as: .lines) {
             """
             42
             """
@@ -56,7 +56,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testDouble() {
-        assertInlineSnapshot(of: 42.0.recreatable, as: .lines) {
+        assertInlineSnapshot(of: 42.0.recreatable(indent: 0), as: .lines) {
             """
             42.0
             """
@@ -64,7 +64,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testBool() {
-        assertInlineSnapshot(of: true.recreatable, as: .lines) {
+        assertInlineSnapshot(of: true.recreatable(indent: 0), as: .lines) {
             """
             true
             """
@@ -75,7 +75,7 @@ final class RecreatableTests: XCTestCase {
         let stringValue = "some-string"
         // swiftlint:disable:next force_unwrapping
         let data: Data = stringValue.data(using: .utf8)!
-        assertInlineSnapshot(of: data.recreatable, as: .lines) {
+        assertInlineSnapshot(of: data.recreatable(indent: 0), as: .lines) {
             """
             Data(
                 base64Encoded: "c29tZS1zdHJpbmc="
@@ -90,17 +90,20 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testEnum() {
-        assertInlineSnapshot(of: MyEnum.simple.recreatable, as: .lines) {
+        assertInlineSnapshot(of: MyEnum.simple.recreatable(indent: 0), as: .lines) {
             """
             .simple
             """
         }
-        assertInlineSnapshot(of: MyEnum.associatedValue("foo-bar").recreatable, as: .lines) {
+        assertInlineSnapshot(of: MyEnum.associatedValue("foo-bar").recreatable(indent: 0), as: .lines) {
             """
             .associatedValue("foo-bar")
             """
         }
-        assertInlineSnapshot(of: MyEnum.namedAssociatedValues(foo: "foo", bar: "bar").recreatable, as: .lines) {
+        assertInlineSnapshot(
+            of: MyEnum.namedAssociatedValues(foo: "foo", bar: "bar").recreatable(indent: 0),
+            as: .lines
+        ) {
             """
             .namedAssociatedValues(
                 foo: "foo",
@@ -117,7 +120,7 @@ final class RecreatableTests: XCTestCase {
                 bar: [42, 4, 2],
                 enumValue: .namedAssociatedValues(foo: "aa", bar: "bb"),
                 json: nil
-            ).recreatable,
+            ).recreatable(indent: 0),
             as: .lines
         ) {
             """
@@ -151,7 +154,7 @@ final class RecreatableTests: XCTestCase {
                     )
                 ),
                 json: nil
-            ).recreatable,
+            ).recreatable(indent: 0),
             as: .lines
         ) {
             """
@@ -197,7 +200,7 @@ final class RecreatableTests: XCTestCase {
             ],
         ]
 
-        assertInlineSnapshot(of: stringDict.recreatable, as: .lines) {
+        assertInlineSnapshot(of: stringDict.recreatable(indent: 0), as: .lines) {
             """
             [
                 "array": [
@@ -227,7 +230,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testArray() {
-        assertInlineSnapshot(of: ["foo", "bar", "baz"].recreatable, as: .lines) {
+        assertInlineSnapshot(of: ["foo", "bar", "baz"].recreatable(indent: 0), as: .lines) {
             """
             [
                 "foo",
@@ -239,7 +242,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testEmptyString() {
-        assertInlineSnapshot(of: ["", "second", "first"].recreatable, as: .lines) {
+        assertInlineSnapshot(of: ["", "second", "first"].recreatable(indent: 0), as: .lines) {
             """
             [
                 "",
@@ -251,7 +254,7 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testRequestWithEmptyQueryDictionary() {
-        assertInlineSnapshot(of: Request(query: [:]).recreatable, as: .lines) {
+        assertInlineSnapshot(of: Request(query: [:]).recreatable(indent: 0), as: .lines) {
             """
             Request(query: [:])
             """
@@ -259,7 +262,10 @@ final class RecreatableTests: XCTestCase {
     }
 
     func testEmptyStringInStruct() {
-        assertInlineSnapshot(of: MyStruct(foo: nil, bar: [], enumValue: .simple, json: nil).recreatable, as: .lines) {
+        assertInlineSnapshot(
+            of: MyStruct(foo: nil, bar: [], enumValue: .simple, json: nil).recreatable(indent: 0),
+            as: .lines
+        ) {
             """
             MyStruct(
                 bar: [],
@@ -288,7 +294,7 @@ final class RecreatableTests: XCTestCase {
         ]
 
         assertInlineSnapshot(
-            of: MyStruct(foo: nil, bar: [], enumValue: .simple, json: json).recreatable,
+            of: MyStruct(foo: nil, bar: [], enumValue: .simple, json: json).recreatable(indent: 0),
             as: .lines
         ) {
             """

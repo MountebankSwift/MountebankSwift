@@ -23,10 +23,10 @@ public struct XPath: Codable, Equatable, Sendable {
 }
 
 extension XPath: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("selector", selector),
             ("namespace", namespace),
-        ])
+        ], indent: indent)
     }
 }

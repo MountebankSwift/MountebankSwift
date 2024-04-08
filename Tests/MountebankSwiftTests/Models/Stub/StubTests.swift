@@ -94,7 +94,7 @@ final class StubTests: XCTestCase {
 
     func testRecreatable() {
         assertInlineSnapshot(
-            of: Stub.Examples.text.value.recreatable,
+            of: Stub.Examples.text.value.recreatable(indent: 0),
             as: .lines
         ) {
             """
@@ -112,7 +112,7 @@ final class StubTests: XCTestCase {
     // swiftlint:disable line_length
     func testRecreatableAllStubs() {
         assertInlineSnapshot(
-            of: Stub.Examples.all.map(\.value).recreatable,
+            of: Stub.Examples.all.map(\.value).recreatable(indent: 0),
             as: .lines
         ) {
             #"""

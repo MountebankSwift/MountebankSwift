@@ -44,7 +44,7 @@ extension Behavior {
 }
 
 extension Behavior.BehaviorCopyMethod: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         var properties: [(String, Recreatable?)] = []
         switch self {
         case .regex(let selector, let options):
@@ -57,12 +57,12 @@ extension Behavior.BehaviorCopyMethod: Recreatable {
             properties.append(("selector", selector))
         }
 
-        return enumSwiftString(properties)
+        return enumSwiftString(properties, indent: indent)
     }
 }
 
 extension Behavior.BehaviorCopyMethod.Options: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         let values = [
             contains(Self.ignoreCase) ? ".ignoreCase" : nil,
             contains(Self.multiline) ? ".multiline" : nil,

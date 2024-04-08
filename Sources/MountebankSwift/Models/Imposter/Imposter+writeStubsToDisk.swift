@@ -22,9 +22,7 @@ extension Imposter {
         .compactMap { $0 }
         .joined()
 
-        increaseRecreatableIndent()
-        let stubsString = stubs.recreatable
-        decreaseRecreatableIndent()
+        let stubsString = stubs.recreatable(indent: 1)
 
         let imposters = """
         import Foundation

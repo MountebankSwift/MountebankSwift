@@ -43,12 +43,12 @@ public struct PredicateParameters: Equatable, Sendable {
 }
 
 extension PredicateParameters: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("caseSensitive", caseSensitive),
             ("except", except),
             ("xPath", xPath),
             ("jsonPath", jsonPath),
-        ])
+        ], indent: indent)
     }
 }

@@ -14,7 +14,7 @@ public struct JSONPath: Codable, Equatable, Sendable {
 }
 
 extension JSONPath: Recreatable {
-    var recreatable: String {
-        "JSONPath(selector: \(selector.recreatable))"
+    func recreatable(indent: Int) -> String {
+        "JSONPath(selector: \(selector.recreatable(indent: indent)))"
     }
 }

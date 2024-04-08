@@ -83,7 +83,7 @@ extension Predicate {
 }
 
 extension Predicate: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         switch self {
         case .equals(let request, let predicateParameters),
              .deepEquals(let request, let predicateParameters),
@@ -92,14 +92,14 @@ extension Predicate: Recreatable {
              .endsWith(let request, let predicateParameters),
              .matches(let request, let predicateParameters),
              .exists(let request, let predicateParameters):
-            return enumSwiftString([request, predicateParameters])
+            return enumSwiftString([request, predicateParameters], indent: indent)
         case .not(let predicate, let predicateParameters):
-            return enumSwiftString([predicate, predicateParameters])
+            return enumSwiftString([predicate, predicateParameters], indent: indent)
         case .or(let array, let predicateParameters),
              .and(let array, let predicateParameters):
-            return enumSwiftString([array, predicateParameters])
+            return enumSwiftString([array, predicateParameters], indent: indent)
         case .inject(let string):
-            return enumSwiftString([string])
+            return enumSwiftString([string], indent: indent)
         }
     }
 }

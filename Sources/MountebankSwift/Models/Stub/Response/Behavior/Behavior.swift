@@ -43,22 +43,22 @@ public enum Behavior: Equatable, Sendable {
 }
 
 extension Behavior: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         switch self {
         case .wait(let miliseconds):
-            return enumSwiftString([("miliseconds", miliseconds)])
+            return enumSwiftString([("miliseconds", miliseconds)], indent: indent)
         case .copy(let from, let into, let using):
             return enumSwiftString([
                 ("from", from),
                 ("into", into),
                 ("using", using),
-            ])
+            ], indent: indent)
         case .lookup(let json):
-            return enumSwiftString([json])
+            return enumSwiftString([json], indent: indent)
         case .waitJavascript(let string),
              .decorate(let string),
              .shellTransform(let string):
-            return enumSwiftString([string])
+            return enumSwiftString([string], indent: indent)
         }
     }
 }
