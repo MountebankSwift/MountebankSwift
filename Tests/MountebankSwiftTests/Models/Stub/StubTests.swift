@@ -37,6 +37,17 @@ final class StubTests: XCTestCase {
         )
     }
 
+    func testInjections() throws {
+        try assertEncode(
+            Stub.Examples.injections.value,
+            Stub.Examples.injections.json
+        )
+        try assertDecode(
+            Stub.Examples.injections.json,
+            Stub.Examples.injections.value
+        )
+    }
+
     func testMultipleResponses() throws {
         try assertEncode(
             Stub.Examples.textWhenRefresh404.value,
@@ -119,7 +130,7 @@ final class StubTests: XCTestCase {
                         headers: ["Content-Type": "application/json"],
                         body: .json([
                             "bikeId": 123.0,
-                            "name": "Turbo Bike 4000"
+                            "name": "Turbo Bike 4000",
                         ])
                     ),
                     predicate: .equals(Request(path: "/json-200"))
@@ -147,19 +158,19 @@ final class StubTests: XCTestCase {
                             .matches(
                                 fields: [
                                     "method": true,
-                                    "path": true
+                                    "path": true,
                                 ],
                                 caseSensitive: true
                             ),
                             .matches(fields: ["query": [
                                 "category": true,
-                                "productId": true
+                                "productId": true,
                             ]]),
                             .matches(
                                 fields: [
                                     "method": true,
                                     "path": true,
-                                    "query": true
+                                    "query": true,
                                 ],
                                 predicateOperator: .deepEquals,
                                 caseSensitive: true,
@@ -174,7 +185,22 @@ final class StubTests: XCTestCase {
                                 fields: ["body": true],
                                 xPath: XPath(selector: "//number")
                             ),
-                            .inject("    function (config) {\n        const predicate = {\n            exists: {\n                headers: {\n                    \'X-Transaction-Id\': false\n                }\n            }\n        };\n        if (config.request.headers[\'X-Transaction-Id\']) {\n            config.logger.debug(\'Requiring X-Transaction-Id header to exist in predicate\');\n            predicate.exists.headers[\'X-Transaction-Id\'] = true;\n        }\n        return [predicate];\n    }")
+                            .inject("""
+                                function (config) {
+                                    const predicate = {
+                                        exists: {
+                                            headers: {
+                                                'X-Transaction-Id': false
+                                            }
+                                        }
+                                    };
+                                    if (config.request.headers['X-Transaction-Id']) {
+                                        config.logger.debug('Requiring X-Transaction-Id header to exist in predicate');
+                                        predicate.exists.headers['X-Transaction-Id'] = true;
+                                    }
+                                    return [predicate];
+                                }
+                            """),
                         ]
                     ),
                     predicates: []
@@ -192,11 +218,22 @@ final class StubTests: XCTestCase {
                 ),
                 Stub(
                     responses: [
+                        Inject("(config) => { return { \"body\": \"hello world\" }; }"),
+                        Inject("""
+                        (config) => {
+                            return { "body": "hello world" };
+                        }
+                        """),
+                    ],
+                    predicate: .equals(Request(path: "/injection"))
+                ),
+                Stub(
+                    responses: [
                         Is(statusCode: 404),
                         Is(
                             statusCode: 200,
                             body: .text("Hello world")
-                        )
+                        ),
                     ],
                     predicate: .equals(Request(path: "/404-to-200"))
                 ),
@@ -216,12 +253,14 @@ final class StubTests: XCTestCase {
                             headers: ["Content-Type": "application/json"],
                             body: .json([
                                 "bikeId": 123.0,
-                                "name": "Turbo Bike 4000"
+                                "name": "Turbo Bike 4000",
                             ])
                         ),
                         Is(
                             statusCode: 200,
-                            body: .data(Data(base64Encoded: "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAABaADAAQAAAABAAAABQAAAAB/qhzxAAAAKUlEQVQIHWP8//8/AwMjI5CAgv//wTyEAFScCaYAmcYhCDQDWRUDkA8AEGsMAtJaFngAAAAASUVORK5CYII=")!)
+                            body: .data(Data(
+                                base64Encoded: "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAABaADAAQAAAABAAAABQAAAAB/qhzxAAAAKUlEQVQIHWP8//8/AwMjI5CAgv//wTyEAFScCaYAmcYhCDQDWRUDkA8AEGsMAtJaFngAAAAASUVORK5CYII="
+                            )!)
                         ),
                         Is(statusCode: 404),
                         Proxy(
@@ -229,7 +268,7 @@ final class StubTests: XCTestCase {
                             mode: .proxyAlways
                         ),
                         Fault.connectionResetByPeer,
-                        Inject("(config) => { return { \"body\": \"hello world\" }; }")
+                        Inject("(config) => { return { \"body\": \"hello world\" }; }"),
                     ],
                     predicates: [
                         .equals(Request(
@@ -237,14 +276,14 @@ final class StubTests: XCTestCase {
                             path: "/test-is-200",
                             query: ["key": [
                                 "first",
-                                "second"
+                                "second",
                             ]],
                             headers: ["foo": "bar"],
                             data: ["baz"]
                         )),
                         .deepEquals(Request(query: ["key": [
                             "first",
-                            "second"
+                            "second",
                         ]])),
                         .contains(Request(data: "AgM=")),
                         .startsWith(Request(data: "first")),
@@ -252,14 +291,14 @@ final class StubTests: XCTestCase {
                         .matches(Request(data: "^first")),
                         .exists(Request(query: [
                             "q": true,
-                            "search": false
+                            "search": false,
                         ])),
                         .not(.equals(Request(
                             method: .put,
                             path: "/test-is-200",
                             query: ["key": [
                                 "first",
-                                "second"
+                                "second",
                             ]],
                             headers: ["foo": "bar"],
                             data: ["baz"]
@@ -270,12 +309,12 @@ final class StubTests: XCTestCase {
                                 path: "/test-is-200",
                                 query: ["key": [
                                     "first",
-                                    "second"
+                                    "second",
                                 ]],
                                 headers: ["foo": "bar"],
                                 data: ["baz"]
                             )),
-                            .contains(Request(data: "AgM="))
+                            .contains(Request(data: "AgM=")),
                         ]),
                         .and([
                             .equals(Request(
@@ -283,15 +322,15 @@ final class StubTests: XCTestCase {
                                 path: "/test-is-200",
                                 query: ["key": [
                                     "first",
-                                    "second"
+                                    "second",
                                 ]],
                                 headers: ["foo": "bar"],
                                 data: ["baz"]
                             )),
                             .deepEquals(Request(query: ["key": [
                                 "first",
-                                "second"
-                            ]]))
+                                "second",
+                            ]])),
                         ]),
                         .inject("(config) => { return config.request.headers[\'Authorization\'] == \'Bearer <my-token>\'; }"),
                         .equals(
@@ -305,9 +344,9 @@ final class StubTests: XCTestCase {
                                 ),
                                 jsonPath: JSONPath(selector: "$..title")
                             )
-                        )
+                        ),
                     ]
-                )
+                ),
             ]
             """#
         }

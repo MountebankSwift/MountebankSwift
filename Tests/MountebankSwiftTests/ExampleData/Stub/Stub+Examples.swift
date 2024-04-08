@@ -11,6 +11,7 @@ extension Stub {
             predicateGeneratorsProxy,
             noPredicates,
             http404,
+            injections,
             textWhenRefresh404,
             multiplePredicatesAndResponses,
         ]
@@ -70,6 +71,25 @@ extension Stub {
             ]
         )
 
+        static let injections = Example(
+            value: Stub(
+                responses: [
+                    Inject.Examples.injectBodySingleLine.value,
+                    Inject.Examples.injectBodyMultiline.value,
+                ],
+                predicate: Predicate.equals(Request(path: "/injection"))
+            ),
+            json: [
+                "responses": [
+                    ["inject": Inject.Examples.injectBodySingleLine.json],
+                    ["inject": Inject.Examples.injectBodyMultiline.json],
+                ],
+                "predicates": [
+                    ["equals" : ["path": "/injection"]],
+                ],
+            ]
+        )
+
         static let simpleProxy = Example(
             value: Stub(
                 response: Proxy.Examples.simple.value
@@ -104,7 +124,7 @@ extension Stub {
                     [
                         Proxy.Examples.simple.value,
                         Fault.Examples.connectionResetByPeer.value,
-                        Inject.Examples.injectBody.value,
+                        Inject.Examples.injectBodySingleLine.value,
                     ]
                 ,
                 predicates: Predicate.Examples.all.map(\.value)
@@ -117,7 +137,7 @@ extension Stub {
                         [
                             ["proxy": Proxy.Examples.simple.json],
                             ["fault": Fault.Examples.connectionResetByPeer.json],
-                            ["inject": Inject.Examples.injectBody.json],
+                            ["inject": Inject.Examples.injectBodySingleLine.json],
                         ]
                 ),
                 "predicates": .array(Predicate.Examples.all.map(\.json)),

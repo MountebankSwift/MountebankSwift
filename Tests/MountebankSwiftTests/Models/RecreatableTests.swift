@@ -77,7 +77,9 @@ final class RecreatableTests: XCTestCase {
         let data: Data = stringValue.data(using: .utf8)!
         assertInlineSnapshot(of: data.recreatable, as: .lines) {
             """
-            Data(base64Encoded: "c29tZS1zdHJpbmc=")!
+            Data(
+                base64Encoded: "c29tZS1zdHJpbmc="
+            )!
             """
         }
         XCTAssertEqual(
@@ -124,7 +126,7 @@ final class RecreatableTests: XCTestCase {
                 bar: [
                     42,
                     4,
-                    2
+                    2,
                 ],
                 enumValue: .namedAssociatedValues(
                     foo: "aa",
@@ -158,7 +160,7 @@ final class RecreatableTests: XCTestCase {
                 bar: [
                     42,
                     4,
-                    2
+                    2,
                 ],
                 enumValue: .structValue(structValue: MyStruct(
                     foo: "foo",
@@ -201,7 +203,7 @@ final class RecreatableTests: XCTestCase {
                 "array": [
                     "foo",
                     "bar",
-                    "baz"
+                    "baz",
                 ],
                 "bool": true,
                 "dictionary": [
@@ -210,15 +212,15 @@ final class RecreatableTests: XCTestCase {
                         "bool": true,
                         "double": 42.0,
                         "int": 42,
-                        "string": "value"
+                        "string": "value",
                     ],
                     "double": 42.0,
                     "int": 42,
-                    "string": "value"
+                    "string": "value",
                 ],
                 "double": 42.0,
                 "int": 42,
-                "string": "value"
+                "string": "value",
             ]
             """
         }
@@ -230,7 +232,7 @@ final class RecreatableTests: XCTestCase {
             [
                 "foo",
                 "bar",
-                "baz"
+                "baz",
             ]
             """
         }
@@ -242,7 +244,7 @@ final class RecreatableTests: XCTestCase {
             [
                 "",
                 "second",
-                "first"
+                "first",
             ]
             """
         }
@@ -297,15 +299,15 @@ final class RecreatableTests: XCTestCase {
                     "dictionary": [
                         "array": [
                             "foo",
-                            "bar"
+                            "bar",
                         ],
                         "bool": true,
                         "double": 42.0,
                         "nested": ["query": true],
-                        "null": .null
+                        "null": .null,
                     ],
                     "int": 42.0,
-                    "string": "value"
+                    "string": "value",
                 ]
             )
             """
