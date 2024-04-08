@@ -15,7 +15,7 @@ public enum Fault: String, StubResponse, Codable, Equatable {
 }
 
 extension Fault: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         "Fault.\(self)"
     }
 }

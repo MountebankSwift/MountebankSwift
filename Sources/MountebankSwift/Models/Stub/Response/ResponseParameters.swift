@@ -22,10 +22,10 @@ public struct ResponseParameters: Equatable, Sendable {
 }
 
 extension ResponseParameters: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("repeatCount", repeatCount),
             ("behaviors", behaviors),
-        ])
+        ], indent: indent)
     }
 }

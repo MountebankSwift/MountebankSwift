@@ -5,47 +5,42 @@ import Foundation
 /// Protocol for re-creating swift code from an instance.
 /// Use the helper methods below. See extensions on models for examples
 protocol Recreatable {
-    var recreatable: String { get }
+    func recreatable(indent: Int) -> String
 }
 
 // MARK: - Public Helpers
 
 private let whitespace = "    "
-private var indent = 0
-func increaseRecreatableIndent() { indent += 1 }
-func decreaseRecreatableIndent() { indent -= 1 }
 
 extension Recreatable {
     /// Helper to create a recreatable string for a struct
-    func structSwiftString(_ properties: [(key: String?, label: Recreatable?)]) -> String {
-        structOrClassSwiftString(properties: properties)
+    func structSwiftString(_ properties: [(key: String?, label: Recreatable?)], indent: Int) -> String {
+        structOrClassSwiftString(properties: properties, indent: indent)
     }
 
     /// Helper to create a recreatable string for a class
-    func classSwiftString(_ properties: [(String?, Recreatable?)]) -> String {
-        structOrClassSwiftString(properties: properties)
+    func classSwiftString(_ properties: [(String?, Recreatable?)], indent: Int) -> String {
+        structOrClassSwiftString(properties: properties, indent: indent)
     }
 
     /// Helper to create a recreatable string for an enum without labeled associated values
-    func enumSwiftString(_ properties: [Recreatable?] = []) -> String {
-        enumSwiftString(properties.map { (nil, $0) })
+    func enumSwiftString(_ properties: [Recreatable?] = [], indent: Int) -> String {
+        enumSwiftString(properties.map { (nil, $0) }, indent: indent)
     }
 
     /// Helper to create a recreatable string for an enum with labeled associated values
-    func enumSwiftString(_ properties: [(String?, Recreatable?)]) -> String {
+    func enumSwiftString(_ properties: [(String?, Recreatable?)], indent: Int) -> String {
         let enumCaseWithoutAssociatedValues = "\(self)".split(separator: "(").first.map(String.init) ?? "\(self)"
         if properties.isEmpty {
             return ".\(enumCaseWithoutAssociatedValues)"
         }
 
-        let increaseindent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
-        indent += increaseindent
-        defer {
-            indent -= increaseindent
-        }
+        let newIndent = properties.filter { $0.1?.recreatable(indent: indent).isEmpty == false }.count > 1
+            ? indent + 1
+            : indent
 
         let propertyList = properties
-            .map { Self.propertySwiftString($0, $1) }
+            .map { Self.propertySwiftString($0, $1, indent: newIndent) }
             .filter { !$0.isEmpty }
 
         switch propertyList.count {
@@ -56,8 +51,8 @@ extension Recreatable {
         default:
             return """
             .\(enumCaseWithoutAssociatedValues)(
-            \(indentedList(propertyList, trailingComma: false))
-            \(String(repeating: whitespace, count: indent - 1)))
+            \(indentedList(propertyList, indent: newIndent, trailingComma: false))
+            \(String(repeating: whitespace, count: indent)))
             """
         }
     }
@@ -66,15 +61,13 @@ extension Recreatable {
 // MARK: - Private Helpers
 
 extension Recreatable {
-    private func structOrClassSwiftString(properties: [(String?, Recreatable?)]) -> String {
-        let increaseindent = properties.filter { $0.1?.recreatable.isEmpty == false }.count > 1 ? 1 : 0
-        indent += increaseindent
-        defer {
-            indent -= increaseindent
-        }
+    private func structOrClassSwiftString(properties: [(String?, Recreatable?)], indent: Int) -> String {
+        let newIndent = properties.filter { $0.1?.recreatable(indent: indent).isEmpty == false }.count > 1
+            ? indent + 1
+            : indent
 
         let propertyList = properties
-            .map { Self.propertySwiftString($0, $1) }
+            .map { Self.propertySwiftString($0, $1, indent: newIndent) }
             .filter { !$0.isEmpty }
 
         switch propertyList.count {
@@ -85,18 +78,18 @@ extension Recreatable {
         default:
             return """
             \(Self.self)(
-            \(indentedList(propertyList, trailingComma: false))
-            \(String(repeating: whitespace, count: indent - 1)))
+            \(indentedList(propertyList, indent: newIndent, trailingComma: false))
+            \(String(repeating: whitespace, count: indent)))
             """
         }
     }
 
-    private static func propertySwiftString(_ label: String?, _ value: Recreatable?) -> String {
+    private static func propertySwiftString(_ label: String?, _ value: Recreatable?, indent: Int) -> String {
         guard let value else {
             return ""
         }
 
-        let recreatable = value.recreatable
+        let recreatable = value.recreatable(indent: indent)
         guard !recreatable.isEmpty else {
             return ""
         }
@@ -112,13 +105,13 @@ extension Recreatable {
 // MARK: - Extensions on Swift Types
 
 extension String: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         contains(where: \.isNewline)
-            ? multilineRecreatable
+            ? multilineRecreatable(indent: indent)
             : debugDescription
     }
 
-    private var multilineRecreatable: String {
+    private func multilineRecreatable(indent: Int) -> String {
         let description = description
             .split(separator: "\n")
             .map {
@@ -135,48 +128,45 @@ extension String: Recreatable {
 }
 
 extension Int: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         description
     }
 }
 
 extension Double: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         debugDescription
     }
 }
 
 extension Bool: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         description
     }
 }
 
 extension Data: Recreatable {
-    var recreatable: String {
-        indent += 1
-        defer {
-            indent -= 1
-        }
-        return """
+    func recreatable(indent: Int) -> String {
+        """
         Data(
-        \(String(repeating: whitespace, count: indent))base64Encoded: \(base64EncodedString().recreatable)
-        \(String(repeating: whitespace, count: indent - 1)))!
+        \(String(repeating: whitespace, count: indent + 1))base64Encoded: \(
+            base64EncodedString()
+                .recreatable(indent: indent + 1)
+        )
+        \(String(repeating: whitespace, count: indent)))!
         """
     }
 }
 
 extension Dictionary: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         if isEmpty {
             return "[:]"
         }
 
-        let increaseindent = filter({ $0.value is Recreatable }).count > 1 ? 1 : 0
-        indent += increaseindent
-        defer {
-            indent -= increaseindent
-        }
+        let newIndent = filter({ $0.value is Recreatable }).count > 1
+            ? indent + 1
+            : indent
 
         let keyValuePairs = map { key, value in
             guard let recreatableKey = key as? Recreatable else {
@@ -186,7 +176,7 @@ extension Dictionary: Recreatable {
                 return "[Mountebank.Recreatable]: ❌ \(type(of: value)) does not conform to Recreatable"
             }
 
-            return "\(recreatableKey.recreatable): \(recreatableValue.recreatable)"
+            return "\(recreatableKey.recreatable(indent: newIndent)): \(recreatableValue.recreatable(indent: newIndent))"
         }.sorted()
 
         switch keyValuePairs.count {
@@ -197,31 +187,29 @@ extension Dictionary: Recreatable {
         default:
             return """
             [
-            \(indentedList(keyValuePairs, trailingComma: true))
-            \(String(repeating: whitespace, count: indent - 1))]
+            \(indentedList(keyValuePairs, indent: newIndent, trailingComma: true))
+            \(String(repeating: whitespace, count: indent))]
             """
         }
     }
 }
 
 extension Array: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         if isEmpty {
             return "[]"
         }
 
-        let increaseindent = filter({ $0 is Recreatable }).count > 1 ? 1 : 0
-        indent += increaseindent
-        defer {
-            indent -= increaseindent
-        }
+        let newIndent = filter({ $0 is Recreatable }).count > 1
+            ? indent + 1
+            : indent
 
         let elements = compactMap { element in
             guard let recreatable = element as? Recreatable else {
                 return "[Mountebank.Recreatable]: ❌ \(type(of: element)) does not conform to Recreatable"
             }
 
-            return recreatable.recreatable
+            return recreatable.recreatable(indent: newIndent)
         }
 
         switch elements.count {
@@ -232,14 +220,14 @@ extension Array: Recreatable {
         default:
             return """
             [
-            \(indentedList(elements, trailingComma: true))
-            \(String(repeating: whitespace, count: indent - 1))]
+            \(indentedList(elements, indent: newIndent, trailingComma: true))
+            \(String(repeating: whitespace, count: indent))]
             """
         }
     }
 }
 
-private func indentedList(_ list: [String], trailingComma: Bool) -> String {
+private func indentedList(_ list: [String], indent: Int, trailingComma: Bool) -> String {
     let result = list
         .map { String(repeating: whitespace, count: indent) + $0 }
         .joined(separator: ",\n")

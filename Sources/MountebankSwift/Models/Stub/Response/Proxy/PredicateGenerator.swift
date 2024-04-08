@@ -41,10 +41,10 @@ public enum PredicateGenerator: Equatable, Sendable {
 }
 
 extension PredicateGenerator: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         switch self {
         case .inject(let inject):
-            return enumSwiftString([inject])
+            return enumSwiftString([inject], indent: indent)
         case .matches(
             let fields,
             let predicateOperator,
@@ -62,13 +62,13 @@ extension PredicateGenerator: Recreatable {
                 ("xPath", xPath),
                 ("jsonPath", jsonPath),
                 ("ignore", ignore),
-            ])
+            ], indent: indent)
         }
     }
 }
 
 extension PredicateOperator: Recreatable {
-    var recreatable: String {
-        enumSwiftString()
+    func recreatable(indent: Int) -> String {
+        enumSwiftString(indent: indent)
     }
 }

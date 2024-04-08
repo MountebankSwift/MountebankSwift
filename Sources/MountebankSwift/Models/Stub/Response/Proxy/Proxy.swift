@@ -112,19 +112,19 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
 }
 
 extension Proxy: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("to", to),
             ("mode", mode),
             ("predicateGenerators", predicateGenerators),
             ("addWaitBehavior", addWaitBehavior),
             ("addDecorateBehavior", addDecorateBehavior),
-        ])
+        ], indent: indent)
     }
 }
 
 extension Proxy.Mode: Recreatable {
-    var recreatable: String {
-        enumSwiftString()
+    func recreatable(indent: Int) -> String {
+        enumSwiftString(indent: indent)
     }
 }

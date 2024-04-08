@@ -100,16 +100,16 @@ public enum JSON: Codable, Hashable, Sendable {
 }
 
 extension JSON: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         switch self {
         case .string(let value as Recreatable),
              .number(let value as Recreatable),
              .bool(let value as Recreatable),
              .object(let value as Recreatable),
              .array(let value as Recreatable):
-            return value.recreatable
+            return value.recreatable(indent: indent)
         case .null:
-            return enumSwiftString()
+            return enumSwiftString(indent: indent)
         }
     }
 }

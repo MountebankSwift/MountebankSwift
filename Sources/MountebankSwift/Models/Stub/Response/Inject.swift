@@ -20,7 +20,7 @@ public struct Inject: StubResponse, Codable, Equatable {
 }
 
 extension Inject: Recreatable {
-    var recreatable: String {
-        "Inject(\(injection.recreatable))"
+    func recreatable(indent: Int) -> String {
+        "Inject(\(injection.recreatable(indent: indent)))"
     }
 }

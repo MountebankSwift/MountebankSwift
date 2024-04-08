@@ -7,7 +7,7 @@ struct Imposters: Codable, Equatable {
 }
 
 extension Imposters: Recreatable {
-    var recreatable: String {
-        structSwiftString([("imposters", imposters)])
+    func recreatable(indent: Int) -> String {
+        structSwiftString([("imposters", imposters)], indent: indent)
     }
 }

@@ -60,8 +60,8 @@ public struct Stub: Equatable, Sendable {
 }
 
 extension Stub: Recreatable {
-    var recreatable: String {
-        structSwiftString([responseProperty, predicateProperty])
+    func recreatable(indent: Int) -> String {
+        structSwiftString([responseProperty, predicateProperty], indent: indent)
     }
 
     private var responseProperty: (String, Recreatable) {

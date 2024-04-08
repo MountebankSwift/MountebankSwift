@@ -38,22 +38,22 @@ public enum Body: Equatable, Sendable {
 }
 
 extension Body: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         switch self {
         case .text(let string):
-            return enumSwiftString([string])
+            return enumSwiftString([string], indent: indent)
         case .json(let json):
-            return enumSwiftString([json])
+            return enumSwiftString([json], indent: indent)
         case .jsonEncodable(let encodable, let encoder):
             do {
                 let data = try (encoder ?? jsonEncoder).encode(encodable)
                 let json = try jsonDecoder.decode(JSON.self, from: data)
-                return Body.json("").enumSwiftString([json])
+                return Body.json("").enumSwiftString([json], indent: indent)
             } catch {
                 return "[Mountebank]: ❌ Failed to encode object: \(error)"
             }
         case .data(let data):
-            return enumSwiftString([data])
+            return enumSwiftString([data], indent: indent)
         }
     }
 }

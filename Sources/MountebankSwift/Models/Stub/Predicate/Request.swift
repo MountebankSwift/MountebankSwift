@@ -31,13 +31,13 @@ public struct Request: Equatable, Codable, CustomDebugStringConvertible, Sendabl
 }
 
 extension Request: Recreatable {
-    var recreatable: String {
+    func recreatable(indent: Int) -> String {
         structSwiftString([
             ("method", method),
             ("path", path),
             ("query", query),
             ("headers", headers),
             ("data", data),
-        ])
+        ], indent: indent)
     }
 }

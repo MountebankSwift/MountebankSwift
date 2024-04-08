@@ -14,7 +14,7 @@ public enum HTTPMethod: String, Codable, Equatable, Sendable {
 }
 
 extension HTTPMethod: Recreatable {
-    var recreatable: String {
-        enumSwiftString()
+    func recreatable(indent: Int) -> String {
+        enumSwiftString(indent: indent)
     }
 }
