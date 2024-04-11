@@ -47,6 +47,8 @@ final class ExampleUITests: XCTestCase {
 }
 ```
 
+For more examples, see the demo app [https://github.com/MountebankSwift/MountebankExampleApp/](https://github.com/MountebankSwift/MountebankExampleApp/)
+
 ## Documentation
 
 The documentation is available on the [Swift Package Index](https://swiftpackageindex.com/mountebankswift/mountebankswift/main/documentation) website.
