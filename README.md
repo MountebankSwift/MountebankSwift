@@ -76,7 +76,7 @@ dependency in `Package.swift`:
 dependencies: [
   .package(
     url: "https://github.com/MountebankSwift/MountebankSwift",
-    from: "1.0.0"
+    from: "0.0.0"
   ),
 ]
 ```
