@@ -19,13 +19,40 @@ class MountebankTests: XCTestCase {
         sut = nil
     }
 
-    func testGetImposter() async throws {
+    func testGetImposterAsync() async throws {
+        try await testGetImposter(runAsync: true)
+    }
+
+    func testGetImposterCompletion() async throws {
+        try await testGetImposter(runAsync: false)
+    }
+
+    func testGetImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.simple
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.getImposter(port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result, file: file, line: line)
+        }
+
+        if runAsync {
+            assertResult(try await sut.getImposter(port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.getImposter(port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
         XCTAssertEqual(
@@ -41,216 +68,524 @@ class MountebankTests: XCTestCase {
                 headers: [HTTPHeaders.contentType: MimeType.json.rawValue]
             )
         )
-
-        XCTAssertEqual(imposter.value, result)
     }
 
-    func testGetAllImposter() async throws {
+    func testGetAllImposterAsync() async throws {
+        try await testGetAllImposter(runAsync: true)
+    }
+
+    func testGetAllImposterCompletion() async throws {
+        try await testGetAllImposter(runAsync: false)
+    }
+
+    func testGetAllImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let result = try await sut.getAllImposters()
+        let assertResult = { (result: [Imposter]) in
+            XCTAssertEqual(imposters.value.imposters, result, file: file, line: line)
+        }
+
+        if runAsync {
+            assertResult(try await sut.getAllImposters())
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.getAllImposters { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value.imposters, result)
     }
 
-    func testGetAllImposterRemoteError() async throws {
-        let mounteBankErrors = MountebankErrors.Examples.single
-        let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .badRequest)
-
-        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
-            XCTAssertEqual(
-                error as? MountebankValidationError,
-                MountebankValidationError.remoteError(mounteBankErrors.value)
-            )
-        }
+    func testPostImposterAsync() async throws {
+        try await testPostImposter(runAsync: true)
     }
 
-    func testInvalidResponseGetAllImposter() async throws {
-        let mounteBankErrors = MountebankErrors.Examples.single
-        let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .accepted)
-
-        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
-            XCTAssertEqual(
-                error as? MountebankValidationError,
-                MountebankValidationError.invalidResponseData
-            )
-        }
+    func testPostImposterCompletion() async throws {
+        try await testPostImposter(runAsync: false)
     }
 
-    func testInvalidErrorMapping() async throws {
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("[]".utf8), statusCode: .internalServerError)
-
-        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
-            XCTAssertEqual(
-                error as? MountebankValidationError,
-                MountebankValidationError.invalidResponseData
-            )
-        }
-    }
-
-    func testInvalidResponseFromInvalidStringGetAllImposter() async throws {
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("invalid".utf8), statusCode: .accepted)
-
-        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
-            XCTAssertEqual(
-                error as? MountebankValidationError,
-                MountebankValidationError.invalidResponseData
-            )
-        }
-    }
-
-    func testPostImposter() async throws {
+    func testPostImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.simple
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.postImposter(imposter: imposter.value)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.postImposter(imposter: imposter.value))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.postImposter(imposter: imposter.value) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testPutImposters() async throws {
+    func testPutImpostersAsync() async throws {
+        try await testPutImposters(runAsync: true)
+    }
+
+    func testPutImpostersCompletion() async throws {
+        try await testPutImposters(runAsync: false)
+    }
+
+    func testPutImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let result = try await sut.putImposters(imposters: imposters.value.imposters)
+        let assertResult = { (result: [Imposter]) in
+            XCTAssertEqual(imposters.value.imposters, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.putImposters(imposters: imposters.value.imposters))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.putImposters(imposters: imposters.value.imposters) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value.imposters, result)
+
     }
 
-    func testPostImposterStub() async throws {
+    func testPostImposterStubAsync() async throws {
+        try await testPostImposterStub(runAsync: true)
+    }
+
+    func testPostImposterStubCompletion() async throws {
+        try await testPostImposterStub(runAsync: false)
+    }
+
+    func testPostImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let stub = Stub.Examples.json
         let imposter = Imposter.Examples.json
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.postImposterStub(stub: stub.value, port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.postImposterStub(stub: stub.value, port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.postImposterStub(stub: stub.value, port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testDeleteImposter() async throws {
+    func testDeleteImposterAsync() async throws {
+        try await testDeleteImposter(runAsync: true)
+    }
+
+    func testDeleteImposterCompletion() async throws {
+        try await testDeleteImposter(runAsync: false)
+    }
+
+    func testDeleteImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.json
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.deleteImposter(port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.deleteImposter(port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.deleteImposter(port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testDeleteAllImposters() async throws {
+    func testDeleteAllImpostersAsync() async throws {
+        try await testDeleteAllImposters(runAsync: true)
+    }
+
+    func testDeleteAllImpostersCompletion() async throws {
+        try await testDeleteAllImposters(runAsync: false)
+    }
+
+    func testDeleteAllImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let result = try await sut.deleteAllImposters()
+        let assertResult = { (result: [Imposter]) in
+            XCTAssertEqual(imposters.value.imposters, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.deleteAllImposters())
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.deleteAllImposters { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposters.value.imposters, result)
+
     }
 
-    func testMakeImposterUrl() async throws {
+    func testMakeImposterUrl() {
         let result = sut.makeImposterUrl(port: 1010)
         XCTAssertEqual(result, URL(string: "http://localhost:1010"))
     }
 
-    func testPutImposterStubs() async throws {
+    func testPutImposterStubsAsync() async throws {
+        try await testPutImposterStubs(runAsync: true)
+    }
+
+    func testPutImposterStubsCompletion() async throws {
+        try await testPutImposterStubs(runAsync: false)
+    }
+
+    func testPutImposterStubs(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.putImposterStubs(stubs: imposter.value.stubs, port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.putImposterStubs(stubs: imposter.value.stubs, port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.putImposterStubs(stubs: imposter.value.stubs, port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testDeleteStub() async throws {
+    func testDeleteStubAsync() async throws {
+        try await testDeleteStub(runAsync: true)
+    }
+
+    func testDeleteStubCompletion() async throws {
+        try await testDeleteStub(runAsync: false)
+    }
+
+    func testDeleteStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.deleteStub(port: port, stubIndex: 0)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.deleteStub(port: port, stubIndex: 0))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.deleteStub(port: port, stubIndex: 0) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testPutImposterStub() async throws {
+    func testPutImposterStubAsync() async throws {
+        try await testPutImposterStub(runAsync: true)
+    }
+
+    func testPutImposterStubCompletion() async throws {
+        try await testPutImposterStub(runAsync: false)
+    }
+
+    func testPutImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let stub = try XCTUnwrap(imposter.value.stubs.last)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.putImposterStub(stub: stub, port: port, stubIndex: 0)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.putImposterStub(stub: stub, port: port, stubIndex: 0))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.putImposterStub(stub: stub, port: port, stubIndex: 0) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testDeleteSavedProxyResponses() async throws {
+    func testDeleteSavedProxyResponsesAsync() async throws {
+        try await testDeleteSavedProxyResponses(runAsync: true)
+    }
+
+    func testDeleteSavedProxyResponsesCompletion() async throws {
+        try await testDeleteSavedProxyResponses(runAsync: false)
+    }
+
+    func testDeleteSavedProxyResponses(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.deleteSavedProxyResponses(port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.deleteSavedProxyResponses(port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.deleteSavedProxyResponses(port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testDeleteSavedRequests() async throws {
+    func testDeleteSavedRequestsAsync() async throws {
+        try await testDeleteSavedRequests(runAsync: true)
+    }
+
+    func testDeleteSavedRequestsCompletion() async throws {
+        try await testDeleteSavedRequests(runAsync: false)
+    }
+
+    func testDeleteSavedRequests(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let result = try await sut.deleteSavedRequests(port: port)
+        let assertResult = { (result: Imposter) in
+            XCTAssertEqual(imposter.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.deleteSavedRequests(port: port))
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.deleteSavedRequests(port: port) { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(imposter.value, result)
+
     }
 
-    func testGetConfig() async throws {
+    func testGetConfigAsync() async throws {
+        try await testGetConfig(runAsync: true)
+    }
+
+    func testGetConfigCompletion() async throws {
+        try await testGetConfig(runAsync: false)
+    }
+
+    func testGetConfig(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let config = Config.Examples.simple
         let configData = try makeDataFromJSON(config.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: configData, statusCode: .accepted)
 
-        let result = try await sut.getConfig()
+        let assertResult = { (result: Config) in
+            XCTAssertEqual(config.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.getConfig())
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.getConfig { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(config.value, result)
+
     }
 
-    func testGetLogs() async throws {
+    func testGetLogsAsync() async throws {
+        try await testGetLogs(runAsync: true)
+    }
+
+    func testGetLogsCompletion() async throws {
+        try await testGetLogs(runAsync: false)
+    }
+
+    func testGetLogs(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let logs = Logs.Examples.simple
         let logsData = try makeDataFromJSON(logs.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
 
-        let result = try await sut.getLogs()
+        let assertResult = { (result: Logs) in
+            XCTAssertEqual(logs.value, result)
+        }
+
+        if runAsync {
+            assertResult(try await sut.getLogs())
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.getLogs { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
+
+            wait(for: [completionExpectation], timeout: 1)
+        }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(logs.value, result)
+
     }
 
-    func testTestConnection() async throws {
+    func testTestConnectionAsync() async throws {
+        try await testTestConnection(runAsync: true)
+    }
+
+    func testTestConnectionCompletion() async throws {
+        try await testTestConnection(runAsync: false)
+    }
+
+    func testTestConnection(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         let logs = Logs.Examples.simple
         let logsData = try makeDataFromJSON(logs.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
@@ -258,7 +593,7 @@ class MountebankTests: XCTestCase {
         try await sut.testConnection()
     }
 
-    private func makeDataFromJSON(_ json: JSON) throws -> Data {
+    func makeDataFromJSON(_ json: JSON) throws -> Data {
         try testEncoder.encode(json)
     }
 }
