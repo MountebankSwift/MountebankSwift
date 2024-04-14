@@ -3,7 +3,7 @@ import XCTest
 
 extension XCTestCase {
 
-    func XCTAssertThrowsError<T>(
+    func XCTAssertThrowsErrorAsync<T>(
         _ expression: @autoclosure () async throws -> T,
         _ message: @autoclosure () -> String = "",
         file: StaticString = #filePath,
