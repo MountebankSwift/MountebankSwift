@@ -6,8 +6,8 @@ let jsonEncoder = JSONEncoder()
 
 /// Mountebank client to connect to the Mountebank stub server.
 ///
-/// The client is used to submit imposters to the Mountebank server.
-/// Once imposters are in place your application under test can use the Mountebank stub server instead of real server.
+/// The client is used to submit `Imposters` to the ``Mountebank`` server.
+/// Once `Imposters` are in place your application under test can use the Mountebank stub server instead of real server.
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
 ///
 /// ```swift
@@ -23,7 +23,7 @@ let jsonEncoder = JSONEncoder()
 /// let imposterResult = try await mounteBank.postImposter(imposter: imposter)
 /// let imposterURL = mounteBank.makeImposterUrl(port: imposterResult.port!)
 ///
-/// // Application under test can now use `imposterURL` to send requests to
+/// // The application under test can now use `imposterURL` to send requests to
 /// ```
 public struct Mountebank {
     private let host: Host
@@ -54,7 +54,7 @@ public struct Mountebank {
 
     // MARK: - Imposter
 
-    /// Get a single Imposter
+    /// Get a single Imposter async
     ///
     /// Retrieving an ``Imposter`` is generally useful for one the following reasons:
     /// - You want to perform mock verifications by inspecting the requests array).
@@ -63,15 +63,15 @@ public struct Mountebank {
     /// - You proxied a real service, and want to be save off the saved responses in a subsequent disconnected test run.
     ///
     /// - Parameters:
-    ///   - port: The ``Imposter`` server port
+    ///   - port: The ``Imposter`` server port.
     ///   - replayable: Set to `true` to retrieve the minimum amount of information for creating the imposter in the
     ///     future. This leaves out the requests array and any hypermedia.
-    ///   - removeProxies: Set to `true` to remove all proxy responses (and ``Stubs``) from the response. This is useful
+    ///   - removeProxies: Set to `true` to remove all proxy responses (and `Stubs`) from the response. This is useful
     ///     in record-playback scenarios where you want to seed the imposters with proxy information but leave it out on
     ///     subsequent test runs. You can recreate the ``Imposter`` in the future by using the response.
     /// - Returns: A ``Imposter`` that listens to the provided port
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func getImposter(
         port: Int,
@@ -86,18 +86,21 @@ public struct Mountebank {
         )
     }
 
-    /// Get a list of all Imposters
+    /// Get a list of all Imposters async
     ///
-    /// Get a list of all active ``Imposters``. By default, mountebank returns some
+    /// Get a list of all active [``Imposter``]'s. By default, Mountebank returns some
     /// basic information and hypermedia. If you want more information, either get the single ``Imposter`` or use the
     /// `replayable` flag.
     ///
     /// - Parameters:
-    ///   - parameters: The parameters for changing the imposter response
+    ///   - replayable: Set to `true` to retrieve the minimum amount of information for creating the imposter in the
+    ///     future. This leaves out the requests array and any hypermedia.
+    ///   - removeProxies: Set to `true` to remove all proxy responses (and ``Stub``'s) from the response. This is useful
+    ///     in record-playback scenarios where you want to seed the `Imposters` with proxy information but leave it out on
+    ///     subsequent test runs. You can recreate the ``Imposter`` in the future by using the response.
+    /// - Returns: A list of all [``Imposter``]'s
     ///
-    /// - Returns: A list of all ``Imposters``
-    ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func getAllImposters(
         replayable: Bool = false,
@@ -112,37 +115,36 @@ public struct Mountebank {
         ).imposters
     }
 
-    /// Create a single Imposter
+    /// Create a single Imposter async
     ///
-    /// You can create multiple ``Imposters``  in Mountebank of to fulfill your testing needs. Because your
-    /// needs are varied, the ``Imposters`` are all different, and all are identified by a port number
+    /// You can create multiple `Imposters`  in Mountebank of to fulfill your testing needs. Because your
+    /// needs are varied, the `Imposters` are all different, and all are identified by a port number
     /// and associated with a protocol. The value you get out of Mountebank always starts by creating an imposter,
     /// which represents a test double listening on a socket.
     ///
     /// - Parameters:
-    ///   - imposter: ``Imposter`` that will be created
+    ///   - imposter: The ``Imposter`` that will be created.
     /// - Returns: The created ``Imposter`` with the port the ``Imposter`` will be available on.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func postImposter(imposter: Imposter) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: imposter)
         return try await sendDataToEndpoint(body: bodyData, endpoint: .postImposter())
     }
 
-    /// Overwrite all Imposters with a new set of Imposters
+    /// Overwrite all Imposters with a new set of Imposters async
     ///
-    /// Sometimes you want to create a batch of ``Imposters`` in a single call, overwriting any ``Imposters`` already
-    /// created. This call is destructive - it will first delete all existing ``Imposters``. The output of a
+    /// Sometimes you want to create a batch of [``Imposter``]'s in a single call, overwriting any `Imposters` already
+    /// created. This call is destructive - it will first delete all existing `Imposters`. The output of a
     /// GET /imposters?replayable=true can directly be replayed through this call. This call is also used during
     /// startup if you set the --configfile command line flag.
     ///
     /// - Parameters:
-    ///   - imposter: ``Imposter`` that will be created
-    ///   - parameters: The parameters for changing the imposter response
+    ///   - imposters: A list of ``Imposter``'s that overwrite all existing ``Imposter``s.
     /// - Returns: The created ``Imposter`` with the port the ``Imposter`` will be available on.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func putImposters(imposters: [Imposter]) async throws -> [Imposter] {
         let bodyData = try encodeJson(encodable: Imposters(imposters: imposters))
@@ -153,7 +155,7 @@ public struct Mountebank {
         ).imposters
     }
 
-    /// Add a stub to an existing Imposter
+    /// Add a stub to an existing Imposter async
     ///
     /// In most cases, you would add the stubs at the time you create the ``Imposter``, but this call allows you to
     /// add a stub to an existing ``Imposter`` without restarting it. You can add the new stub at any index between 0
@@ -162,12 +164,12 @@ public struct Mountebank {
     /// resource.
     ///
     /// - Parameters:
-    ///   - stub: The Stub that will be added to the ``Imposter``
-    ///   - index: The Index the ``Stub`` should be added to
-    ///   - port: The ``Imposter`` server port
+    ///   - stub: The Stub that will be added to the ``Imposter``.
+    ///   - index: The Index the ``Stub`` should be added to.
+    ///   - port: The ``Imposter`` server port.
     /// - Returns: The updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func postImposterStub(stub: Stub, index: Int? = nil, port: Int) async throws -> Imposter {
         let addStub = AddStub(index: index, stub: stub)
@@ -175,7 +177,7 @@ public struct Mountebank {
         return try await sendDataToEndpoint(body: bodyData, endpoint: .postImposterStub(port: port))
     }
 
-    /// Delete a single Imposter
+    /// Delete a single Imposter async
     ///
     /// Typically you want to delete the ``Imposter`` after each test run. This frees up the socket
     /// and removes the resource. As a convenience, the DELETE call also returns the ``Imposter`` representation just
@@ -183,11 +185,15 @@ public struct Mountebank {
     /// looking at the requests array for mock verification.
     ///
     /// - Parameters:
-    ///   - port: The ``Imposter`` server port
-    ///   - parameters: The parameters for changing the imposter response
-    /// - Returns: The deleted ``Imposter``
+    ///   - port: The ``Imposter`` server port.
+    ///   - replayable: Set to `true` to retrieve the minimum amount of information for creating the imposter in the
+    ///     future. This leaves out the requests array and any hypermedia.
+    ///   - removeProxies: Set to `true` to remove all proxy responses (and ``Stub``'s) from the response. This is useful
+    ///     in record-playback scenarios where you want to seed the `Imposters` with proxy information but leave it out on
+    ///     subsequent test runs. You can recreate the ``Imposter`` in the future by using the response.
+    /// - Returns: The deleted ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteImposter(
         port: Int,
@@ -202,25 +208,25 @@ public struct Mountebank {
         )
     }
 
-    /// Delete all Imposters
+    /// Delete all Imposters async
     ///
-    /// If you want to have a clean state, the best way is to delete all ``Imposters``. Any ``Imposter``
+    /// If you want to have a clean state, the best way is to delete all `Imposters`. Any `Imposter`
     /// sockets Mountebank has open will be closed, and the response body will contain exactly what
-    /// you need to mass create the same ``Imposters`` in the future.
+    /// you need to mass create the same [``Imposter``]'s in the future.
     ///
-    /// - Returns: The deleted ``Imposters``
+    /// - Returns: The deleted list of [``Imposter``]'s.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteAllImposters() async throws -> [Imposter] {
         try await sendDataToEndpoint(endpoint: .deleteAllImposters(), responseType: Imposters.self).imposters
     }
 
-    /// Create a Imposter url
+    /// Create an Imposter url
     ///
     /// - Parameters:
     ///   - port: The ``Imposter`` server port
-    /// - Returns: The Mountainbank ``Imposter`` url.
+    /// - Returns: The Mountebank ``Imposter`` url.
     public func makeImposterUrl(port: Int) -> URL {
         // swiftlint:disable:next force_unwrapping
         URL(string: "http://\(host):\(port)")!
@@ -228,52 +234,52 @@ public struct Mountebank {
 
     // MARK: - Stub
 
-    /// Overwrite all stubs in an existing Imposter
+    /// Overwrite all stubs in an existing Imposter async
     ///
     /// Use this endpoint to overwrite all existing ``Stub`` without restarting the ``Imposter``. The response
     /// will provide the updated ``Imposter`` resource.
     ///
     /// - Parameters:
-    ///   - stubs: The ``Stub`` that will be on the ``Imposter``
-    ///   - port: The ``Imposter`` server port
-    /// - Returns: The new updated ``Imposter``
+    ///   - stubs: The [``Stub``]'s that will be on the ``Imposter``.
+    ///   - port: The ``Imposter`` server port.
+    /// - Returns: The new updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func putImposterStubs(stubs: [Stub], port: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: Stubs(stubs: stubs))
         return try await sendDataToEndpoint(body: bodyData, endpoint: .putImposterStubs(port: port))
     }
 
-    /// Remove a single stub from an existing Imposter
+    /// Remove a single stub from an existing Imposter async
     ///
     /// Use this endpoint to remove the ``Stub`` at the given array index without restarting the ``Imposter``.
     /// The response will provide the updated ``Imposter`` resource.
     ///
     /// - Parameters:
-    ///   - port: The ``Imposter`` server port
-    ///   - stubIndex: The index of the ``Stub`` to be deleted
-    /// - Returns: The updated ``Imposter``
+    ///   - port: The ``Imposter`` server port.
+    ///   - stubIndex: The index of the ``Stub`` to be deleted.
+    /// - Returns: The updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteStub(port: Int, stubIndex: Int) async throws -> Imposter {
         try await sendDataToEndpoint(endpoint: .deleteStub(port: port, stubIndex: stubIndex))
     }
 
-    /// Change a Stub in an existing Imposter
+    /// Change a Stub in an existing Imposter async
     ///
     /// Use this endpoint to overwrite an existing ``Stub`` without restarting the ``Imposter``. The stubIndex must
     /// match the array index of the ``Stub`` you wish to change. Pass the new ``Stub`` as the body of the request. The
     /// response will provide the updated imposter resource.
     ///
     /// - Parameters:
-    ///   - stub: The ``Stub`` that will be added to the ``Imposter``
-    ///   - port: The ``Imposter`` server port
-    ///   - stubIndex: The index of the ``Stub`` to be updated
-    /// - Returns: The updated ``Imposter``
+    ///   - stub: The ``Stub`` that will be added to the ``Imposter``.
+    ///   - port: The ``Imposter`` server port.
+    ///   - stubIndex: The index of the ``Stub`` to be updated.
+    /// - Returns: The updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func putImposterStub(stub: Stub, port: Int, stubIndex: Int) async throws -> Imposter {
         let bodyData = try encodeJson(encodable: stub)
@@ -285,34 +291,34 @@ public struct Mountebank {
 
     // MARK: - Delete state
 
-    /// Delete saved proxy responses from an Imposter
+    /// Delete saved proxy responses from an Imposter async
     ///
     /// ``Proxy`` Stubs save all responses returned from downstream systems. Usually this is what you want, as they can
     /// be played back at a later time without the actual downstream system available. However, if you need to clear
     /// them but keep the Stubs intact, you can do so with this call.
     ///
     /// - Parameters:
-    ///   - port: The ``Imposter`` server port
+    ///   - port: The ``Imposter`` server port.
     ///
-    /// - Returns: The updated ``Imposter``
+    /// - Returns: The updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteSavedProxyResponses(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(endpoint: .deleteSavedProxyResponses(port: port))
     }
 
-    /// Delete saved requests from an Imposter
+    /// Delete saved requests from an Imposter async
     ///
     /// Clear an Imposter's recorded requests (used for mock verification) while leaving the rest of the ``Imposter``
     /// intact. On a successful request, Mountebank will return the updated ``Imposter`` resource.
     ///
     /// - Parameters:
-    ///   - port: The ``Imposter`` server port
+    ///   - port: The ``Imposter`` server port.
     ///
-    /// - Returns: The updated ``Imposter``
+    /// - Returns: The updated ``Imposter``.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     @discardableResult
     public func deleteSavedRequests(port: Int) async throws -> Imposter {
         try await sendDataToEndpoint(endpoint: .deleteSavedRequests(port: port))
@@ -320,38 +326,38 @@ public struct Mountebank {
 
     // MARK: - Util
 
-    /// Get Mountebank configuration and process information
+    /// Get Mountebank configuration and process information async
     ///
     /// If you want to know about the environment Mountebank is running it, this resource will give you what you
     /// need. It describes the version, command line flags, and process information.
     ///
-    /// - Returns: The Mountebank server ``Config``
+    /// - Returns: The Mountebank server ``Config``.
     ///
     /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
     public func getConfig() async throws -> Config {
         try await sendDataToEndpoint(endpoint: .getConfig(), responseType: Config.self)
     }
 
-    /// Get the logs from the current session.
+    /// Get the logs from the current session async
     ///
     /// In the rare scenario where Mountebank is hosted on a different server and you need access to the ``Logs``,
     /// they are accessible through this endpoint.
     ///
     /// - Parameters:
-    ///   - parameters: The parameters for selecting the logs
-    /// - Returns: The ``Logs`` for of the Mountebank server
+    ///   - parameters: The parameters for selecting the logs.
+    /// - Returns: The ``Logs`` for of the Mountebank server.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     public func getLogs(parameters: LogParameters = LogParameters()) async throws -> Logs {
         try await sendDataToEndpoint(endpoint: .getLogs(parameters: parameters), responseType: Logs.self)
     }
 
-    /// Validate if the Mountebank server is up.
+    /// Validate if the Mountebank server is up async
     ///
-    /// Before you want to setup all your Mountebank ``Imposters`` you can use this method to check if Mountebank
+    /// Before you want to setup all your Mountebank `Imposters` you can use this method to check if Mountebank
     /// is running.
     ///
-    /// - Throws: `MountebankValidationError` if connection between the client and server fails in some way.
+    /// - Throws: ``MountebankValidationError`` if connection between the client and server fails in some way.
     public func testConnection() async throws {
         _ = try await httpClient.httpRequest(HTTPRequest(url: mountebankURL, method: .get))
     }
