@@ -19,7 +19,6 @@ to interact with a running Mountebank instance.
 
 ### Creating Imposters
 - ``Imposter``
-- ``Imposters``
 
 ### Creating Stubs
 - ``Stub``

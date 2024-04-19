@@ -46,7 +46,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -96,7 +96,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -133,7 +133,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -171,7 +171,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -211,7 +211,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -250,7 +250,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -288,7 +288,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -332,7 +332,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -371,7 +371,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -411,7 +411,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -450,7 +450,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -489,7 +489,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -527,7 +527,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -565,7 +565,7 @@ class MountebankTests: XCTestCase {
                 case .success(let success):
                     assertResult(success)
                 case .failure(let error):
-                    XCTFail("Did expect success but recieved \(error.localizedDescription)")
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
                 }
                 completionExpectation.fulfill()
             }
@@ -586,11 +586,28 @@ class MountebankTests: XCTestCase {
     }
 
     func testTestConnection(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
-        let logs = Logs.Examples.simple
-        let logsData = try makeDataFromJSON(logs.json)
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
+        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data(), statusCode: .accepted)
+        
+        let assertResult = { (result: Void) in
+            XCTAssertNotNil(result)
+        }
+        
+        if runAsync {
+            assertResult(try await sut.testConnection())
+        } else {
+            let completionExpectation = expectation(description: "Expects completion")
+            sut.testConnection { result in
+                switch result {
+                case .success(let success):
+                    assertResult(success)
+                case .failure(let error):
+                    XCTFail("Did expect success but received \(error.localizedDescription)")
+                }
+                completionExpectation.fulfill()
+            }
 
-        try await sut.testConnection()
+            wait(for: [completionExpectation], timeout: 1)
+        }
     }
 
     func makeDataFromJSON(_ json: JSON) throws -> Data {
