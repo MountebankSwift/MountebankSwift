@@ -1,0 +1,17 @@
+@Tutorial {
+    @Intro(title: "Integration into UI tests") {
+        Get ready to see how easy it is to start using MounteBank!
+    }
+    
+    @Section(title: "TODO") {
+        @ContentAndMedia {
+             TODO
+        }
+            
+        @Steps {
+            @Step {
+                TODO
+            }
+        }    
+    }
+}

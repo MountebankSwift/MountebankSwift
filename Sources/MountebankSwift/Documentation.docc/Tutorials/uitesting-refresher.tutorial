@@ -1,0 +1,33 @@
+@Tutorial {
+    @Intro(title: "UI Testing and Network Mocking") {
+        A quick refresher on the setup of UI Testing and why we might want to mock the network.
+                
+        This won't involve any codeing. Skip to the next chapter for MountebankSwift.
+    }
+    
+    @Section(title: "UI Testing setup") {
+        @ContentAndMedia {
+            TODO             
+        }
+            
+        @Steps {
+            @Step {
+                TODO
+            }
+        }
+    }
+    
+    @Section(title: "Mock the network?") {
+        @ContentAndMedia {
+            TODO             
+        }
+            
+        @Steps {
+            @Step {
+                TODO
+            }
+        }
+    }
+}
+    
+    
