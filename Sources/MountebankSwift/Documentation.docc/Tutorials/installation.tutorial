@@ -3,7 +3,7 @@
         Instal Mountebank globally and add MountebankSwift as a dependency to our project. 
     }
     
-    @Section(title: "Global installation of Mountebank") {
+    @Section(title: "Installation of Mountebank") {
         @ContentAndMedia {
             @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
             
@@ -12,21 +12,15 @@
             
         @Steps {
             @Step {
-                Using our terminal, we'll install Mountebank with `$ npm install -g mountebank`. If you don't have `npm` installed, you can install it with brew using `brew install node`
+                Using our terminal, we'll install Mountebank. If you don't have ``npm`` installed, you can install it with brew using ``$ brew install node``
                 
-                @Code(name: "npm install", file: npm_install.sh)
+                @Code(name: "installation", file: npm_install.sh)
             }
             
             @Step {
                 This will install Mountebank and it's required dependencies
                 
-                @Code(name: "npm installed", file: npm_installed.sh)
-            }
-            
-            @Step {
-                Once installed we can start Mountebank!
-                
-                @Code(name: "start mountebank", file: start_mountebank.sh)
+                @Code(name: "installation", file: npm_installed.sh)
             }
         }
     }
