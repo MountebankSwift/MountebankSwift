@@ -1,5 +1,5 @@
 @Tutorial {
-    @Intro(title: "UI testing with Mountebank") {
+    @Intro(title: "Mountebank setup overview") {
         In this tutorial we'll go through the basics of a Mountebank-powered UI test.
     }
         

@@ -1,11 +1,65 @@
 @Tutorial {
-    @Intro(title: "Integration into UI tests") {
+    @Intro(title: "MountebankSwift integration in UI Tests") {
         Get ready to see how easy it is to start using Mountebank!
         We're going to mock the network in an existing project. 
         
         For this tutorial we'll use the [MountebankExampleApp](https://github.com/MountebankSwift/MountebankExampleApp/tree/without-tests). It's a really simple app that fetches a list of podcasts from a server, and displays it in the app. It features a feed view and a podcast detail view. 
 
         We start off on the branch "`without-tests`". [Download sample code](https://github.com/MountebankSwift/MountebankExampleApp/archive/refs/heads/without-tests.zip).
+    }
+    
+    @Section(title: "Global installation of Mountebank") {
+        @ContentAndMedia {
+            @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
+            
+            First, we'll install Mountebank to our system.             
+        }
+            
+        @Steps {
+            @Step {
+                Using our terminal, we'll install Mountebank. If you don't have ``npm`` installed, you can install it with brew using ``$ brew install node``
+                
+                @Code(name: "installation", file: npm_install.sh)
+            }
+            
+            @Step {
+                This will install Mountebank and it's required dependencies
+                
+                @Code(name: "installation", file: npm_installed.sh)
+            }
+        }
+    }
+        
+    @Section(title: "Adding MountebankSwift to a project") {
+        @ContentAndMedia {
+            @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
+            
+            Next we'll add MountebankSwift to our project             
+        }
+            
+        @Steps {
+            @Step {
+                A) Go to **File** -> **Add Package Dependency**
+                
+                or, alternatively, option B) Go to your project file, select **Package Dependencies** and click the **plus icon**
+                
+                @Image(source: "add_package.png", alt: "Add package dependency in Xcode")
+            }
+            
+            @Step {
+                In the text field at the top right, paste the link to the repo. 
+                
+                https://github.com/MountebankSwift/MountebankSwift/
+                
+                @Image(source: "add_package_mountebank.png", alt: "Pasting the link into the text field.")
+            }
+            
+            @Step {
+                Finally, make sure you add MountebankSwift to our **UI test target**, not the main app. And hit **Add Package**
+                
+                @Image(source: "add_package_mountebank_target.png", alt: "Add the right target ")
+            }
+        }
     }
     
     @Section(title: "Basic integration") {
@@ -22,7 +76,7 @@
             }
             
             @Step {
-                The app is really simple, it fetches a list of podcasts from a server, and displays it in the app. It features a feed view and a podcast detail view. 
+                The [sample app](https://github.com/MountebankSwift/MountebankExampleApp/tree/without-tests) is really simple, it fetches a list of podcasts from a server, and displays it in the app. It features a feed view and a podcast detail view. 
                 @Image(source: "sample_app.png", alt: "Screenshots of the demo app")
             }
             

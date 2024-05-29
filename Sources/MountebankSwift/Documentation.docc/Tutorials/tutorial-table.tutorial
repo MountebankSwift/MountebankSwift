@@ -22,7 +22,6 @@
         Step by step guide for usage of MountebankSwift in UI tests in an app. 
         
         @TutorialReference(tutorial: "doc:mountebank-overview")
-        @TutorialReference(tutorial: "doc:installation")
         @TutorialReference(tutorial: "doc:integration")
     }
     
