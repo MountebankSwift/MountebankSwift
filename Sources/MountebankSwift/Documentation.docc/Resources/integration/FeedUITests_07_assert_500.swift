@@ -24,7 +24,7 @@ final class FeedUITests: XCTestCase {
         }
 
         let app = XCUIApplication()
-        app.launchEnvironment = ["apiHost": "http://localhost:\(listsPort)"]
+        app.launchEnvironment["listApiHost"] = "http://localhost:\(listsPort)"
         app.launch()
 
         XCTAssertTrue(app.staticTexts["Error: 500"].exists)

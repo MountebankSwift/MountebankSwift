@@ -8,7 +8,7 @@
         We start off on the branch "`without-tests`". [Download sample code](https://github.com/MountebankSwift/MountebankExampleApp/archive/refs/heads/without-tests.zip).
     }
     
-    @Section(title: "First integration") {
+    @Section(title: "Basic integration") {
         @ContentAndMedia {
             We're going to implement a UI test for error handling of the podcast feed.
             
@@ -44,7 +44,7 @@
             }
             
             @Step {
-                Next, we create an Imposter, a stub server, with a list of stubs. We'll give it a single stub with a single error response and a predicate that matches that request that is executed when the list of podcasts are fetched. 
+                Next, we create an ``Imposter``, a stub server, with a list of stubs. We'll give it a single stub with a single error response and a predicate that matches that request that is executed when the list of podcasts are fetched. 
                 @Code(name: "FeedUITests.swift", file: FeedUITests_03_create_imposter.swift)
             }
             
@@ -79,45 +79,62 @@
                 Now run the test. You'll see the 500 error shown instead of the podcast feed. Great!
                 @Image(source: "sample_app_error_500.png", alt: "Sample app showing the 500 error")
             }
-            
-            @Step {
-                We'll continue with our test.
-                @Code(name: "FeedUITests.swift", file: FeedUITests_07_assert_500.swift)
-            }
-         
+                     
             @Step {
                 We add another server response, this time we'll return an empty list.
-                @Code(name: "FeedUITests.swift", file: FeedUITests_08_response_empty.swift)
+                @Code(name: "FeedUITests.swift", file: FeedUITests_09_response_empty.swift, previousFile: FeedUITests_08_previous.swift)
             }
             
             @Step {
                 After the 500 error message was shown, we'll tap the `Retry` button and assert the error message for an empty podcast feed.  
-                @Code(name: "FeedUITests.swift", file: FeedUITests_09_assert_empty.swift)
+                @Code(name: "FeedUITests.swift", file: FeedUITests_10_assert_empty.swift)
             }
             
             @Step {
                 Now run the test. You'll see the empty feed error shown.
                 @Image(source: "sample_app_error_empty.png", alt: "Sample app showing the empty feed error error")
             }
-            
-            @Step {
-                We'll continue with our test.
-                @Code(name: "FeedUITests.swift", file: FeedUITests_09_assert_empty.swift)
-            }
-            
+                        
             @Step {
                 We add one more response, this time containing a short list of podcasts.
-                @Code(name: "FeedUITests.swift", file: FeedUITests_10_response_full.swift)
+                @Code(name: "FeedUITests.swift", file: FeedUITests_12_response_full.swift, previousFile: FeedUITests_12_previous.swift)
             }
             
             @Step {
                 And we assert that when we tap the `Retry` button, the podcast "Serial" is now visible.
-                @Code(name: "FeedUITests.swift", file: FeedUITests_11_assert_podcast.swift)
+                @Code(name: "FeedUITests.swift", file: FeedUITests_13_assert_podcast.swift, previousFile: FeedUITests_13_previous.swift)
             }
             
             @Step {
-                Running the test again, we now see the list of podcasts! 
+                Running the test again, we now see the list of podcasts! Only their thumbnails are missing.. let's fix that.
                 @Image(source: "sample_app_list.png", alt: "Sample app showing two mocked podcasts in the feed")
+            }
+            
+            @Step {
+                The app uses a different host for the images. We could either 1) add another stub for the images to our existing imposter and tell the app to use this imposter for both hosts, or 2) we could create another imposter for the images. 
+                
+                Let's create another imposter for the images to demonstrate using multiple imposter in a single test.  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_14_images_imposter.swift, previousFile: FeedUITests_14_previous.swift)
+            }
+            
+            @Step {
+                Don't forget to post the imposter, and pass the host to the launch environment  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_15_post_imposter.swift)
+            }
+            
+            @Step {
+                Also add the images UI testing host to the `Host.swift` file  
+                @Code(name: "Host.swift", file: sample_app_host_images.swift, previousFile: sample_app_host_images_initial.swift)
+            }
+            
+            @Step {
+                Running the test again, we've now got some images! 🥳 
+                @Image(source: "sample_app_list_images.png", alt: "Sample app showing podcasts with images!")
+            }
+            
+            @Step {
+                To wrap things up, let's add some assertions to check if the requests made to the imposter match our expectations.   
+                @Code(name: "FeedUITests.swift", file: FeedUITests_16_assert_requests.swift, previousFile: FeedUITests_16_previous.swift)
             }
         }    
     }
