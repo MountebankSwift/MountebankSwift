@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.15.4"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.1"),
     ],
     targets: [
         .target(
