@@ -27,13 +27,13 @@ class MountebankTests: XCTestCase {
         try await testGetImposter(runAsync: false)
     }
 
-    func testGetImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testGetImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.simple
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result, file: file, line: line)
         }
 
@@ -51,7 +51,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -78,12 +78,12 @@ class MountebankTests: XCTestCase {
         try await testGetAllImposter(runAsync: false)
     }
 
-    func testGetAllImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testGetAllImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let assertResult = { (result: [Imposter]) in
+        let assertResult = { @Sendable (result: [Imposter]) in
             XCTAssertEqual(imposters.value.imposters, result, file: file, line: line)
         }
 
@@ -101,7 +101,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -115,12 +115,12 @@ class MountebankTests: XCTestCase {
         try await testPostImposter(runAsync: false)
     }
 
-    func testPostImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testPostImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.simple
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -138,7 +138,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -153,12 +153,12 @@ class MountebankTests: XCTestCase {
         try await testPutImposters(runAsync: false)
     }
 
-    func testPutImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testPutImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let assertResult = { (result: [Imposter]) in
+        let assertResult = { @Sendable (result: [Imposter]) in
             XCTAssertEqual(imposters.value.imposters, result)
         }
 
@@ -176,7 +176,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -191,14 +191,14 @@ class MountebankTests: XCTestCase {
         try await testPostImposterStub(runAsync: false)
     }
 
-    func testPostImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testPostImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let stub = Stub.Examples.json
         let imposter = Imposter.Examples.json
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -216,7 +216,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -231,13 +231,13 @@ class MountebankTests: XCTestCase {
         try await testDeleteImposter(runAsync: false)
     }
 
-    func testDeleteImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testDeleteImposter(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.json
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -255,7 +255,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -270,12 +270,12 @@ class MountebankTests: XCTestCase {
         try await testDeleteAllImposters(runAsync: false)
     }
 
-    func testDeleteAllImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testDeleteAllImposters(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
-        let assertResult = { (result: [Imposter]) in
+        let assertResult = { @Sendable (result: [Imposter]) in
             XCTAssertEqual(imposters.value.imposters, result)
         }
 
@@ -293,7 +293,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -313,13 +313,13 @@ class MountebankTests: XCTestCase {
         try await testPutImposterStubs(runAsync: false)
     }
 
-    func testPutImposterStubs(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testPutImposterStubs(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -337,7 +337,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -352,13 +352,13 @@ class MountebankTests: XCTestCase {
         try await testDeleteStub(runAsync: false)
     }
 
-    func testDeleteStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testDeleteStub(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -376,7 +376,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -391,14 +391,14 @@ class MountebankTests: XCTestCase {
         try await testPutImposterStub(runAsync: false)
     }
 
-    func testPutImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testPutImposterStub(runAsync: Bool, line: UInt = #line, file: StaticString = #filePath) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let stub = try XCTUnwrap(imposter.value.stubs.last)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -416,7 +416,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -431,13 +431,17 @@ class MountebankTests: XCTestCase {
         try await testDeleteSavedProxyResponses(runAsync: false)
     }
 
-    func testDeleteSavedProxyResponses(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
+    func testDeleteSavedProxyResponses(
+        runAsync: Bool,
+        line: UInt = #line,
+        file: StaticString = #filePath
+    ) async throws {
         let imposter = Imposter.Examples.advanced
         let port = try XCTUnwrap(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -455,7 +459,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -476,7 +480,7 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { (result: Imposter) in
+        let assertResult = { @Sendable (result: Imposter) in
             XCTAssertEqual(imposter.value, result)
         }
 
@@ -494,7 +498,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -514,7 +518,7 @@ class MountebankTests: XCTestCase {
         let configData = try makeDataFromJSON(config.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: configData, statusCode: .accepted)
 
-        let assertResult = { (result: Config) in
+        let assertResult = { @Sendable (result: Config) in
             XCTAssertEqual(config.value, result)
         }
 
@@ -532,7 +536,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -552,7 +556,7 @@ class MountebankTests: XCTestCase {
         let logsData = try makeDataFromJSON(logs.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
 
-        let assertResult = { (result: Logs) in
+        let assertResult = { @Sendable (result: Logs) in
             XCTAssertEqual(logs.value, result)
         }
 
@@ -570,7 +574,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
@@ -587,11 +591,11 @@ class MountebankTests: XCTestCase {
 
     func testTestConnection(runAsync: Bool, line: UInt = #line, file: StaticString = #file) async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data(), statusCode: .accepted)
-        
-        let assertResult = { (result: Void) in
+
+        let assertResult = { @Sendable (result: Void) in
             XCTAssertNotNil(result)
         }
-        
+
         if runAsync {
             assertResult(try await sut.testConnection())
         } else {
@@ -606,7 +610,7 @@ class MountebankTests: XCTestCase {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
     }
 

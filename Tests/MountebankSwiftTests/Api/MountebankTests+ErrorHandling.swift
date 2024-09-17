@@ -93,9 +93,9 @@ extension MountebankTests {
         runAsync: Bool,
         mounteBankError: MountebankValidationError,
         line: UInt = #line,
-        file: StaticString = #file
+        file: StaticString = #filePath
     ) async throws {
-        let assertResult = { (error: Error) in
+        let assertResult = { @Sendable (error: Error) in
             XCTAssertEqual(
                 error as? MountebankValidationError,
                 mounteBankError,
@@ -120,7 +120,7 @@ extension MountebankTests {
                 completionExpectation.fulfill()
             }
 
-            wait(for: [completionExpectation], timeout: 1)
+            await fulfillment(of: [completionExpectation], timeout: 1)
         }
     }
 }
