@@ -176,6 +176,7 @@ extension Dictionary: Recreatable {
                 return "[Mountebank.Recreatable]: ❌ \(type(of: value)) does not conform to Recreatable"
             }
 
+            // swiftlint:disable:next line_length
             return "\(recreatableKey.recreatable(indent: newIndent)): \(recreatableValue.recreatable(indent: newIndent))"
         }.sorted()
 

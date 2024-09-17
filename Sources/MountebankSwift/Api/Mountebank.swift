@@ -25,9 +25,12 @@ let jsonEncoder = JSONEncoder()
 ///
 /// // The application under test can now use `imposterURL` to send requests to
 /// ```
-public struct Mountebank {
+public struct Mountebank: Sendable {
     private let host: Host
     private let port: Int
+
+    private(set) nonisolated(unsafe) static var defaultBehaviors: [Behavior] = []
+    private(set) nonisolated(unsafe) static var defaultHeaders: [String: String] = [:]
 
     /// The url of the Mountebank server this client will connect to
     public var mountebankURL: URL {
@@ -40,15 +43,30 @@ public struct Mountebank {
     /// - Parameters:
     ///   - host: The Mountebank server host address
     ///   - port: The Mountebank server port
-    public init(host: Host = .localhost, port: Int = 2525) {
+    public init(
+        host: Host = .localhost,
+        defaultBehaviors: [Behavior] = [],
+        defaultHeaders: [String: String] = [:],
+        port: Int = 2525
+    ) {
         self.host = host
         self.port = port
+        Self.defaultHeaders = defaultHeaders
+        Self.defaultBehaviors = defaultBehaviors
         httpClient = HttpClient()
     }
 
-    init(host: Host = .localhost, port: Int = 2525, httpClient: HttpClientProtocol) {
+    init(
+        host: Host = .localhost,
+        port: Int = 2525,
+        defaultBehaviors: [Behavior] = [],
+        defaultHeaders: [String: String] = [:],
+        httpClient: HttpClientProtocol
+    ) {
         self.host = host
         self.port = port
+        Self.defaultHeaders = defaultHeaders
+        Self.defaultBehaviors = defaultBehaviors
         self.httpClient = httpClient
     }
 

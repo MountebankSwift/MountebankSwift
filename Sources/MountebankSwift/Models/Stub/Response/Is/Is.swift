@@ -4,9 +4,6 @@ import Foundation
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
 public struct Is: StubResponse, Equatable {
 
-    public static var defaultBehaviors: [Behavior] = []
-    public static var defaultHeaders: [String: String] = [:]
-
     public let statusCode: Int?
     public let headers: [String: String]?
     public let body: Body?
@@ -29,7 +26,7 @@ public struct Is: StubResponse, Equatable {
         _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
-        var result = defaultHeaders
+        var result = Mountebank.defaultHeaders
 
         switch body {
         case .none, .text, .data:
@@ -46,11 +43,11 @@ public struct Is: StubResponse, Equatable {
     }
 
     private static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
-        defaultBehaviors.isEmpty
+        Mountebank.defaultBehaviors.isEmpty
             ? parameters
             : ResponseParameters(
                 repeatCount: parameters?.repeatCount,
-                behaviors: Self.defaultBehaviors + (parameters?.behaviors ?? [])
+                behaviors: Mountebank.defaultBehaviors + (parameters?.behaviors ?? [])
             )
     }
 }

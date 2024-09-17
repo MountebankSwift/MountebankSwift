@@ -26,7 +26,7 @@ extension Mountebank {
         port: Int,
         replayable: Bool = false,
         removeProxies: Bool = false,
-        completion: ((Result<Imposter, Error>) -> Void)? = nil
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(
             asyncFunction: { try await getImposter(port: port, replayable: replayable, removeProxies: removeProxies) },
@@ -52,7 +52,7 @@ extension Mountebank {
     public func getAllImposters(
         replayable: Bool = false,
         removeProxies: Bool = false,
-        completion: ((Result<[Imposter], Error>) -> Void)? = nil
+        completion: (@Sendable (Result<[Imposter], Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(
             asyncFunction: { try await getAllImposters(replayable: replayable, removeProxies: removeProxies) },
@@ -73,7 +73,7 @@ extension Mountebank {
     ///   When the connection between client and server fails in some way the result will be a `.failure` with
     ///   a ``MountebankValidationError``.
     ///
-    public func postImposter(imposter: Imposter, completion: ((Result<Imposter, Error>) -> Void)? = nil) {
+    public func postImposter(imposter: Imposter, completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil) {
         mapAsyncToCompletion(
             asyncFunction: { try await postImposter(imposter: imposter) },
             completion: completion
@@ -93,7 +93,10 @@ extension Mountebank {
     ///   When the connection between client and server fails in some way the result will be a `.failure`
     ///   with a ``MountebankValidationError``.
     ///
-    public func putImposters(imposters: [Imposter], completion: ((Result<[Imposter], Error>) -> Void)? = nil) {
+    public func putImposters(
+        imposters: [Imposter],
+        completion: (@Sendable (Result<[Imposter], Error>) -> Void)? = nil
+    ) {
         mapAsyncToCompletion(
             asyncFunction: { try await putImposters(imposters: imposters) },
             completion: completion
@@ -119,7 +122,7 @@ extension Mountebank {
         stub: Stub,
         index: Int? = nil,
         port: Int,
-        completion: ((Result<Imposter, Error>) -> Void)? = nil
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(
             asyncFunction: { try await postImposterStub(stub: stub, index: index, port: port) },
@@ -148,7 +151,7 @@ extension Mountebank {
         port: Int,
         replayable: Bool = false,
         removeProxies: Bool = false,
-        completion: ((Result<Imposter, Error>) -> Void)? = nil
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(asyncFunction: { try await deleteImposter(
             port: port,
@@ -167,7 +170,7 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the deleted [``Imposter``]. When the connection between client and server fails.
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func deleteAllImposters(completion: ((Result<[Imposter], Error>) -> Void)? = nil) {
+    public func deleteAllImposters(completion: (@Sendable (Result<[Imposter], Error>) -> Void)? = nil) {
         mapAsyncToCompletion(asyncFunction: { try await deleteAllImposters() }, completion: completion)
     }
 
@@ -184,7 +187,11 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the new updated ``Imposter`` When the connection between client and server fails.
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func putImposterStubs(stubs: [Stub], port: Int, completion: ((Result<Imposter, Error>) -> Void)? = nil) {
+    public func putImposterStubs(
+        stubs: [Stub],
+        port: Int,
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
+    ) {
         mapAsyncToCompletion(
             asyncFunction: { try await putImposterStubs(stubs: stubs, port: port) },
             completion: completion
@@ -202,7 +209,11 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the updated ``Imposter`` When the connection between client and server fails.
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func deleteStub(port: Int, stubIndex: Int, completion: ((Result<Imposter, Error>) -> Void)? = nil) {
+    public func deleteStub(
+        port: Int,
+        stubIndex: Int,
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
+    ) {
         mapAsyncToCompletion(
             asyncFunction: { try await deleteStub(port: port, stubIndex: stubIndex) },
             completion: completion
@@ -226,7 +237,7 @@ extension Mountebank {
         stub: Stub,
         port: Int,
         stubIndex: Int,
-        completion: ((Result<Imposter, Error>) -> Void)? = nil
+        completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(
             asyncFunction: { try await putImposterStub(stub: stub, port: port, stubIndex: stubIndex) },
@@ -247,7 +258,7 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the The updated ``Imposter`` When the connection between client and server fails
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func deleteSavedProxyResponses(port: Int, completion: ((Result<Imposter, Error>) -> Void)? = nil) {
+    public func deleteSavedProxyResponses(port: Int, completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil) {
         mapAsyncToCompletion(asyncFunction: { try await deleteSavedRequests(port: port) }, completion: completion)
     }
 
@@ -261,7 +272,7 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the deleted ``Imposter``. When the connection between client and server fails
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func deleteSavedRequests(port: Int, completion: ((Result<Imposter, Error>) -> Void)? = nil) {
+    public func deleteSavedRequests(port: Int, completion: (@Sendable (Result<Imposter, Error>) -> Void)? = nil) {
         mapAsyncToCompletion(asyncFunction: { try await deleteSavedRequests(port: port) }, completion: completion)
     }
 
@@ -276,7 +287,7 @@ extension Mountebank {
     ///   - completion: Completion `Result` with the ``Config``. When the connection between client and server fails
     ///   in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func getConfig(completion: ((Result<Config, Error>) -> Void)? = nil) {
+    public func getConfig(completion: (@Sendable (Result<Config, Error>) -> Void)? = nil) {
         mapAsyncToCompletion(asyncFunction: { try await getConfig() }, completion: completion)
     }
 
@@ -292,7 +303,7 @@ extension Mountebank {
     ///
     public func getLogs(
         parameters: LogParameters = LogParameters(),
-        completion: ((Result<Logs, Error>) -> Void)? = nil
+        completion: (@Sendable (Result<Logs, Error>) -> Void)? = nil
     ) {
         mapAsyncToCompletion(asyncFunction: { try await getLogs(parameters: parameters) }, completion: completion)
     }
@@ -303,13 +314,13 @@ extension Mountebank {
     /// - Parameters:
     ///   - completion: Completion `Result` with that will be void when successful. When the connection between client and server fails in some way the result will be a `.failure` with a ``MountebankValidationError``.
     ///
-    public func testConnection(completion: ((Result<Void, Error>) -> Void)? = nil) {
+    public func testConnection(completion: (@Sendable (Result<Void, Error>) -> Void)? = nil) {
         mapAsyncToCompletion(asyncFunction: { try await testConnection() }, completion: completion)
     }
 
-    private func mapAsyncToCompletion<T>(
-        asyncFunction: @escaping () async throws -> T,
-        completion: ((Result<T, Error>) -> Void)? = nil
+    private func mapAsyncToCompletion<T: Sendable>(
+        asyncFunction: @escaping @Sendable () async throws -> T,
+        completion: (@Sendable (Result<T, Error>) -> Void)? = nil
     ) {
         Task {
             do {
