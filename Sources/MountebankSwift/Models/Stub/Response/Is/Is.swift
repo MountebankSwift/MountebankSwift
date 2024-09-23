@@ -19,36 +19,27 @@ public struct Is: StubResponse, Equatable {
         self.statusCode = statusCode
         self.body = body
         self.headers = Self.makeHeaders(headers, body: body)
-        self.parameters = Self.makeParameters(parameters)
+        self.parameters = parameters
     }
 
     private static func makeHeaders(
         _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
-        var result = Mountebank.defaultHeaders
-
+        var result = [String: String]()
+        
         switch body {
         case .none, .text, .data:
             break
         case .json, .jsonEncodable:
             result[HTTPHeaders.contentType.rawValue] = MimeType.json.rawValue
         }
-
+        
         if let headers {
             result.merge(headers, uniquingKeysWith: { _, b in b })
         }
-
+        
         return result.isEmpty ? nil : result
-    }
-
-    private static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
-        Mountebank.defaultBehaviors.isEmpty
-            ? parameters
-            : ResponseParameters(
-                repeatCount: parameters?.repeatCount,
-                behaviors: Mountebank.defaultBehaviors + (parameters?.behaviors ?? [])
-            )
     }
 }
 
