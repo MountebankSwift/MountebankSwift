@@ -13,7 +13,7 @@ typealias StubImage = UIImage
 
 #elseif os(Linux)
 
-struct StubImage {
+struct StubImage: Sendable {
     var data: Data
 
     init?(data: Data) {
@@ -25,7 +25,6 @@ struct StubImage {
 // swiftlint:disable force_unwrapping
 
 extension StubImage {
-    @MainActor static let image = StubImage(data: StubImage.example.value)!
 
     static let exampleBase64String = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAE" +
         "RlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAABaADAAQAAAABAAAABQAAAAB" +
