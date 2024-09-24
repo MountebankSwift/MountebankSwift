@@ -27,18 +27,18 @@ public struct Is: StubResponse, Equatable {
         body: Body?
     ) -> [String: String]? {
         var result = [String: String]()
-        
+
         switch body {
         case .none, .text, .data:
             break
         case .json, .jsonEncodable:
             result[HTTPHeaders.contentType.rawValue] = MimeType.json.rawValue
         }
-        
-        if let headers {
-            result.merge(headers, uniquingKeysWith: { _, b in b })
+
+        for (key, header) in headers ?? [:] {
+            result[key] = header
         }
-        
+
         return result.isEmpty ? nil : result
     }
 }

@@ -127,11 +127,8 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Imposter) in
-            XCTAssertEqual(imposter.value, result)
-        }
-
-        assertResult(try await sut.putImposterStubs(stubs: imposter.value.stubs, port: port))
+        let result = try await sut.putImposterStubs(stubs: imposter.value.stubs, port: port)
+        XCTAssertEqual(imposter.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -142,11 +139,8 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Imposter) in
-            XCTAssertEqual(imposter.value, result)
-        }
-
-        assertResult(try await sut.deleteStub(port: port, stubIndex: 0))
+        let result = try await sut.deleteStub(port: port, stubIndex: 0)
+        XCTAssertEqual(imposter.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -158,11 +152,8 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Imposter) in
-            XCTAssertEqual(imposter.value, result)
-        }
-
-        assertResult(try await sut.putImposterStub(stub: stub, port: port, stubIndex: 0))
+        let result = try await sut.putImposterStub(stub: stub, port: port, stubIndex: 0)
+        XCTAssertEqual(imposter.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -173,11 +164,8 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Imposter) in
-            XCTAssertEqual(imposter.value, result)
-        }
-
-        assertResult(try await sut.deleteSavedProxyResponses(port: port))
+        let result = try await sut.deleteSavedProxyResponses(port: port)
+        XCTAssertEqual(imposter.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -188,11 +176,8 @@ class MountebankTests: XCTestCase {
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Imposter) in
-            XCTAssertEqual(imposter.value, result)
-        }
-
-        assertResult(try await sut.deleteSavedRequests(port: port))
+        let result = try await sut.deleteSavedRequests(port: port)
+        XCTAssertEqual(imposter.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -202,11 +187,8 @@ class MountebankTests: XCTestCase {
         let configData = try makeDataFromJSON(config.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: configData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Config) in
-            XCTAssertEqual(config.value, result)
-        }
-
-        assertResult(try await sut.getConfig())
+        let result = try await sut.getConfig()
+        XCTAssertEqual(config.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
@@ -216,11 +198,8 @@ class MountebankTests: XCTestCase {
         let logsData = try makeDataFromJSON(logs.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
 
-        let assertResult = { @Sendable (result: Logs) in
-            XCTAssertEqual(logs.value, result)
-        }
-
-        assertResult(try await sut.getLogs())
+        let result = try await sut.getLogs()
+        XCTAssertEqual(logs.value, result)
 
         XCTAssertTrue(httpClientSpy.httpRequestCalled)
     }
