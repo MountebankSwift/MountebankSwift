@@ -1,6 +1,6 @@
 import Foundation
 
-struct DateFormatter: @unchecked Sendable {
+struct DateFormatter {
     init() {}
 
     let isoDateFormatter: ISO8601DateFormatter = {
