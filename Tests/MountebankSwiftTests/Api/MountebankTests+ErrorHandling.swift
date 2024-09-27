@@ -4,22 +4,22 @@ import XCTest
 
 extension MountebankTests {
     func testGetAllImposterRemoteError() async throws {
-        let mounteBankErrors = MountebankErrors.Examples.single
-        let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .badRequest)
+        let mountebankErrors = MountebankErrors.Examples.single
+        let mountebankErrorsData = try makeDataFromJSON(mountebankErrors.json)
+        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mountebankErrorsData, statusCode: .badRequest)
 
         try await assertErrorOnGetAllImposters(
-            mounteBankError: MountebankValidationError.remoteError(mounteBankErrors.value)
+            mountebankError: MountebankValidationError.remoteError(mountebankErrors.value)
         )
     }
 
     func testInvalidResponseGetAllImposter() async throws {
-        let mounteBankErrors = MountebankErrors.Examples.single
-        let mounteBankErrorsData = try makeDataFromJSON(mounteBankErrors.json)
-        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mounteBankErrorsData, statusCode: .accepted)
+        let mountebankErrors = MountebankErrors.Examples.single
+        let mountebankErrorsData = try makeDataFromJSON(mountebankErrors.json)
+        httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mountebankErrorsData, statusCode: .accepted)
 
         try await assertErrorOnGetAllImposters(
-            mounteBankError: MountebankValidationError.invalidResponseData
+            mountebankError: MountebankValidationError.invalidResponseData
         )
     }
 
@@ -27,7 +27,7 @@ extension MountebankTests {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("[]".utf8), statusCode: .internalServerError)
 
         try await assertErrorOnGetAllImposters(
-            mounteBankError: MountebankValidationError.invalidResponseData
+            mountebankError: MountebankValidationError.invalidResponseData
         )
     }
 
@@ -35,21 +35,21 @@ extension MountebankTests {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("invalid".utf8), statusCode: .accepted)
 
         try await assertErrorOnGetAllImposters(
-            mounteBankError: MountebankValidationError.invalidResponseData
+            mountebankError: MountebankValidationError.invalidResponseData
         )
     }
 
     // MARK: - Helper functions
 
     private func assertErrorOnGetAllImposters(
-        mounteBankError: MountebankValidationError,
+        mountebankError: MountebankValidationError,
         line: UInt = #line,
         file: StaticString = #filePath
     ) async throws {
         await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
             XCTAssertEqual(
                 error as? MountebankValidationError,
-                mounteBankError,
+                mountebankError,
                 file: file,
                 line: line
             )

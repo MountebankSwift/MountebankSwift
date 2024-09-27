@@ -11,8 +11,8 @@ let jsonEncoder = JSONEncoder()
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
 ///
 /// ```swift
-/// private var mounteBank = Mountebank(host: .localhost)
-/// try await mounteBank.testConnection()
+/// private var mountebank = Mountebank(host: .localhost)
+/// try await mountebank.testConnection()
 ///
 /// let stub = Stub(
 ///     response: Is(statusCode: 200, body: .text("Hello world!")),
@@ -20,8 +20,8 @@ let jsonEncoder = JSONEncoder()
 /// )
 /// let imposter = Imposter(networkProtocol: .http, stubs: [stub])
 ///
-/// let imposterResult = try await mounteBank.postImposter(imposter: imposter)
-/// let imposterURL = mounteBank.makeImposterUrl(port: imposterResult.port!)
+/// let imposterResult = try await mountebank.postImposter(imposter: imposter)
+/// let imposterURL = mountebank.makeImposterUrl(port: imposterResult.port!)
 ///
 /// // The application under test can now use `imposterURL` to send requests to
 /// ```
