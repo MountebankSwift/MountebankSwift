@@ -5,14 +5,14 @@ on:
     branches:
       - main
     tags-ignore:
-      - '**'
+      - "**"
     paths:
-      - '**/*.swift'
-      - '.github/workflows/*.yml'
+      - "**/*.swift"
+      - ".github/workflows/*.yml"
   pull_request:
     paths:
-      - '**/*.swift'
-      - '.github/workflows/*.yml'
+      - "**/*.swift"
+      - ".github/workflows/*.yml"
 jobs:
   swift_lint:
     runs-on: macos-latest
@@ -23,12 +23,12 @@ jobs:
         run: swiftlint lint --reporter github-actions-logging
 
   test:
-    name: Test on ${{ matrix.os }} with ${{ matrix.swift }} 
+    name: Test on ${{ matrix.os }} with ${{ matrix.swift }}
     timeout-minutes: 40
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        swift: ["5.9", "5.10"]
+        swift: ["5.10", "6.0"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: swift-actions/setup-swift@v2
