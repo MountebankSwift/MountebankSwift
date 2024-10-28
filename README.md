@@ -20,16 +20,16 @@ import MountebankSwift
 
 final class ExampleUITests: XCTestCase {
 
-    private var mounteBank = Mountebank(host: .localhost)
+    private var mountebank = Mountebank(host: .localhost)
 
     override func setUp() async throws {
         // Test if Mountebank is running if it failing please start Mountebank with `mb start`.
-        try await mounteBank.testConnection()
+        try await mountebank.testConnection()
     }
 
     override func tearDown() async throws {
         // Remove all imposters to have a clean Mountebank instance for the next tests.
-        try await mounteBank.deleteAllImposters()
+        try await mountebank.deleteAllImposters()
     }
 
     func testExample() throws {
@@ -39,7 +39,7 @@ final class ExampleUITests: XCTestCase {
         )
         let imposter = Imposter(networkProtocol: .http, stubs: [stub])
         // Post the imposters to start testing against.
-        try await mounteBank.postImposter(imposter: imposter)
+        try await mountebank.postImposter(imposter: imposter)
 
         let app = XCUIApplication()
         app.launch()
