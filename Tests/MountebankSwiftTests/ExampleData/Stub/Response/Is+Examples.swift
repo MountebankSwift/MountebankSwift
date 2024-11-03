@@ -111,6 +111,7 @@ extension Is {
         static let binary = Example(
             value: Is(
                 statusCode: 200,
+                // swiftlint:disable:next force_unwrapping
                 body: Data(base64Encoded: base64Image, options: .ignoreUnknownCharacters)!
             ),
             json: [

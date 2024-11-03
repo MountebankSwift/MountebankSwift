@@ -15,12 +15,15 @@ on:
       - ".github/workflows/*.yml"
 jobs:
   swift_lint:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Run swiftlint
-        run: swiftlint lint --reporter github-actions-logging
+      - name: SwiftLint
+        run: |
+          docker run --rm -v `pwd`:`pwd` -w `pwd` \
+            ghcr.io/realm/swiftlint:0.57.0 \
+            swiftlint lint --strict --config .swiftlint.yml --reporter github-actions-logging
 
   test:
     name: Test on ${{ matrix.os }} with ${{ matrix.swift }}
