@@ -1,7 +1,7 @@
 import Foundation
 @testable import MountebankSwift
 
-public final class HttpClientSpy: HttpClientProtocol {
+public final class HttpClientSpy: HttpClientProtocol, @unchecked Sendable {
 
     public init(
         httpRequestReturnValue: HTTPResponse? = nil
