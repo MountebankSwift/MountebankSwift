@@ -11,11 +11,11 @@ class DateFormatterTests: XCTestCase {
         sut = DateFormatter()
     }
 
-    func testFromAndToDate() {
+    func testFromAndToDate() throws {
         let dateString = "2023-12-08T20:09:06.263Z"
         let dateObject = Date(timeIntervalSince1970: 1702066146.263)
 
-        XCTAssertEqual(sut.formatToDate(dateString), dateObject)
+        XCTAssertEqual(try sut.formatToDate(dateString), dateObject)
         XCTAssertEqual(sut.formatFromDate(dateObject), dateString)
     }
 }

@@ -22,7 +22,7 @@ extension Imposter.RecordedRequest {
         try container.encodeIfPresent(headers, forKey: .headers)
         try container.encodeIfPresent(body, forKey: .body)
         try container.encodeIfPresent(form, forKey: .form)
-        try container.encode(DateFormatter().formatFromDate(timestamp), forKey: .timestamp)
+        try container.encode(DateFormatter.shared.formatFromDate(timestamp), forKey: .timestamp)
         try container.encode(requestFrom, forKey: .requestFrom)
         try container.encode(ip, forKey: .ip)
 
@@ -42,7 +42,7 @@ extension Imposter.RecordedRequest {
         form = try container.decodeIfPresent(JSON.self, forKey: .form)
 
         let timestampString = try container.decode(String.self, forKey: .timestamp)
-        timestamp = DateFormatter().formatToDate(timestampString)
+        timestamp = try DateFormatter.shared.formatToDate(timestampString)
         requestFrom = try container.decode(String.self, forKey: .requestFrom)
         ip = try container.decode(String.self, forKey: .ip)
     }

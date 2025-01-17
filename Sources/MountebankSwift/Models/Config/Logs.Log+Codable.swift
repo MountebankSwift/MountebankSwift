@@ -13,7 +13,7 @@ extension Logs.Log {
         try container.encode(level, forKey: .level)
         try container.encode(message, forKey: .message)
         if let timestamp {
-            try container.encodeIfPresent(DateFormatter().formatFromDate(timestamp), forKey: .timestamp)
+            try container.encodeIfPresent(DateFormatter.shared.formatFromDate(timestamp), forKey: .timestamp)
         }
     }
 
@@ -24,7 +24,7 @@ extension Logs.Log {
         message = try container.decode(String.self, forKey: .message)
 
         if let dateString = try container.decodeIfPresent(String.self, forKey: .timestamp) {
-            timestamp = DateFormatter().formatToDate(dateString)
+            timestamp = try DateFormatter.shared.formatToDate(dateString)
         } else {
             timestamp = nil
         }

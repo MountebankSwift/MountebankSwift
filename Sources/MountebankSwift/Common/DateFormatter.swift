@@ -3,25 +3,14 @@ import Foundation
 struct DateFormatter {
     init() {}
 
-    let isoDateFormatter: ISO8601DateFormatter = {
-        let isoDateFormatter = ISO8601DateFormatter()
-        isoDateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        isoDateFormatter.formatOptions = [
-            .withFullDate,
-            .withFullTime,
-            .withDashSeparatorInDate,
-            .withFractionalSeconds,
-        ]
+    static let shared = DateFormatter()
 
-        return isoDateFormatter
-    }()
-
-    func formatToDate(_ isoDateString: String) -> Date {
-        // swiftlint:disable next force_unwrapping
-        isoDateFormatter.date(from: isoDateString)!
+    func formatToDate(_ isoDateString: String) throws -> Date {
+        let format = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
+        return try format.parse(isoDateString)
     }
 
     func formatFromDate(_ date: Date) -> String {
-        isoDateFormatter.string(from: date)
+        date.formatted(Date.ISO8601FormatStyle(includingFractionalSeconds: true).dateSeparator(.dash))
     }
 }
