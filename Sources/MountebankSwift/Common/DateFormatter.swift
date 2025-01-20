@@ -23,6 +23,7 @@ struct DateFormatter: @unchecked Sendable {
             let format = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
             return try format.parse(isoDateString)
         } else {
+            // swiftlint:disable:next force_unwrapping
             return Self.isoDateFormatter.date(from: isoDateString)!
         }
     }
