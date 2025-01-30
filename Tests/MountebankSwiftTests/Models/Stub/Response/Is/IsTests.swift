@@ -86,7 +86,7 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testSettingDefaultBahavoirsConcurrent() throws {
+    func testSettingDefaultBahavoirsConcurrent() async throws {
         let expectation = expectation(description: "Should not crash when called from multiple threads")
         expectation.expectedFulfillmentCount = 1000
 
@@ -96,7 +96,7 @@ class IsTests: XCTestCase {
             expectation.fulfill()
         }
 
-        wait(for: [expectation])
+        await fulfillment(of: [expectation], timeout: 1)
     }
 
     func testResponseParameters() throws {
