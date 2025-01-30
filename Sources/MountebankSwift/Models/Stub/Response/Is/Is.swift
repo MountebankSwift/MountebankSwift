@@ -1,8 +1,13 @@
 import Foundation
-
+#if canImport(FoundationNetworking)
+import CoreFoundation
+#endif
 // swiftlint:disable type_name
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
-public struct Is: StubResponse, Equatable {
+public struct Is: StubResponse, Equatable, Sendable {
+
+    private nonisolated(unsafe) static var defaultBehaviors: [Behavior] = []
+    private static let lock = NSLock()
 
     public let statusCode: Int?
     public let headers: [String: String]?
@@ -19,7 +24,7 @@ public struct Is: StubResponse, Equatable {
         self.statusCode = statusCode
         self.body = body
         self.headers = Self.makeHeaders(headers, body: body)
-        self.parameters = parameters
+        self.parameters = Self.makeParameters(parameters)
     }
 
     private static func makeHeaders(
@@ -40,6 +45,30 @@ public struct Is: StubResponse, Equatable {
         }
 
         return result.isEmpty ? nil : result
+    }
+
+    private static func makeParameters(_ parameters: ResponseParameters? = nil) -> ResponseParameters? {
+        lock.lock()
+
+        defer {
+            lock.unlock()
+        }
+
+        return defaultBehaviors.isEmpty
+            ? parameters
+            : ResponseParameters(
+                repeatCount: parameters?.repeatCount,
+                behaviors: Self.defaultBehaviors + (parameters?.behaviors ?? [])
+            )
+    }
+
+    public static func setDefaultBehaviors(behaviors: [Behavior]) {
+        lock.lock()
+
+        defer {
+            lock.unlock()
+        }
+        defaultBehaviors = behaviors
     }
 }
 
