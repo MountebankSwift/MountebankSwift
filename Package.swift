@@ -16,6 +16,10 @@ let package = Package(
             name: "MountebankSwift",
             targets: ["MountebankSwift"]
         ),
+        .library(
+            name: "MountebankSwiftModels",
+            targets: ["MountebankSwiftModels"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
@@ -24,7 +28,40 @@ let package = Package(
     targets: [
         .target(
             name: "MountebankSwift",
+            dependencies: ["MountebankSwiftModels"],
+            swiftSettings: [
+                // Enable to validate if project is compatible with swift 6.0 Concurrency
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
+        ),
+        .target(
+            name: "MountebankSwiftModels",
             dependencies: [],
+            swiftSettings: [
+                // Enable to validate if project is compatible with swift 6.0 Concurrency
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
+        ),
+        .target(
+            name: "MountebankExampleData",
+            dependencies: [
+                "MountebankSwiftModels",
+            ],
+            resources: [
+                .copy("Files"),
+            ],
+            swiftSettings: [
+                .enableExperimentalFeature("StrictConcurrency"),
+            ]
+        ),
+        .testTarget(
+            name: "MountebankSwiftModelsTests",
+            dependencies: [
+                "MountebankSwiftModels",
+                "MountebankExampleData",
+                .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
             swiftSettings: [
                 // Enable to validate if project is compatible with swift 6.0 Concurrency
                 .enableExperimentalFeature("StrictConcurrency"),
@@ -34,15 +71,13 @@ let package = Package(
             name: "MountebankSwiftTests",
             dependencies: [
                 "MountebankSwift",
+                "MountebankExampleData",
                 .product(name: "InlineSnapshotTesting", package: "swift-snapshot-testing"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
-            resources: [
-                .copy("ExampleData/Files"),
-            ],
             swiftSettings: [
                 // Enable to validate if project is compatible with swift 6.0 Concurrency
-                // .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
     ]

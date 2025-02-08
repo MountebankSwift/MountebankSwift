@@ -1,5 +1,6 @@
 import XCTest
 @testable import MountebankSwift
+import MountebankSwiftModels
 
 final class EndpointTests: XCTestCase {
 

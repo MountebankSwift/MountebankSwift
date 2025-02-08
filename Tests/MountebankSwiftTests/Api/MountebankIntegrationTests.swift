@@ -3,6 +3,8 @@ import FoundationNetworking
 #endif
 
 import XCTest
+@testable import MountebankSwiftModels
+@testable import MountebankExampleData
 @testable import MountebankSwift
 
 final class MountebankIntegrationTests: XCTestCase {

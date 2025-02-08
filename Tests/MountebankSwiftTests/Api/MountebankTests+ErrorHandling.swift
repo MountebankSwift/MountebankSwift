@@ -1,6 +1,8 @@
 import Foundation
 import XCTest
 @testable import MountebankSwift
+import MountebankSwiftModels
+@testable import MountebankExampleData
 
 extension MountebankTests {
     func testGetAllImposterRemoteError() async throws {

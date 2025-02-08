@@ -1,4 +1,5 @@
 import Foundation
+import MountebankSwiftModels
 
 /// All Endpoints as documented on:
 /// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)

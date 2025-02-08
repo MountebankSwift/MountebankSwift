@@ -1,6 +1,8 @@
 import Foundation
 import XCTest
 @testable import MountebankSwift
+import MountebankSwiftModels
+@testable import MountebankExampleData
 
 class MountebankTests: XCTestCase {
 
@@ -214,3 +216,9 @@ class MountebankTests: XCTestCase {
         try testEncoder.encode(json)
     }
 }
+
+let testEncoder: JSONEncoder = {
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .withoutEscapingSlashes, .sortedKeys]
+    return encoder
+}()

@@ -4,6 +4,7 @@ import FoundationNetworking
 import Foundation
 import XCTest
 @testable import MountebankSwift
+import MountebankSwiftModels
 
 class URLAppendingQueryItemsTestsTests: XCTestCase {
 

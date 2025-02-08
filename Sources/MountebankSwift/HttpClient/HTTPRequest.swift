@@ -1,4 +1,5 @@
 import Foundation
+import MountebankSwiftModels
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif

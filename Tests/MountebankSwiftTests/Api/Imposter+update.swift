@@ -1,5 +1,6 @@
 import Foundation
 @testable import MountebankSwift
+@testable import MountebankSwiftModels
 
 extension Imposter {
 

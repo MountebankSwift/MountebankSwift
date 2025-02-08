@@ -1,8 +1,5 @@
 import Foundation
-
-// Project wide en/decoders
-let jsonDecoder = JSONDecoder()
-let jsonEncoder = JSONEncoder()
+import MountebankSwiftModels
 
 /// Mountebank client to connect to the Mountebank stub server.
 ///
