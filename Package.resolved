@@ -1,5 +1,5 @@
 {
-  "originHash" : "5f663e9d06f5eb433f1cced6910d64590b698dde85a2ce959c416712ff2bcdd8",
+  "originHash" : "25d9b6ec10ebfebd6539352a154c2d28ccecfcf4b17f1fbd99ecaf0adba18c2c",
   "pins" : [
     {
       "identity" : "swift-custom-dump",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-docc-plugin",
       "state" : {
-        "revision" : "85e4bb4e1cd62cec64a4b8e769dcefdf0c5b9d64",
-        "version" : "1.4.3"
+        "revision" : "d1691545d53581400b1de9b0472d45eb25c19fed",
+        "version" : "1.4.4"
       }
     },
     {
