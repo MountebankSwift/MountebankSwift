@@ -17,7 +17,7 @@
             
         @Steps {
             @Step {
-                Using our terminal, we'll install Mountebank. If you don't have ``npm`` installed, you can install it with brew using ``$ brew install node``
+                Using our terminal, we'll install Mountebank. If you don't have `npm` installed, you can install it with brew using ``$ brew install node``
                 
                 @Code(name: "installation", file: npm_install.sh)
             }
@@ -123,7 +123,7 @@
             }
             
             @Step {
-                We change it so it uses the launch environment ``listApiHost`` during UI testing. 
+                We change it so it uses the launch environment `listApiHost` during UI testing.
                 
                 If you want you could wrap this in `#if DEBUG` macros. 
                 @Code(name: "Host.swift", file: sample_app_host_lists.swift)

@@ -8,14 +8,6 @@
 ](https://www.youtube.com/watch?v=3M4DzPmsgGs).
     }
     
-<!--    @Chapter(name: "UI Testing and Network Mocking") {-->
-<!--        A quick refresher on UI Testing and why you might want to mock the network.-->
-<!--        -->
-<!--        <br/>Skip this chapter if you want to continue to MountebankSwift-->
-<!--        -->
-<!--        @TutorialReference(tutorial: "doc:uitesting-refresher")-->
-<!--    }-->
-    
     @Chapter(name: "Getting started with MountebankSwift") {
         @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
 
