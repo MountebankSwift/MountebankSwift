@@ -57,6 +57,7 @@ included:
 
 excluded:
   - .build
+  - Sources/MountebankSwift/Documentation.docc
 
 colon:
   apply_to_dictionaries: false
