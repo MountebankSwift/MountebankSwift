@@ -24,7 +24,7 @@ extension Logs.Log {
         message = try container.decode(String.self, forKey: .message)
 
         if let dateString = try container.decodeIfPresent(String.self, forKey: .timestamp) {
-            timestamp = DateFormatter.shared.formatToDate(dateString)
+            timestamp = try DateFormatter.shared.formatToDate(dateString)
         } else {
             timestamp = nil
         }

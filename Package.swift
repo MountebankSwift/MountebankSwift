@@ -1,4 +1,4 @@
-// swift-tools-version: 5.7
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -19,7 +19,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.15.4"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.17.1"),
     ],
     targets: [
         .target(
@@ -27,7 +27,7 @@ let package = Package(
             dependencies: [],
             swiftSettings: [
                 // Enable to validate if project is compatible with swift 6.0 Concurrency
-                // .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
         .testTarget(

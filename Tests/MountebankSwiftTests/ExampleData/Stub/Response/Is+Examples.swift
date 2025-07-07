@@ -104,12 +104,20 @@ extension Is {
             ]
         )
 
+        fileprivate static let base64Image = "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAAE" +
+            "RlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAABaADAAQAAAABAAAABQAAAAB" +
+            "/qhzxAAAAKUlEQVQIHWP8//8/AwMjI5CAgv//wTyEAFScCaYAmcYhCDQDWRUDkA8AEGsMAtJaFngAAAAASUVORK5CYII="
+
         static let binary = Example(
-            value: Is(statusCode: 200, body: StubImage.example.value),
+            value: Is(
+                statusCode: 200,
+                // swiftlint:disable:next force_unwrapping
+                body: Data(base64Encoded: base64Image, options: .ignoreUnknownCharacters)!
+            ),
             json: [
                 "_mode" : "binary",
                 "statusCode" : 200,
-                "body" : StubImage.example.json,
+                "body" : .string(base64Image),
             ]
         )
 

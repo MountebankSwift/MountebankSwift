@@ -86,6 +86,19 @@ class IsTests: XCTestCase {
         )
     }
 
+    func testSettingDefaultBahavoirsConcurrent() async throws {
+        let expectation = expectation(description: "Should not crash when called from multiple threads")
+        expectation.expectedFulfillmentCount = 1000
+
+        DispatchQueue.concurrentPerform(iterations: 1000) { _ in
+            Is.setDefaultBehaviors(behaviors: [])
+            _ = Is()
+            expectation.fulfill()
+        }
+
+        await fulfillment(of: [expectation], timeout: 1)
+    }
+
     func testResponseParameters() throws {
         // Parameters should not be encoded to the json here but on a higher level, so no decode test here
         try assertEncode(

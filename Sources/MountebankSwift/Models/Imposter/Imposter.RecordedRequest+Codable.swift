@@ -42,7 +42,7 @@ extension Imposter.RecordedRequest {
         form = try container.decodeIfPresent(JSON.self, forKey: .form)
 
         let timestampString = try container.decode(String.self, forKey: .timestamp)
-        timestamp = DateFormatter.shared.formatToDate(timestampString)
+        timestamp = try DateFormatter.shared.formatToDate(timestampString)
         requestFrom = try container.decode(String.self, forKey: .requestFrom)
         ip = try container.decode(String.self, forKey: .ip)
     }

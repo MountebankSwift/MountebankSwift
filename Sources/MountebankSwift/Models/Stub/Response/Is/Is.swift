@@ -1,11 +1,13 @@
 import Foundation
-
+#if canImport(FoundationNetworking)
+import CoreFoundation
+#endif
 // swiftlint:disable type_name
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
-public struct Is: StubResponse, Equatable {
+public struct Is: StubResponse, Equatable, Sendable {
 
-    public static var defaultBehaviors: [Behavior] = []
-    public static var defaultHeaders: [String: String] = [:]
+    private nonisolated(unsafe) static var defaultBehaviors: [Behavior] = []
+    private static let lock = NSLock()
 
     public let statusCode: Int?
     public let headers: [String: String]?
@@ -29,7 +31,7 @@ public struct Is: StubResponse, Equatable {
         _ headers: [String: String]?,
         body: Body?
     ) -> [String: String]? {
-        var result = defaultHeaders
+        var result = [String: String]()
 
         switch body {
         case .none, .text, .data:
@@ -38,20 +40,35 @@ public struct Is: StubResponse, Equatable {
             result[HTTPHeaders.contentType.rawValue] = MimeType.json.rawValue
         }
 
-        if let headers {
-            result.merge(headers, uniquingKeysWith: { _, b in b })
+        for (key, header) in headers ?? [:] {
+            result[key] = header
         }
 
         return result.isEmpty ? nil : result
     }
 
-    private static func makeParameters(_ parameters: ResponseParameters?) -> ResponseParameters? {
-        defaultBehaviors.isEmpty
+    private static func makeParameters(_ parameters: ResponseParameters? = nil) -> ResponseParameters? {
+        lock.lock()
+
+        defer {
+            lock.unlock()
+        }
+
+        return defaultBehaviors.isEmpty
             ? parameters
             : ResponseParameters(
                 repeatCount: parameters?.repeatCount,
                 behaviors: Self.defaultBehaviors + (parameters?.behaviors ?? [])
             )
+    }
+
+    public static func setDefaultBehaviors(behaviors: [Behavior]) {
+        lock.lock()
+
+        defer {
+            lock.unlock()
+        }
+        defaultBehaviors = behaviors
     }
 }
 

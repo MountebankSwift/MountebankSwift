@@ -17,7 +17,7 @@ let testDecoder = JSONDecoder()
 func assertEncode<CodableEquatableType: Codable & Equatable>(
     _ value: CodableEquatableType,
     _ expectedResult: JSON,
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
     let data = try testEncoder.encode(value)
@@ -39,7 +39,7 @@ func assertEncode<CodableEquatableType: Codable & Equatable>(
 func assertDecode<CodableEquatableType: Codable & Equatable>(
     _ value: JSON,
     _ expectedResult: CodableEquatableType,
-    file: StaticString = #file,
+    file: StaticString = #filePath,
     line: UInt = #line
 ) throws {
     let jsonData = try testEncoder.encode(value)
