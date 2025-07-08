@@ -1,0 +1,85 @@
+@Tutorial {
+    @Intro(title: "Mountebank setup overview") {
+        In this tutorial we'll go through the basics of a Mountebank-powered UI test.
+    }
+        
+    @Section(title: "Mountebank Overview") {
+        @ContentAndMedia {
+             A quick overview of the Mountebank setup
+        }
+            
+        @Steps {
+            @Step {
+                @Image(source: "mountebank_overview.004.png")
+                During our tests, we can send stubs to Mountebank.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.006.png")
+                Mountebank will create stub servers for us called "Imposters".
+            }
+            @Step {
+                @Image(source: "mountebank_overview.008.png")
+                Mountebank will let us know on which port our imposter is running and we'll use it to configure the network layer in our app.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.009.png")
+                Then when our app sends requests, our app will use the stubserver running on localhost on the specified port \(4010 in this case\).
+            }
+            @Step {
+                @Image(source: "mountebank_overview.010.png")
+                The imposter will respond to requests with the predefined stub response instead of a real response.
+            }
+        }    
+    }
+    
+    @Section(title: "Imposter response selection") {
+        @ContentAndMedia {
+            How does an Imposter determines which response to return?
+        }
+            
+        @Steps {
+            @Step {
+                @Image(source: "mountebank_overview.012.png")
+                Our app sends a request to the imposter. 
+            }
+            @Step {
+                @Image(source: "mountebank_overview.013.png")
+                The imposter contains multiple stubs and a default response. Each stub exists of predicates and responses. 
+            }
+            @Step {
+                @Image(source: "mountebank_overview.014.png")
+                Each incoming request is matched against the request fields and values of the predicates. 
+            }
+            @Step {
+                @Image(source: "mountebank_overview.015.png")
+                A response could be a JSON payload, but also an image, binary or some other server response.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.016.png")
+                The stubs are checked one by until all predicates of a stub match.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.018.png")
+                The path of the incoming request does not match the path of the predicate of 'Stub 1', so the stub is ignored.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.021.png")
+                Both of the predicates of 'Stub 2' match, so it will be used for the response.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.024.png")
+                The first response of the stub is returned to the app.  
+            }
+            @Step {
+                @Image(source: "mountebank_overview.025.png")
+                If a stub contains multiple requests, then the next time the stub's predicates match a request, the second response will be returned.
+            }
+            @Step {
+                @Image(source: "mountebank_overview.026.png")
+                And the next time, a third response will be returned. These can all have different status codes.
+            }
+        }
+    }
+}
+    
+    

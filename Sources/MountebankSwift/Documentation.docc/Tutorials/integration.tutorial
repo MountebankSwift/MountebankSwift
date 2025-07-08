@@ -1,0 +1,195 @@
+@Tutorial {
+    @Intro(title: "MountebankSwift integration in UI Tests") {
+        Get ready to see how easy it is to start using Mountebank!
+        We're going to mock the network in an existing project. 
+        
+        For this tutorial we'll use the [MountebankExampleApp](https://github.com/MountebankSwift/MountebankExampleApp/tree/without-tests). It's a really simple app that fetches a list of podcasts from a server, and displays it in the app. It features a feed view and a podcast detail view. 
+
+        We start off on the branch "`without-tests`". [Download sample code](https://github.com/MountebankSwift/MountebankExampleApp/archive/refs/heads/without-tests.zip).
+    }
+    
+    @Section(title: "Global installation of Mountebank") {
+        @ContentAndMedia {
+            @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
+            
+            First, we'll install Mountebank to our system.             
+        }
+            
+        @Steps {
+            @Step {
+                Using our terminal, we'll install Mountebank. If you don't have `npm` installed, you can install it with brew using ``$ brew install node``
+                
+                @Code(name: "installation", file: npm_install.sh)
+            }
+            
+            @Step {
+                This will install Mountebank and it's required dependencies
+                
+                @Code(name: "installation", file: npm_installed.sh)
+            }
+        }
+    }
+        
+    @Section(title: "Adding MountebankSwift to a project") {
+        @ContentAndMedia {
+            @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
+            
+            Next we'll add MountebankSwift to our project             
+        }
+            
+        @Steps {
+            @Step {
+                A) Go to **File** -> **Add Package Dependency**
+                
+                or, alternatively, option B) Go to your project file, select **Package Dependencies** and click the **plus icon**
+                
+                @Image(source: "add_package.png", alt: "Add package dependency in Xcode")
+            }
+            
+            @Step {
+                In the text field at the top right, paste the link to the repo. 
+                
+                https://github.com/MountebankSwift/MountebankSwift/
+                
+                @Image(source: "add_package_mountebank.png", alt: "Pasting the link into the text field.")
+            }
+            
+            @Step {
+                Finally, make sure you add MountebankSwift to our **UI test target**, not the main app. And hit **Add Package**
+                
+                @Image(source: "add_package_mountebank_target.png", alt: "Add the right target ")
+            }
+        }
+    }
+    
+    @Section(title: "Basic integration") {
+        @ContentAndMedia {
+            We're going to implement a UI test for error handling of the podcast feed.
+            
+            @Image(source: "sample_app.png", alt: "Screenshots of the demo app")
+        }
+            
+        @Steps {
+            @Step {
+                Make sure Mountebank has been started using the commandline. 
+                @Code(name: "start mountebank via cli", file: start_mountebank.sh)
+            }
+            
+            @Step {
+                The [sample app](https://github.com/MountebankSwift/MountebankExampleApp/tree/without-tests) is really simple, it fetches a list of podcasts from a server, and displays it in the app. It features a feed view and a podcast detail view. 
+                @Image(source: "sample_app.png", alt: "Screenshots of the demo app")
+            }
+            
+            @Step {
+                We'll start off with an empty test  
+                
+                @Code(name: "FeedUITests.swift", file: FeedUITests_00_initial.swift)
+            }
+            
+            @Step {
+                We import MountebankSwift  
+                
+                @Code(name: "FeedUITests.swift", file: FeedUITests_01_import.swift)
+            }
+            
+            @Step {
+                We change our test to make it support async await. If you don't want to use async await, you could also use a completion based api, see the [documentation](https://swiftpackageindex.com/mountebankswift/mountebankswift/0.12.0/documentation/mountebankswift/mountebank#creating-imposters).
+                @Code(name: "FeedUITests.swift", file: FeedUITests_02_async.swift)
+            }
+            
+            @Step {
+                Next, we create an ``Imposter``, a stub server, with a list of stubs. We'll give it a single stub with a single error response and a predicate that matches that request that is executed when the list of podcasts are fetched. 
+                @Code(name: "FeedUITests.swift", file: FeedUITests_03_create_imposter.swift)
+            }
+            
+            @Step {
+                Then, we'll create a Mountebank client and use it to post the imposter to our Mountebank instance.  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_04_post_imposter.swift)
+            }
+            
+            @Step {
+                We store the port that Mountebank will use for this imposter and we pass the address of our stub server to our app. Our app can then use it to send requests to!
+                @Code(name: "FeedUITests.swift", file: FeedUITests_06_launch_environment.swift)
+            }
+            
+            @Step {
+                Finally, lets assert that the app is now showing an error message.
+                @Code(name: "FeedUITests.swift", file: FeedUITests_07_assert_500.swift)
+            }
+        
+            @Step {
+                The app contains an enum `Host`. It defines the servers that app uses to fetch its data.  
+                @Code(name: "Host.swift", file: sample_app_host_initial.swift)
+            }
+            
+            @Step {
+                We change it so it uses the launch environment `listApiHost` during UI testing.
+                
+                If you want you could wrap this in `#if DEBUG` macros. 
+                @Code(name: "Host.swift", file: sample_app_host_lists.swift)
+            }
+            
+            @Step {
+                Now run the test. You'll see the 500 error shown instead of the podcast feed. Great!
+                @Image(source: "sample_app_error_500.png", alt: "Sample app showing the 500 error")
+            }
+                     
+            @Step {
+                We add another server response, this time we'll return an empty list.
+                @Code(name: "FeedUITests.swift", file: FeedUITests_09_response_empty.swift, previousFile: FeedUITests_08_previous.swift)
+            }
+            
+            @Step {
+                After the 500 error message was shown, we'll tap the `Retry` button and assert the error message for an empty podcast feed.  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_10_assert_empty.swift)
+            }
+            
+            @Step {
+                Now run the test. You'll see the empty feed error shown.
+                @Image(source: "sample_app_error_empty.png", alt: "Sample app showing the empty feed error error")
+            }
+                        
+            @Step {
+                We add one more response, this time containing a short list of podcasts.
+                @Code(name: "FeedUITests.swift", file: FeedUITests_12_response_full.swift, previousFile: FeedUITests_12_previous.swift)
+            }
+            
+            @Step {
+                And we assert that when we tap the `Retry` button, the podcast "Serial" is now visible.
+                @Code(name: "FeedUITests.swift", file: FeedUITests_13_assert_podcast.swift, previousFile: FeedUITests_13_previous.swift)
+            }
+            
+            @Step {
+                Running the test again, we now see the list of podcasts! Only their thumbnails are missing.. let's fix that.
+                @Image(source: "sample_app_list.png", alt: "Sample app showing two mocked podcasts in the feed")
+            }
+            
+            @Step {
+                The app uses a different host for the images. We could either 1) add another stub for the images to our existing imposter and tell the app to use this imposter for both hosts, or 2) we could create another imposter for the images. 
+                
+                Let's create another imposter for the images to demonstrate using multiple imposter in a single test.  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_14_images_imposter.swift, previousFile: FeedUITests_14_previous.swift)
+            }
+            
+            @Step {
+                Don't forget to post the imposter, and pass the host to the launch environment  
+                @Code(name: "FeedUITests.swift", file: FeedUITests_15_post_imposter.swift)
+            }
+            
+            @Step {
+                Also add the images UI testing host to the `Host.swift` file  
+                @Code(name: "Host.swift", file: sample_app_host_images.swift, previousFile: sample_app_host_images_initial.swift)
+            }
+            
+            @Step {
+                Running the test again, we've now got some images! 🥳 
+                @Image(source: "sample_app_list_images.png", alt: "Sample app showing podcasts with images!")
+            }
+            
+            @Step {
+                To wrap things up, let's add some assertions to check if the requests made to the imposter match our expectations.   
+                @Code(name: "FeedUITests.swift", file: FeedUITests_16_assert_requests.swift, previousFile: FeedUITests_16_previous.swift)
+            }
+        }    
+    }
+}
