@@ -2,14 +2,12 @@
     @Intro(title: "Network mocking for UI Tests") {
         [MountebankSwift](https://github.com/MountebankSwift/MountebankSwift/) is a client library for [Mountebank](https://www.mbtest.org/), an open source tool that provide cross-platform, multi-protocol test doubles over the wire. Simply point your application under test to Mountebank instead of the server, and test like you would with traditional stubs and mocks.
         
-        In this tuturial you'll learn everything about MountebankSwift and mock some network requests!
-        
-        There's also a video version of thuis guide available: [🎬 Elevating UI Tests with network mocking
-](https://www.youtube.com/watch?v=3M4DzPmsgGs).
+        There's also a video version of thuis guide available  
+        [🎬 Elevating UI Tests with network mocking](https://www.youtube.com/watch?v=3M4DzPmsgGs).
     }
     
     @Chapter(name: "Getting started with MountebankSwift") {
-        @Image(source: "MountebankSwift.png", alt: "The Mountebank logo a charlatan holding a bottle with the logo of Swift placed on the bottle")
+        @Image(source: "MountebankSwift.png", alt: "The Mountebank logo, A charlatan holding a bottle with the logo of Swift placed on the bottle")
 
         Step by step guide for usage of MountebankSwift in UI tests in an app. 
         
