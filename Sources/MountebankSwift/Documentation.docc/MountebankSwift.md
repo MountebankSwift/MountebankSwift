@@ -12,6 +12,10 @@ to interact with a running Mountebank instance.
 
 ## Topics
 
+### Tutorials
+
+- <doc:/tutorials/tutorial-table>
+
 ### Connect to Mountebank
 - ``Mountebank``
 - ``Host``
