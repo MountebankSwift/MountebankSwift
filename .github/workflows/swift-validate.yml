@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: SwiftLint
         run: |
           docker run --rm -v `pwd`:`pwd` -w `pwd` \
@@ -37,7 +37,7 @@ jobs:
       - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ matrix.swift }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Mountebank
         run: npm install mountebank -g
       - name: Setup Mountebank
