@@ -2,7 +2,7 @@ import Foundation
 
 /// A proxy response proxies the request to the specified destination and returns the response.
 ///
-/// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
+/// [mbtest.dev/docs/api/proxies](https://www.mbtest.dev/docs/api/proxies)
 public struct Proxy: StubResponse, Codable, Equatable, Sendable {
     /// Replay behavior of the proxy.
     public enum Mode: String, Codable, Sendable {
@@ -17,7 +17,7 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
 
     /// Protocol specific parameters for this proxy
     public enum NetworkProtocolParameters: Equatable, Sendable {
-        /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
+        /// [mbtest.dev/docs/api/proxies](https://www.mbtest.dev/docs/api/proxies)
         /// - Parameters:
         ///   - injectHeaders: Key-value pairs of headers to inject into the proxied request.
         case http(
@@ -25,7 +25,7 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
             injectHeaders: [String: String]? = nil
         )
 
-        /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
+        /// [mbtest.dev/docs/api/proxies](https://www.mbtest.dev/docs/api/proxies)
         /// - Parameters:
         ///   - injectHeaders: Key-value pairs of headers to inject into the proxied request.
         ///   - cert: The SSL client certificate, a PEM-formatted string
@@ -75,7 +75,7 @@ public struct Proxy: StubResponse, Codable, Equatable, Sendable {
     /// The `--allowInjection` command line flag must be set to support this behavior.
     public let addDecorateBehavior: String?
 
-    /// [mbtest.org/docs/api/proxies](https://www.mbtest.org/docs/api/proxies)
+    /// [mbtest.dev/docs/api/proxies](https://www.mbtest.dev/docs/api/proxies)
     /// - Parameters:
     ///   - to: Defines the origin server that the request should proxy to.
     ///         A URL without the path (e.g. http://someserver:3000 or tcp://someserver:3000)

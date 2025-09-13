@@ -8,7 +8,7 @@ let jsonEncoder = JSONEncoder()
 ///
 /// The client is used to submit `Imposters` to the ``Mountebank`` server.
 /// Once `Imposters` are in place your application under test can use the Mountebank stub server instead of real server.
-/// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
+/// [mbtest.dev/docs/api/overview](https:/www.mbtest.dev/docs/api/overview)
 ///
 /// ```swift
 /// private var mountebank = Mountebank(host: .localhost)

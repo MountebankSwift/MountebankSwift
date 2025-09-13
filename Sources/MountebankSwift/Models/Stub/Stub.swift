@@ -4,7 +4,7 @@ import Foundation
 /// The ``Imposter`` uses the stub if **all** of the stub's predicates match an incoming request.
 /// Every time the stub is used it will return the next response in the list of its responses.
 ///
-/// [mbtest.org/docs/api/contracts?type=stub](https://www.mbtest.org/docs/api/contracts?type=stub)
+/// [mbtest.dev/docs/api/contracts?type=stub](https://www.mbtest.dev/docs/api/contracts?type=stub)
 public struct Stub: Equatable, Sendable {
     /// In the absence of a predicate, a stub always matches, and there's never a reason to add more than one stub to
     /// an imposter. Predicates allow imposters to have much richer behavior by defining whether or not a stub matches
