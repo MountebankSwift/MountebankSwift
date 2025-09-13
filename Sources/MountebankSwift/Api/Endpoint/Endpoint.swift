@@ -1,7 +1,7 @@
 import Foundation
 
 /// All Endpoints as documented on:
-/// [mbtest.org/docs/api/overview](https://www.mbtest.org/docs/api/overview)
+/// [mbtest.dev/docs/api/overview](https://www.mbtest.dev/docs/api/overview)
 struct Endpoint {
     let method: HTTPMethod
 

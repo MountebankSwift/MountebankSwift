@@ -3,7 +3,7 @@ import Foundation
 /// Predicate parameter to narrow down the scope of the predicate value to a value matched by the jsonpath selector,
 /// much like the except parameter.
 ///
-/// [mbtest.org/docs/api/jsonpath](https://www.mbtest.org/docs/api/jsonpath)
+/// [mbtest.dev/docs/api/jsonpath](https://www.mbtest.dev/docs/api/jsonpath)
 public struct JSONPath: Codable, Equatable, Sendable {
     /// The JSONPath selector
     public let selector: String

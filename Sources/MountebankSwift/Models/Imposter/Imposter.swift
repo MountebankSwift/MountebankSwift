@@ -6,7 +6,7 @@ import Foundation
 /// In the typical use case, each test will start an imposter during test setup
 /// and stop an imposter during test teardown.
 ///
-/// [mbtest.org/docs/api/contracts?type=imposter](https://www.mbtest.org/docs/api/contracts?type=imposter)
+/// [mbtest.dev/docs/api/contracts?type=imposter](https://www.mbtest.dev/docs/api/contracts?type=imposter)
 public struct Imposter: Codable, Equatable, Sendable {
 
     /// Mountebank does also support `tcp`, `smtp` and custom protocols
@@ -16,7 +16,7 @@ public struct Imposter: Codable, Equatable, Sendable {
     public enum NetworkProtocol: Codable, Equatable, Sendable {
         /// Options for the http protocol
         ///
-        /// [mbtest.org/docs/protocols/http](https://www.mbtest.org/docs/protocols/http)
+        /// [mbtest.dev/docs/protocols/http](https://www.mbtest.dev/docs/protocols/http)
         /// - Parameters:
         ///   - allowCORS: If true, mountebank will allow all Cross-Origin Resource Sharing preflight
         ///     requests on the imposter
@@ -24,7 +24,7 @@ public struct Imposter: Codable, Equatable, Sendable {
 
         /// Options for the https protocol
         ///
-        /// [mbtest.org/docs/protocols/https](https://www.mbtest.org/docs/protocols/https)
+        /// [mbtest.dev/docs/protocols/https](https://www.mbtest.dev/docs/protocols/https)
         /// - Parameters:
         ///   - allowCORS: If true, mountebank will allow all CORS preflight requests on the imposter.
         ///   - rejectUnauthorized: If true, mountebank will validate the certificate against the list

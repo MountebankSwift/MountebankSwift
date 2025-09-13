@@ -2,7 +2,7 @@ import Foundation
 
 /// Configuration of the Mountebank server
 ///
-/// [mbtest.org/docs/api/contracts?type=config](https://www.mbtest.org/docs/api/contracts?type=config)
+/// [mbtest.dev/docs/api/contracts?type=config](https://www.mbtest.dev/docs/api/contracts?type=config)
 public struct Config: Codable, Equatable, Sendable {
     public struct Options: Codable, Equatable, Sendable {
         public struct Log: Codable, Equatable, Sendable {

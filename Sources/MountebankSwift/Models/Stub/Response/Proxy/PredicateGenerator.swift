@@ -12,7 +12,7 @@ public enum PredicateOperator: String, Codable, Sendable {
 
 public enum PredicateGenerator: Equatable, Sendable {
     /// Defines a template for the generated predicates
-    /// [mbtest.org/docs/api/proxies#proxy-predicate-generators](https://www.mbtest.org/docs/api/proxies#proxy-predicate-generators)
+    /// [mbtest.dev/docs/api/proxies#proxy-predicate-generators](https://www.mbtest.dev/docs/api/proxies#proxy-predicate-generators)
     /// - Parameters:
     ///   - fields: The fields that need to be equal in subsequent requests to replay the saved response. Set the field value true to generate a predicate
     ///       based on it. Nested fields, as in JSON fields or HTTP headers, are supported as well, as long as the leaf keys have a true value. If you set the

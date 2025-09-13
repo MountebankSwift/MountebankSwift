@@ -3,8 +3,8 @@
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMountebankSwift%2FMountebankSwift%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/MountebankSwift/MountebankSwift)
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FMountebankSwift%2FMountebankSwift%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/MountebankSwift/MountebankSwift)
 
-A swift client library for the [Mountebank](https://www.mbtest.org/) - open source tool that
-provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.org/docs/api/overview)
+A swift client library for the [Mountebank](https://www.mbtest.dev/) - open source tool that
+provides test doubles over the wire. It provides all the [api functionality](https://www.mbtest.dev/docs/api/overview)
 to interact with a running Mountebank instance.
 
 ![Mountebank logo holding a bottle with Swift's icon on it](MountebankSwift.jpg)
