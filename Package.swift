@@ -26,7 +26,6 @@ let package = Package(
             name: "MountebankSwift",
             dependencies: [],
             swiftSettings: [
-                // Enable to validate if project is compatible with swift 6.0 Concurrency
                 .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
@@ -41,8 +40,7 @@ let package = Package(
                 .copy("ExampleData/Files"),
             ],
             swiftSettings: [
-                // Enable to validate if project is compatible with swift 6.0 Concurrency
-                // .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
     ]
