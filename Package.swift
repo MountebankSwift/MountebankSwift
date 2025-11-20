@@ -18,15 +18,14 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.17.7"),
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.5"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.18.7"),
     ],
     targets: [
         .target(
             name: "MountebankSwift",
             dependencies: [],
             swiftSettings: [
-                // Enable to validate if project is compatible with swift 6.0 Concurrency
                 .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
@@ -41,8 +40,7 @@ let package = Package(
                 .copy("ExampleData/Files"),
             ],
             swiftSettings: [
-                // Enable to validate if project is compatible with swift 6.0 Concurrency
-                // .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency")
             ]
         ),
     ]

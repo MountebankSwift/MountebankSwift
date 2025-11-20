@@ -63,7 +63,7 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let expectedResult = imposterToPost
             .with(networkProtocol: .https(
-                allowCORS: nil,
+                allowCORS: true,
                 rejectUnauthorized: true,
                 certificateAuthority: ExampleCert.certificateAuthority,
                 key: ExampleCert.privateKey,

@@ -17,8 +17,8 @@ jobs:
   swift_lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - name: Checkout the project
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
       - name: SwiftLint
         run: |
           docker run --rm -v `pwd`:`pwd` -w `pwd` \
@@ -31,15 +31,15 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        swift: ["5.10", "6.1.0"]
+        swift: ["6.1.0", "6.2.0"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: swift-actions/setup-swift@v2
         with:
           swift-version: ${{ matrix.swift }}
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
       - name: Install Mountebank
-        run: npm install mountebank -g
+        run: npm install @mbtest/mountebank -g
       - name: Setup Mountebank
         run: |
           RUNNER_TRACKING_ID="" && mb start --allowInjection &

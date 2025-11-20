@@ -1,7 +1,7 @@
 import Foundation
 import MountebankSwift
 
-// swiftlint:disable line_length force_unwrapping
+// swiftlint:disable line_length force_unwrapping trailing_newline
 extension ImposterTests {
     static let testWriteToDiskStubsAll: [Stub] = [
         Stub(
@@ -237,4 +237,4 @@ extension ImposterTests {
     ]
 }
 
-// swiftlint:enable line_length force_unwrapping
+// swiftlint:enable line_length force_unwrapping trailing_newline

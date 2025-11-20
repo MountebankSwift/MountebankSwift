@@ -28,12 +28,12 @@ extension Imposter {
         import Foundation
         import MountebankSwift
 
-        // swiftlint:disable line_length force_unwrapping
+        // swiftlint:disable line_length force_unwrapping trailing_newline
         extension \(dirName) {
             static let \(propertyName): [Stub] = \(stubsString)
         }
 
-        // swiftlint:enable line_length force_unwrapping
+        // swiftlint:enable line_length force_unwrapping trailing_newline
         """
 
         try writeToDisk(
