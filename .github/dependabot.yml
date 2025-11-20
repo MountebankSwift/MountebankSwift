@@ -7,7 +7,7 @@ updates:
       prefix: "GitHub Actions:"
     schedule:
       interval: "weekly"
-      time: "02:00"
+      time: "01:00"
     groups:
       dependencies:
         patterns:
