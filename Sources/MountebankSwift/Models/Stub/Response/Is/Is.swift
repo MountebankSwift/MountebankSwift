@@ -6,7 +6,7 @@ import CoreFoundation
 /// A regular predefined response. Merges the specified response fields with ``Imposter``.`defaultResponse`
 public struct Is: StubResponse, Equatable, Sendable {
 
-    private nonisolated(unsafe) static var defaultBehaviors: [Behavior] = []
+    nonisolated(unsafe) private static var defaultBehaviors: [Behavior] = []
     private static let lock = NSLock()
 
     public let statusCode: Int?
