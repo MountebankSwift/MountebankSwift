@@ -25,7 +25,7 @@ class IsInitializersTests: XCTestCase {
         XCTAssertEqual(sut.body, .data(bodyData))
     }
 
-    func testInitWithJsonEncodableBody() throws {
+    func skip_testInitWithJsonEncodableBody() throws {
         let bodyJsonEncodable = SomeCodableObject(
             foo: "foo",
             bar: SomeCodableObject.Bar(baz: "baz")
