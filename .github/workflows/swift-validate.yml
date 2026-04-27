@@ -44,6 +44,8 @@ jobs:
       - name: Setup Mountebank
         run: |
           RUNNER_TRACKING_ID="" && mb start --allowInjection &
+      - name: Get swift version
+        run: swift --version
       - name: Resolve packages
         run: swift package resolve
       - name: Build Package
