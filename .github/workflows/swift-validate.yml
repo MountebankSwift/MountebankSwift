@@ -18,11 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the project
-        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: SwiftLint
         run: |
           docker run --rm -v `pwd`:`pwd` -w `pwd` \
-            ghcr.io/realm/swiftlint:0.57.0 \
+            ghcr.io/realm/swiftlint:0.63.2 \
             swiftlint lint --strict --config .swiftlint.yml --reporter github-actions-logging
 
   test:
@@ -31,13 +31,14 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-        swift: ["6.1.0", "6.2.0"]
+        swift: ["6.2.0", "6.3.0"]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: swift-actions/setup-swift@v2
+      - uses: swift-actions/setup-swift@364295d9c23900ce04d4e5cc708387921b4e50f9
         with:
           swift-version: ${{ matrix.swift }}
-      - uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3
+          skip-verify-signature: true
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Install Mountebank
         run: npm install @mbtest/mountebank -g
       - name: Setup Mountebank
