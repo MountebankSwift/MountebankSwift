@@ -19,7 +19,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.5.0"),
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.19.2"),
+        // Build does fail with swift 6.3 with version 1.19.2. This is the latest working version.
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.18.7"),
     ],
     targets: [
         .target(
