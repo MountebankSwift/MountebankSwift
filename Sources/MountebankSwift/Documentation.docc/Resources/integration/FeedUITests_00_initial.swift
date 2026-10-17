@@ -1,10 +1,8 @@
-import Testing
+import XCTest
 
-@Suite
-struct FeedUITests {
+final class FeedUITests: XCTestCase {
 
-    @Test
-    func errorHandling() throws {
+    func testErrorHandling() throws {
         let app = XCUIApplication()
         app.launch()
 

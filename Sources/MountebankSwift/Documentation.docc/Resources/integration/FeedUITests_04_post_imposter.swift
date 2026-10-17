@@ -1,14 +1,12 @@
 import MountebankSwift
-import Testing
+import XCTest
 
-@Suite
-struct FeedUITests {
+final class FeedUITests: XCTestCase {
     // Mountebank client to communicate with our Mountebank instance running on http://localhost:2525/
     let mountebank = Mountebank()
 
-    @Test
     @MainActor
-    func errorHandling() async throws {
+    func testErrorHandling() async throws {
         let listsImposter = Imposter(
             name: "lists",
             stubs: [

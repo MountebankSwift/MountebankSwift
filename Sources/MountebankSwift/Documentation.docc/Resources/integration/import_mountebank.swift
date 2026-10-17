@@ -1,12 +1,10 @@
 import MountebankSwift
 
-@Suite
-struct MyUITests {
+final class MyUITests: XCTestCase {
     let mountebank = Mountebank()
 
-    @Test
     @MainActor
-    func something() async throws {
+    func testSomething() async throws {
         let imposter = Imposter(port: 1234, stubs: [...])
         try await mountebank.postImposter(imposter: imposter)
 

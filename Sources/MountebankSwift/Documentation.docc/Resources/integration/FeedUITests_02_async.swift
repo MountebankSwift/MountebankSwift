@@ -1,12 +1,10 @@
 import MountebankSwift
-import Testing
+import XCTest
 
-@Suite
-struct FeedUITests {
+final class FeedUITests: XCTestCase {
 
-    @Test
     @MainActor
-    func errorHandling() async throws {
+    func testErrorHandling() async throws {
         let app = XCUIApplication()
         app.launch()
 

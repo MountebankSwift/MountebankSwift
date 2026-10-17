@@ -2,7 +2,7 @@ let app = XCUIApplication()
 app.launchEnvironment["listApiHost"] = "http://localhost:\(listsPort)"
 app.launch()
 
-#expect(app.staticTexts["Error: 500"].exists)
+XCTAssertTrue(app.staticTexts["Error: 500"].exists)
 
 app.buttons["Retry"].tap()
-#expect(app.staticTexts["No podcasts found"].exists)
+XCTAssertTrue(app.staticTexts["No podcasts found"].exists)

@@ -1,13 +1,11 @@
 import MountebankSwift
-import Testing
+import XCTest
 
-@Suite
-struct FeedUITests {
+final class FeedUITests: XCTestCase {
     let mountebank = Mountebank()
 
-    @Test
     @MainActor
-    func errorHandling() async throws {
+    func testErrorHandling() async throws {
         let listsImposter = Imposter(
             name: "lists",
             stubs: [
@@ -21,7 +19,7 @@ struct FeedUITests {
         )
 
         guard let listsPort = try await mountebank.postImposter(imposter: listsImposter).port else {
-            Issue.record("Port should have been set by now")
+            XCTFail("Port should have been set by now")
             return
         }
 
@@ -29,6 +27,6 @@ struct FeedUITests {
         app.launchEnvironment["listApiHost"] = "http://localhost:\(listsPort)"
         app.launch()
 
-        #expect(app.staticTexts["Error: 500"].exists)
+        XCTAssertTrue(app.staticTexts["Error: 500"].exists)
     }
 }
