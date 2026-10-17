@@ -7,7 +7,7 @@ enum Host {
     static var lists: URL {
         // Use UI testing URL if it is set or use production URL otherwise
         uiTestingListApiHost ??
-        URL(string: "https://lists.pocketcasts.com")!
+            URL(string: "https://lists.pocketcasts.com")!
     }
 
     static var images: String {

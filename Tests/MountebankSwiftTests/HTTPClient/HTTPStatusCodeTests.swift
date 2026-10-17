@@ -1,17 +1,20 @@
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-final class HTTPStatusCodeTests: XCTestCase {
+@Suite
+struct HTTPStatusCodeTests {
 
-    func testInformationalStatus() throws {
+    @Test
+    func informationalStatus() throws {
         [
             HTTPStatusCode.continue,
         ].forEach { item in
-            XCTAssertEqual(item.responseType, .informational)
+            #expect(item.responseType == .informational)
         }
     }
 
-    func testSuccessStatus() throws {
+    @Test
+    func successStatus() throws {
         [
             HTTPStatusCode.ok,
             HTTPStatusCode.created,
@@ -19,20 +22,22 @@ final class HTTPStatusCodeTests: XCTestCase {
             HTTPStatusCode.nonAuthoritativeInformation,
             HTTPStatusCode.noContent,
         ].forEach { item in
-            XCTAssertEqual(item.responseType, .success)
+            #expect(item.responseType == .success)
         }
     }
 
-    func testRedirectionStatus() throws {
+    @Test
+    func redirectionStatus() throws {
         [
             HTTPStatusCode.multipleChoices,
             HTTPStatusCode.movedPermanently,
         ].forEach { item in
-            XCTAssertEqual(item.responseType, .redirection)
+            #expect(item.responseType == .redirection)
         }
     }
 
-    func testClientErrorStatus() throws {
+    @Test
+    func clientErrorStatus() throws {
         [
             HTTPStatusCode.badRequest,
             HTTPStatusCode.unauthorized,
@@ -42,17 +47,18 @@ final class HTTPStatusCodeTests: XCTestCase {
             HTTPStatusCode.methodNotAllowed,
             HTTPStatusCode.unprocessableEntity,
         ].forEach { item in
-            XCTAssertEqual(item.responseType, .clientError)
+            #expect(item.responseType == .clientError)
         }
     }
 
-    func testServerErrorStatus() throws {
+    @Test
+    func serverErrorStatus() throws {
         [
             HTTPStatusCode.internalServerError,
             HTTPStatusCode.badGateway,
             HTTPStatusCode.serviceUnavailable,
         ].forEach { item in
-            XCTAssertEqual(item.responseType, .serverError)
+            #expect(item.responseType == .serverError)
         }
     }
 

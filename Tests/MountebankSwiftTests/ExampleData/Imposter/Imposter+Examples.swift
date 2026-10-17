@@ -1,4 +1,5 @@
-import XCTest
+import Foundation
+import Testing
 @testable import MountebankSwift
 
 extension Imposter {
@@ -16,11 +17,11 @@ extension Imposter {
 
         static let simple = Example(
             value: Imposter(
-                port: 19190,
+                port: 19130,
                 stubs: [Stub.Examples.text.value]
             ),
             json: [
-                "port": 19190,
+                "port": 19130,
                 "protocol": "http",
                 "stubs": [Stub.Examples.text.json],
             ]
@@ -28,11 +29,11 @@ extension Imposter {
 
         static let json = Example(
             value: Imposter(
-                port: 100,
+                port: 1234,
                 stubs: [Stub.Examples.json.value]
             ),
             json: [
-                "port": 100,
+                "port": 1234,
                 "protocol": "http",
                 "stubs": [Stub.Examples.json.json],
             ]
@@ -40,7 +41,7 @@ extension Imposter {
 
         static let advanced = Example(
             value: Imposter(
-                port: 8080,
+                port: 8084,
                 networkProtocol: .https(),
                 name: "Single stub",
                 stubs: [
@@ -52,7 +53,7 @@ extension Imposter {
                 recordRequests: true
             ),
             json: [
-                "port": 8080,
+                "port": 8084,
                 "protocol": "https",
                 "name": "Single stub",
                 "stubs": [
@@ -67,7 +68,7 @@ extension Imposter {
 
         static let withResponseData = Example(
             value: Imposter(
-                port: 19190,
+                port: 12190,
                 networkProtocol: .https(allowCORS: false),
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true,
@@ -81,7 +82,7 @@ extension Imposter {
                 )]
             ),
             json: [
-                "port": 19190,
+                "port": 12190,
                 "protocol": "https",
                 "allowCORS": false,
                 "stubs": [Stub.Examples.text.json],
@@ -101,7 +102,7 @@ extension Imposter {
 
         static let withExtraOptionsHttp = Example(
             value: Imposter(
-                port: 19190,
+                port: 19194,
                 networkProtocol: .http(allowCORS: true),
                 stubs: [],
                 recordRequests: false,
@@ -109,7 +110,7 @@ extension Imposter {
                 requests: []
             ),
             json: [
-                "port": 19190,
+                "port": 19194,
                 "protocol": "http",
                 "allowCORS": true,
                 "stubs": [],
@@ -121,7 +122,7 @@ extension Imposter {
 
         static let withExtraOptionsHttps = Example(
             value: Imposter(
-                port: 19190,
+                port: 19192,
                 networkProtocol: .https(
                     allowCORS: true,
                     rejectUnauthorized: true,
@@ -137,7 +138,7 @@ extension Imposter {
                 requests: []
             ),
             json: [
-                "port": 19190,
+                "port": 19192,
                 "protocol": "https",
                 "allowCORS": true,
                 "rejectUnauthorized": true,
@@ -155,14 +156,14 @@ extension Imposter {
 
         static let includingAllStubs = Example(
             value: Imposter(
-                port: 8080,
+                port: 8081,
                 name: "all",
                 stubs: Stub.Examples.all.map(\.value),
                 defaultResponse: Is(statusCode: 403),
                 recordRequests: true
             ),
             json: [
-                "port": 8080,
+                "port": 8081,
                 "protocol": "http",
                 "name": "all",
                 "stubs": .array(Stub.Examples.all.map(\.json)),
@@ -173,12 +174,12 @@ extension Imposter {
 
         static let simpleRecordRequests = Example(
             value: Imposter(
-                port: 19190,
+                port: 19191,
                 stubs: [Stub.Examples.text.value],
                 recordRequests: true
             ),
             json: [
-                "port": 19190,
+                "port": 19191,
                 "protocol": "http",
                 "stubs": [Stub.Examples.text.json],
                 "recordRequests": true,

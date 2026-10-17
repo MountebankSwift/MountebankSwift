@@ -1,9 +1,11 @@
 import MountebankSwift
+import Testing
 
-import XCTest
+@Suite
+struct LogsTests {
 
-final class LogsTests: XCTestCase {
-    func testLogsSimple() throws {
+    @Test
+    func logsSimple() throws {
         try assertEncode(
             Logs.Examples.simple.value,
             Logs.Examples.simple.json
@@ -14,7 +16,8 @@ final class LogsTests: XCTestCase {
         )
     }
 
-    func testLogsWithDate() throws {
+    @Test
+    func logsWithDate() throws {
         try assertEncode(
             Logs.Examples.withDate.value,
             Logs.Examples.withDate.json

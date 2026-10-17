@@ -1,15 +1,17 @@
 import MountebankSwift
 
-final class MyUITests: XCTestCase {
+@Suite
+struct MyUITests {
     let mountebank = Mountebank()
 
+    @Test
     @MainActor
-    func testSomething() async throws {
+    func something() async throws {
         let imposter = Imposter(port: 1234, stubs: [...])
         try await mountebank.postImposter(imposter: imposter)
 
         let app = XCUIApplication()
-        app.launchEnvironment = [“apiHost”: "http://localhost:1234"]
+        app.launchEnvironment = ["apiHost": "http://localhost:1234"]
         app.launch()
 
         // Run UI test steps

@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class PredicateTests: XCTestCase {
-    func testEquals() throws {
+@Suite
+struct PredicateTests {
+
+    @Test
+    func equals() throws {
         try assertEncode(
             Predicate.Examples.equals.value,
             Predicate.Examples.equals.json
@@ -14,7 +17,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testDeepEquals() throws {
+    @Test
+    func deepEquals() throws {
         try assertEncode(
             Predicate.Examples.deepEquals.value,
             Predicate.Examples.deepEquals.json
@@ -25,7 +29,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testContains() throws {
+    @Test
+    func contains() throws {
         try assertEncode(
             Predicate.Examples.contains.value,
             Predicate.Examples.contains.json
@@ -36,7 +41,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testStartsWith() throws {
+    @Test
+    func startsWith() throws {
         try assertEncode(
             Predicate.Examples.startsWith.value,
             Predicate.Examples.startsWith.json
@@ -47,7 +53,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testEndsWith() throws {
+    @Test
+    func endsWith() throws {
         try assertEncode(
             Predicate.Examples.endsWith.value,
             Predicate.Examples.endsWith.json
@@ -58,7 +65,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testMatches() throws {
+    @Test
+    func matches() throws {
         try assertEncode(
             Predicate.Examples.matches.value,
             Predicate.Examples.matches.json
@@ -69,7 +77,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testExists() throws {
+    @Test
+    func exists() throws {
         try assertEncode(
             Predicate.Examples.exists.value,
             Predicate.Examples.exists.json
@@ -80,7 +89,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testNot() throws {
+    @Test
+    func not() throws {
         try assertEncode(
             Predicate.Examples.not.value,
             Predicate.Examples.not.json
@@ -91,7 +101,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testOr() throws {
+    @Test
+    func or() throws {
         try assertEncode(
             Predicate.Examples.or.value,
             Predicate.Examples.or.json
@@ -102,7 +113,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testAnd() throws {
+    @Test
+    func and() throws {
         try assertEncode(
             Predicate.Examples.and.value,
             Predicate.Examples.and.json
@@ -113,7 +125,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testInject() throws {
+    @Test
+    func inject() throws {
         try assertEncode(
             Predicate.Examples.inject.value,
             Predicate.Examples.inject.json
@@ -124,7 +137,8 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testWithParameters() throws {
+    @Test
+    func withParameters() throws {
         try assertEncode(
             Predicate.Examples.withParameters.value,
             Predicate.Examples.withParameters.json
@@ -135,8 +149,9 @@ final class PredicateTests: XCTestCase {
         )
     }
 
-    func testEqualsRequest() throws {
-        XCTAssertEqual(
+    @Test
+    func equalsRequest() throws {
+        #expect(
             Predicate.equals(
                 Request(
                     method: .put,
@@ -145,8 +160,7 @@ final class PredicateTests: XCTestCase {
                     headers: ["foo": "bar"],
                     data: ["baz"]
                 )
-            ),
-            .equalsRequest(
+            ) == .equalsRequest(
                 method: .put,
                 path: "/test",
                 query: ["key": ["first", "second"]],

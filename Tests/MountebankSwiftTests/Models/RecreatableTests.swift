@@ -1,8 +1,11 @@
+import Foundation
 import InlineSnapshotTesting
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-final class RecreatableTests: XCTestCase {
+@Suite
+struct RecreatableTests {
+
     struct MyStruct: Recreatable {
         let foo: String?
         let bar: [Int]
@@ -39,7 +42,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testString() {
+    @Test
+    func validateString() {
         assertInlineSnapshot(of: "some string value".recreatable(indent: 0), as: .lines) {
             """
             "some string value"
@@ -47,7 +51,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testInt() {
+    @Test
+    func validateInt() {
         assertInlineSnapshot(of: 42.recreatable(indent: 0), as: .lines) {
             """
             42
@@ -55,7 +60,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testDouble() {
+    @Test
+    func validateDouble() {
         assertInlineSnapshot(of: 42.0.recreatable(indent: 0), as: .lines) {
             """
             42.0
@@ -63,7 +69,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testBool() {
+    @Test
+    func validateBool() {
         assertInlineSnapshot(of: true.recreatable(indent: 0), as: .lines) {
             """
             true
@@ -71,7 +78,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testData() {
+    @Test
+    func validateData() {
         let stringValue = "some-string"
         // swiftlint:disable:next force_unwrapping
         let data: Data = stringValue.data(using: .utf8)!
@@ -82,14 +90,14 @@ final class RecreatableTests: XCTestCase {
             )!
             """
         }
-        XCTAssertEqual(
+        #expect(
             // swiftlint:disable:next force_unwrapping
-            String(bytes: Data(base64Encoded: "c29tZS1zdHJpbmc=")!, encoding: .utf8),
-            stringValue
+            String(bytes: Data(base64Encoded: "c29tZS1zdHJpbmc=")!, encoding: .utf8) == stringValue
         )
     }
 
-    func testEnum() {
+    @Test
+    func validateEnum() {
         assertInlineSnapshot(of: MyEnum.simple.recreatable(indent: 0), as: .lines) {
             """
             .simple
@@ -113,7 +121,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testStruct() {
+    @Test
+    func validateStruct() {
         assertInlineSnapshot(
             of: MyStruct(
                 foo: "foo",
@@ -140,7 +149,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testNesting() {
+    @Test
+    func nesting() {
         assertInlineSnapshot(
             of: MyStruct(
                 foo: "foo",
@@ -175,7 +185,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testDictionary() {
+    @Test
+    func dictionary() {
         let stringDict: [String: Any] = [
             "string": "value",
             "int": 42,
@@ -229,7 +240,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testArray() {
+    @Test
+    func array() {
         assertInlineSnapshot(of: ["foo", "bar", "baz"].recreatable(indent: 0), as: .lines) {
             """
             [
@@ -241,7 +253,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testEmptyString() {
+    @Test
+    func emptyString() {
         assertInlineSnapshot(of: ["", "second", "first"].recreatable(indent: 0), as: .lines) {
             """
             [
@@ -253,7 +266,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testRequestWithEmptyQueryDictionary() {
+    @Test
+    func requestWithEmptyQueryDictionary() {
         assertInlineSnapshot(of: Request(query: [:]).recreatable(indent: 0), as: .lines) {
             """
             Request(query: [:])
@@ -261,7 +275,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testEmptyStringInStruct() {
+    @Test
+    func emptyStringInStruct() {
         assertInlineSnapshot(
             of: MyStruct(foo: nil, bar: [], enumValue: .simple, json: nil).recreatable(indent: 0),
             as: .lines
@@ -275,7 +290,8 @@ final class RecreatableTests: XCTestCase {
         }
     }
 
-    func testJSON() {
+    @Test
+    func jSON() {
         let json: JSON = [
             "string": "value",
             "int": 42,

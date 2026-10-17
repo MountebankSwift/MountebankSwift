@@ -1,6 +1,6 @@
 import Foundation
 import MountebankSwift
-import XCTest
+import Testing
 
 enum DecodeError: Error {
     case unableToCreateUTF8StringFromData
@@ -28,11 +28,8 @@ func assertEncode<CodableEquatableType: Codable & Equatable>(
     guard let expectedJSONString = String(bytes: jsonData, encoding: .utf8) else {
         throw DecodeError.unableToCreateUTF8StringFromData
     }
-    XCTAssertEqual(
-        valueJSONString,
-        expectedJSONString,
-        file: file,
-        line: line
+    #expect(
+        valueJSONString == expectedJSONString
     )
 }
 
@@ -44,10 +41,5 @@ func assertDecode<CodableEquatableType: Codable & Equatable>(
 ) throws {
     let jsonData = try testEncoder.encode(value)
     let result = try testDecoder.decode(CodableEquatableType.self, from: jsonData)
-    XCTAssertEqual(
-        result,
-        expectedResult,
-        file: file,
-        line: line
-    )
+    #expect(result == expectedResult)
 }

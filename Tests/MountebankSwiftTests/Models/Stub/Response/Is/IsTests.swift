@@ -1,10 +1,13 @@
 import MountebankSwift
 
-import XCTest
+import Foundation
+import Testing
 
-class IsTests: XCTestCase {
+@Suite
+struct IsTests {
 
-    func testText() throws {
+    @Test
+    func text() throws {
         try assertEncode(
             Is.Examples.text.value,
             Is.Examples.text.json
@@ -15,7 +18,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testHtml() throws {
+    @Test
+    func html() throws {
         try assertEncode(
             Is.Examples.html.value,
             Is.Examples.html.json
@@ -26,7 +30,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testJson() throws {
+    @Test
+    func json() throws {
         try assertEncode(
             Is.Examples.json.value,
             Is.Examples.json.json
@@ -37,7 +42,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testBinary() throws {
+    @Test
+    func binary() throws {
         try assertEncode(
             Is.Examples.binary.value,
             Is.Examples.binary.json
@@ -48,7 +54,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testHttp404() throws {
+    @Test
+    func http404() throws {
         try assertEncode(
             Is.Examples.http404.value,
             Is.Examples.http404.json
@@ -59,7 +66,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testEncodable() throws {
+    @Test
+    func encodable() throws {
         try assertEncode(
             Is.Examples.jsonEncodable.value,
             Is.Examples.jsonEncodable.json
@@ -67,7 +75,8 @@ class IsTests: XCTestCase {
         // Not possible to decode json back into codable
     }
 
-    func testEncodableCustomDateFormatAndKeyEncodingStrategy() throws {
+    @Test
+    func encodableCustomDateFormatAndKeyEncodingStrategy() throws {
         try assertEncode(
             Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.value,
             Is.Examples.jsonEncodableCustomDateFormatAndKeyEncodingStrategy.json
@@ -75,7 +84,8 @@ class IsTests: XCTestCase {
         // Not possible to decode json back into codable
     }
 
-    func testHttpResponse404() throws {
+    @Test
+    func httpResponse404() throws {
         try assertEncode(
             Is.Examples.http404.value,
             Is.Examples.http404.json
@@ -86,20 +96,19 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testSettingDefaultBahavoirsConcurrent() async throws {
-        let expectation = expectation(description: "Should not crash when called from multiple threads")
-        expectation.expectedFulfillmentCount = 1000
-
-        DispatchQueue.concurrentPerform(iterations: 1000) { _ in
-            Is.setDefaultBehaviors(behaviors: [])
-            _ = Is()
-            expectation.fulfill()
+    @Test
+    func settingDefaultBahavoirsConcurrent() async throws {
+        await confirmation(expectedCount: 1000) { confirm in
+            DispatchQueue.concurrentPerform(iterations: 1000) { _ in
+                Is.setDefaultBehaviors(behaviors: [])
+                _ = Is()
+                confirm()
+            }
         }
-
-        await fulfillment(of: [expectation], timeout: 1)
     }
 
-    func testResponseParameters() throws {
+    @Test
+    func responseParameters() throws {
         // Parameters should not be encoded to the json here but on a higher level, so no decode test here
         try assertEncode(
             Is.Examples.withResponseParameters.value,
@@ -107,7 +116,8 @@ class IsTests: XCTestCase {
         )
     }
 
-    func testInvalidHeaders() throws {
+    @Test
+    func invalidHeaders() throws {
         try assertDecode(
             [
                 "statusCode" : 404,

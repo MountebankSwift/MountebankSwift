@@ -1,5 +1,5 @@
 guard let listsPort = try await mountebank.postImposter(imposter: listsImposter).port else {
-    XCTFail("Port should have been set by now")
+    Issue.record("Port should have been set by now")
     return
 }
 
@@ -21,7 +21,7 @@ let imagesImposter = Imposter(
 )
 
 guard let imagesPort = try await mountebank.postImposter(imposter: imagesImposter).port else {
-    XCTFail("Port should have been set by now")
+    Issue.record("Port should have been set by now")
     return
 }
 

@@ -1,8 +1,12 @@
-import XCTest
+import Foundation
+import Testing
 @testable import MountebankSwift
 
-final class ImposterTests: XCTestCase {
-    func testSimple() throws {
+@Suite
+struct ImposterTests {
+
+    @Test
+    func simple() throws {
         try assertEncode(
             Imposter.Examples.simple.value,
             Imposter.Examples.simple.json
@@ -13,7 +17,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testAdvanced() throws {
+    @Test
+    func advanced() throws {
         try assertEncode(
             Imposter.Examples.advanced.value,
             Imposter.Examples.advanced.json
@@ -24,7 +29,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testWithResponseData() throws {
+    @Test
+    func withResponseData() throws {
         try assertEncode(
             Imposter.Examples.withResponseData.value,
             Imposter.Examples.withResponseData.json
@@ -35,7 +41,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testWithExtraOptionsDataHttp() throws {
+    @Test
+    func withExtraOptionsDataHttp() throws {
         try assertEncode(
             Imposter.Examples.withExtraOptionsHttp.value,
             Imposter.Examples.withExtraOptionsHttp.json
@@ -46,7 +53,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testWithExtraOptionsDataHttps() throws {
+    @Test
+    func withExtraOptionsDataHttps() throws {
         try assertEncode(
             Imposter.Examples.withExtraOptionsHttps.value,
             Imposter.Examples.withExtraOptionsHttps.json
@@ -57,7 +65,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testIncludingAllStubs() throws {
+    @Test
+    func includingAllStubs() throws {
         try assertEncode(
             Imposter.Examples.includingAllStubs.value,
             Imposter.Examples.includingAllStubs.json
@@ -68,7 +77,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testInvalidHeaders() throws {
+    @Test
+    func invalidHeaders() throws {
         try assertDecode(
             [
                 "port": 123,
@@ -108,7 +118,8 @@ final class ImposterTests: XCTestCase {
         )
     }
 
-    func testWriteToDisk() throws {
+    @Test
+    func writeToDisk() throws {
         try Imposter.Examples.includingAllStubs.value.writeStubsToDisk()
     }
 }

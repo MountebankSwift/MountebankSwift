@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class InjectTests: XCTestCase {
-    func testInjectBodySingleLine() throws {
+@Suite
+struct InjectTests {
+
+    @Test
+    func injectBodySingleLine() throws {
         try assertEncode(
             Inject.Examples.injectBodySingleLine.value,
             Inject.Examples.injectBodySingleLine.json
@@ -14,7 +17,8 @@ final class InjectTests: XCTestCase {
         )
     }
 
-    func testInjectBodyMultiline() throws {
+    @Test
+    func injectBodyMultiline() throws {
         try assertEncode(
             Inject.Examples.injectBodyMultiline.value,
             Inject.Examples.injectBodyMultiline.json

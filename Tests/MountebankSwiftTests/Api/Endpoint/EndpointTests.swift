@@ -1,12 +1,15 @@
-import XCTest
+import Foundation
+import Testing
 @testable import MountebankSwift
 
-final class EndpointTests: XCTestCase {
+@Suite
+struct EndpointTests {
 
     // swiftlint:disable:next force_unwrapping
     private static let exampleBaseUrl = URL(string: "https://localhost")!
 
-    func testGetAllImposters() {
+    @Test
+    func getAllImposters() {
         [
             makeUrlFromEndpoint(.getAllImposters(
                 parameters: ImposterParameters(replayable: false, removeProxies: false)
@@ -15,11 +18,12 @@ final class EndpointTests: XCTestCase {
                 parameters: ImposterParameters(replayable: true, removeProxies: true)
             )): "\(Self.exampleBaseUrl.absoluteString)/imposters?removeProxies=true&replayable=true",
         ].forEach { endpoint, expectedResult in
-            XCTAssertEqual(endpoint, URL(string: expectedResult))
+            #expect(endpoint == URL(string: expectedResult))
         }
     }
 
-    func testGetImposter() {
+    @Test
+    func getImposter() {
         [
             makeUrlFromEndpoint(.getImposter(
                 port: 10,
@@ -30,11 +34,12 @@ final class EndpointTests: XCTestCase {
                 parameters: ImposterParameters(replayable: true, removeProxies: true)
             )): "\(Self.exampleBaseUrl.absoluteString)/imposters/123?removeProxies=true&replayable=true",
         ].forEach { endpoint, expectedResult in
-            XCTAssertEqual(endpoint, URL(string: expectedResult))
+            #expect(endpoint == URL(string: expectedResult))
         }
     }
 
-    func testGetLogs() {
+    @Test
+    func getLogs() {
         [
             makeUrlFromEndpoint(.getLogs(parameters: LogParameters())): "\(Self.exampleBaseUrl.absoluteString)/logs",
             makeUrlFromEndpoint(.getLogs(
@@ -44,7 +49,7 @@ final class EndpointTests: XCTestCase {
                 parameters: LogParameters(endIndex: 203)
             )): "\(Self.exampleBaseUrl.absoluteString)/logs?endIndex=203",
         ].forEach { endpoint, expectedResult in
-            XCTAssertEqual(endpoint, URL(string: expectedResult))
+            #expect(endpoint == URL(string: expectedResult))
         }
     }
 

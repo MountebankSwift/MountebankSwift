@@ -1,9 +1,11 @@
 import MountebankSwift
+import Testing
 
-import XCTest
+@Suite
+struct ImposterRecordedRequestTests {
 
-final class ImposterRecordedRequestTests: XCTestCase {
-    func testSimpleText() throws {
+    @Test
+    func simpleText() throws {
         try assertEncode(
             Imposter.RecordedRequest.Examples.simple.value,
             Imposter.RecordedRequest.Examples.simple.json
@@ -14,7 +16,8 @@ final class ImposterRecordedRequestTests: XCTestCase {
         )
     }
 
-    func testAdvancedText() throws {
+    @Test
+    func advancedText() throws {
         try assertEncode(
             Imposter.RecordedRequest.Examples.advanced.value,
             Imposter.RecordedRequest.Examples.advanced.json

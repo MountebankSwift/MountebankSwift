@@ -41,7 +41,7 @@ let package = Package(
                 .copy("ExampleData/Files"),
             ],
             swiftSettings: [
-                .enableExperimentalFeature("StrictConcurrency")
+                .enableExperimentalFeature("StrictConcurrency"),
             ]
         ),
     ]

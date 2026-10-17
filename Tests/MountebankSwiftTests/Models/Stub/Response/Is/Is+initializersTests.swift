@@ -1,28 +1,33 @@
+import Foundation
 import MountebankSwift
+import Testing
 
-import XCTest
+@Suite
 
-class IsInitializersTests: XCTestCase {
+struct IsInitializersTests {
 
-    func testInitWithTextBody() throws {
+    @Test
+    func initWithTextBody() throws {
         let bodyText = "This is a body text"
         let sut = Is(body: bodyText)
 
-        XCTAssertEqual(sut.body, .text(bodyText))
+        #expect(sut.body == .text(bodyText))
     }
 
-    func testInitWithJsonBody() throws {
+    @Test
+    func initWithJsonBody() throws {
         let bodyJson = JSON.bool(true)
         let sut = Is(body: bodyJson)
 
-        XCTAssertEqual(sut.body, .json(bodyJson))
+        #expect(sut.body == .json(bodyJson))
     }
 
-    func testInitWithDataBody() throws {
+    @Test
+    func initWithDataBody() throws {
         let bodyData = Data("test".utf8)
         let sut = Is(body: bodyData)
 
-        XCTAssertEqual(sut.body, .data(bodyData))
+        #expect(sut.body == .data(bodyData))
     }
 
     func skip_testInitWithJsonEncodableBody() throws {
@@ -32,7 +37,7 @@ class IsInitializersTests: XCTestCase {
         )
         let sut = Is(body: bodyJsonEncodable)
 
-        XCTAssertEqual(sut.body, .jsonEncodable(bodyJsonEncodable))
+        #expect(sut.body == .jsonEncodable(bodyJsonEncodable))
     }
 }
 

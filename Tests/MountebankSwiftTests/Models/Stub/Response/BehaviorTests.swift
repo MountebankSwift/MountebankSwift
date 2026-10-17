@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class BehaviorTests: XCTestCase {
-    func testWait() throws {
+@Suite
+struct BehaviorTests {
+
+    @Test
+    func wait() throws {
         try assertEncode(
             Behavior.Examples.wait.value,
             Behavior.Examples.wait.json
@@ -14,7 +17,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testWaitJavascript() throws {
+    @Test
+    func waitJavascript() throws {
         try assertEncode(
             Behavior.Examples.waitJavascript.value,
             Behavior.Examples.waitJavascript.json
@@ -25,7 +29,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopyCode() throws {
+    @Test
+    func copyCode() throws {
         try assertEncode(
             Behavior.Examples.copyCode.value,
             Behavior.Examples.copyCode.json
@@ -36,7 +41,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopyQuery() throws {
+    @Test
+    func copyQuery() throws {
         try assertEncode(
             Behavior.Examples.copyQuery.value,
             Behavior.Examples.copyQuery.json
@@ -47,7 +53,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopyHeader() throws {
+    @Test
+    func copyHeader() throws {
         try assertEncode(
             Behavior.Examples.copyHeader.value,
             Behavior.Examples.copyHeader.json
@@ -58,7 +65,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopyJsonPath() throws {
+    @Test
+    func copyJsonPath() throws {
         try assertEncode(
             Behavior.Examples.copyJsonPath.value,
             Behavior.Examples.copyJsonPath.json
@@ -69,7 +77,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testCopyXpath() throws {
+    @Test
+    func copyXpath() throws {
         try assertEncode(
             Behavior.Examples.copyXpath.value,
             Behavior.Examples.copyXpath.json
@@ -80,7 +89,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testLookup() throws {
+    @Test
+    func lookup() throws {
         try assertEncode(
             Behavior.Examples.lookup.value,
             Behavior.Examples.lookup.json
@@ -91,7 +101,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testDecorate() throws {
+    @Test
+    func decorate() throws {
         try assertEncode(
             Behavior.Examples.decorate.value,
             Behavior.Examples.decorate.json
@@ -102,7 +113,8 @@ final class BehaviorTests: XCTestCase {
         )
     }
 
-    func testShellTransform() throws {
+    @Test
+    func shellTransform() throws {
         try assertEncode(
             Behavior.Examples.shellTransform.value,
             Behavior.Examples.shellTransform.json

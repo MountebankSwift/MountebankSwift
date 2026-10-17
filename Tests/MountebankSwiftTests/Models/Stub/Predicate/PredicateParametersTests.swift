@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class PredicateParametersTests: XCTestCase {
-    func testCaseSensitive() throws {
+@Suite
+struct PredicateParametersTests {
+
+    @Test
+    func caseSensitive() throws {
         try assertEncode(
             PredicateParameters.Examples.caseSensiteve.value,
             PredicateParameters.Examples.caseSensiteve.json
@@ -14,7 +17,8 @@ final class PredicateParametersTests: XCTestCase {
         )
     }
 
-    func testExcept() throws {
+    @Test
+    func except() throws {
         try assertEncode(
             PredicateParameters.Examples.except.value,
             PredicateParameters.Examples.except.json
@@ -25,7 +29,8 @@ final class PredicateParametersTests: XCTestCase {
         )
     }
 
-    func testXPath() throws {
+    @Test
+    func xPath() throws {
         try assertEncode(
             PredicateParameters.Examples.xPath.value,
             PredicateParameters.Examples.xPath.json
@@ -36,7 +41,8 @@ final class PredicateParametersTests: XCTestCase {
         )
     }
 
-    func testJSONPath() throws {
+    @Test
+    func jSONPath() throws {
         try assertEncode(
             PredicateParameters.Examples.jsonPath.value,
             PredicateParameters.Examples.jsonPath.json
@@ -47,7 +53,8 @@ final class PredicateParametersTests: XCTestCase {
         )
     }
 
-    func testFull() throws {
+    @Test
+    func full() throws {
         try assertEncode(
             PredicateParameters.Examples.full.value,
             PredicateParameters.Examples.full.json

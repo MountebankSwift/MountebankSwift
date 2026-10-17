@@ -2,47 +2,50 @@
 import FoundationNetworking
 #endif
 
-import XCTest
+import Foundation
+import Testing
 @testable import MountebankSwift
 
-final class MountebankIntegrationTests: XCTestCase {
+@Suite(.serialized)
+final class MountebankIntegrationTests {
 
     // swiftlint:disable:next implicitly_unwrapped_optional
     private var sut: Mountebank!
 
-    override func setUp() async throws {
+    init() async throws {
         sut = Mountebank(host: .localhost, port: 2525)
 
         do {
             try await sut.testConnection()
         } catch {
-            XCTFail("Mountebank needs to be running to run the tests. Start with `mb start`")
+            Issue.record("Mountebank needs to be running to run the tests. Start with `mb start`")
         }
     }
 
-    override func tearDown() async throws {
-        try await sut.deleteAllImposters()
-
-        sut = nil
-    }
-
-    func testGettingLogs() async throws {
+    @Test
+    func gettingLogs() async throws {
         let logsResponse = try await sut.getLogs()
 
-        XCTAssertGreaterThan(logsResponse.logs.count, 0)
+        #expect(logsResponse.logs.count > 0)
+
+        try await tearDown()
     }
 
-    func testGettingConfig() async throws {
+    @Test
+    func gettingConfig() async throws {
         let config = try await sut.getConfig()
 
-        XCTAssertGreaterThan(config.version.count, 0)
+        #expect(config.version.count > 0)
+
+        try await tearDown()
     }
 
-    func testPostImposter() async throws {
+    @Test
+    func postImposter() async throws {
         let imposterToPost = Imposter.Examples.includingAllStubs.value
         let imposterResult = try await sut.postImposter(imposter: imposterToPost)
         guard imposterResult.port != nil else {
-            XCTFail("Port should have been set by now.")
+            Issue.record("Port should have been set by now.")
             return
         }
 
@@ -50,14 +53,17 @@ final class MountebankIntegrationTests: XCTestCase {
             .with(numberOfRequests: 0)
             .with(requests: [])
 
-        XCTAssertEqual(imposterResult, expectedResult)
+        #expect(imposterResult == expectedResult)
+
+        try await tearDown()
     }
 
-    func testPostImposterWithExtraOptions() async throws {
+    @Test
+    func postImposterWithExtraOptions() async throws {
         let imposterToPost = Imposter.Examples.withExtraOptionsHttps.value
         let imposterResult = try await sut.postImposter(imposter: imposterToPost)
         guard imposterResult.port != nil else {
-            XCTFail("Port should have been set by now.")
+            Issue.record("Port should have been set by now.")
             return
         }
 
@@ -74,19 +80,22 @@ final class MountebankIntegrationTests: XCTestCase {
             .with(numberOfRequests: 0)
             .with(requests: [])
 
-        XCTAssertEqual(imposterResult, expectedResult)
+        #expect(imposterResult == expectedResult)
+
+        try await tearDown()
     }
 
-    func testGetImposter() async throws {
+    @Test
+    func getImposter() async throws {
         guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
-            throw XCTSkip("Test uses api's that are not supported for your platfrom.")
+            try Test.cancel("Test uses api's that are not supported for your platfrom.")
         }
 
         let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
 
         let path = "/text-200"
-        let url = try XCTUnwrap(
+        let url = try #require(
             sut.makeImposterUrl(port: imposterPort)
                 .appendingPathComponent(path)
                 .appending([URLQueryItem(name: "search", value: "test")])
@@ -98,30 +107,33 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let imposter = try await sut.getImposter(port: imposterPort)
 
-        XCTAssertEqual(imposter.requests?.count, 2)
+        #expect(imposter.requests?.count == 2)
 
-        let firstRequest = try XCTUnwrap(imposter.requests?.first)
+        let firstRequest = try #require(imposter.requests?.first)
 
         // Can not check full request, because client the runner will
         // run on will impact the RecordedRequest contents.
-        XCTAssertEqual(firstRequest.path, path)
-        XCTAssertNil(firstRequest.form)
-        XCTAssertEqual(firstRequest.query, ["search": "test"])
-        XCTAssertEqual(firstRequest.method, .get)
-        XCTAssertFalse(firstRequest.ip.isEmpty)
-        XCTAssertFalse(firstRequest.requestFrom.isEmpty)
+        #expect(firstRequest.path == path)
+        #expect(firstRequest.form == nil)
+        #expect(firstRequest.query == ["search": "test"])
+        #expect(firstRequest.method == .get)
+        #expect(!firstRequest.ip.isEmpty)
+        #expect(!firstRequest.requestFrom.isEmpty)
+
+        try await tearDown()
     }
 
-    func testGetImposterReplayable() async throws {
+    @Test
+    func getImposterReplayable() async throws {
         guard #available(macOS 13.0, iOS 16.0, tvOS 16.0, watchOS 9.0, *) else {
-            throw XCTSkip("Test uses api's that are not supported for your platfrom.")
+            try Test.cancel("Test uses api's that are not supported for your platfrom.")
         }
 
         let imposterPort = try await postDefaultImposter(imposter: Imposter.Examples.simpleRecordRequests.value)
         let httpClient = HttpClient()
 
         let path = "/text-200"
-        let url = try XCTUnwrap(
+        let url = try #require(
             sut.makeImposterUrl(port: imposterPort)
                 .appendingPathComponent(path)
                 .appending([URLQueryItem(name: "search", value: "test")])
@@ -133,14 +145,14 @@ final class MountebankIntegrationTests: XCTestCase {
 
         let imposter = try await sut.getImposter(port: imposterPort, replayable: true)
 
-        XCTAssertNil(imposter.requests)
-        XCTAssertEqual(
-            imposter,
-            Imposter.Examples.simpleRecordRequests.value
-        )
+        #expect(imposter.requests == nil)
+        #expect(imposter == Imposter.Examples.simpleRecordRequests.value)
+
+        try await tearDown()
     }
 
-    func testUpdatingStub() async throws {
+    @Test
+    func updatingStub() async throws {
         let port = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
         let updatedImposterResult = try await sut.postImposterStub(
             stub: AddStub.Examples.addInjectStubFirstIndex.value.stub,
@@ -148,37 +160,45 @@ final class MountebankIntegrationTests: XCTestCase {
             port: port
         )
 
-        XCTAssertEqual(updatedImposterResult.stubs.count, 2)
-        XCTAssertEqual(updatedImposterResult.stubs.first, Imposter.Examples.simple.value.stubs.first)
-        XCTAssertEqual(updatedImposterResult.stubs.last, AddStub.Examples.addInjectStubFirstIndex.value.stub)
+        #expect(updatedImposterResult.stubs.count == 2)
+        #expect(updatedImposterResult.stubs.first == Imposter.Examples.simple.value.stubs.first)
+        #expect(updatedImposterResult.stubs.last == AddStub.Examples.addInjectStubFirstIndex.value.stub)
+        try await tearDown()
     }
 
-    func testPutImposters() async throws {
+    @Test
+    func putImposters() async throws {
         _ = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
         let updatedImpostersResult = try await sut.putImposters(imposters: Imposters.Examples.single.value.imposters)
 
-        let postedFirstImposter = try XCTUnwrap(Imposters.Examples.single.value.imposters.first)
+        let postedFirstImposter = try #require(Imposters.Examples.single.value.imposters.first)
         let expectedResult = postedFirstImposter
             .with(numberOfRequests: 0)
             .with(requests: nil)
 
-        XCTAssertEqual(updatedImpostersResult.count, 1)
-        XCTAssertEqual(updatedImpostersResult.first, expectedResult)
+        #expect(updatedImpostersResult.count == 1)
+        #expect(updatedImpostersResult.first == expectedResult)
+
+        try await tearDown()
     }
 
-    func testUpdatingImposter() async throws {
+    @Test
+    func updatingImposter() async throws {
         let port = try await postDefaultImposter(imposter: Imposter.Examples.simple.value)
         let imposter = try await sut.getImposter(port: port)
-        XCTAssertEqual(imposter.stubs, Imposter.Examples.simple.value.stubs)
+        #expect(imposter.stubs == Imposter.Examples.simple.value.stubs)
 
         let updatedImposterResult = try await sut.putImposterStubs(
             stubs: Imposter.Examples.advanced.value.stubs,
             port: port
         )
-        XCTAssertEqual(updatedImposterResult.stubs, Imposter.Examples.advanced.value.stubs)
+        #expect(updatedImposterResult.stubs == Imposter.Examples.advanced.value.stubs)
+
+        try await tearDown()
     }
 
-    func testGetAllImposters() async throws {
+    @Test
+    func getAllImposters() async throws {
         let imposter1 = try await sut.postImposter(imposter: Imposter.Examples.advanced.value)
         let imposter2 = try await sut.postImposter(imposter: Imposter.Examples.simple.value)
         let allImposters = try await sut.getAllImposters(replayable: true)
@@ -188,21 +208,27 @@ final class MountebankIntegrationTests: XCTestCase {
             imposter2.with(numberOfRequests: nil).with(requests: nil),
         ]
 
-        XCTAssertEqual(allImposters, expectedResult)
-        XCTAssertEqual(allImposters, expectedResult)
+        #expect(allImposters == expectedResult)
+        #expect(allImposters == expectedResult)
+
+        try await tearDown()
     }
 
-    func testDeleteAllImposters() async throws {
+    @Test
+    func deleteAllImposters() async throws {
         try await sut.postImposter(imposter: Imposter.Examples.advanced.value)
         try await sut.postImposter(imposter: Imposter.Examples.simple.value)
         try await sut.deleteAllImposters()
 
         let allImposters = try await sut.getAllImposters()
 
-        XCTAssertEqual(allImposters.count, 0)
+        #expect(allImposters.count == 0)
+
+        try await tearDown()
     }
 
-    func testDeleteSavedProxyResponses() async throws {
+    @Test
+    func deleteSavedProxyResponses() async throws {
         let imposterResult = try await sut.postImposter(imposter: Imposter(
             port: nil,
             networkProtocol: .https(),
@@ -213,18 +239,21 @@ final class MountebankIntegrationTests: XCTestCase {
             )]
         ))
         guard let port = imposterResult.port else {
-            XCTFail("Port should have been set by now.")
+            Issue.record("Port should have been set by now.")
             return
         }
 
         let response = try await sut.deleteSavedProxyResponses(port: port)
 
-        XCTAssertEqual(response.stubs.count, 1)
+        #expect(response.stubs.count == 1)
+
+        try await tearDown()
     }
 
     // Use this test to verify in your browser that all these content types are encoded properly
     // Put a breakpoint after the `postImposter` call and check for example http://localhost:1234/sample.png
-    func testDifferentResponseBodyTypes() async throws {
+    @Test
+    func differentResponseBodyTypes() async throws {
         let sampleFiles = [
             SampleFile.png,
             SampleFile.jpg,
@@ -257,13 +286,22 @@ final class MountebankIntegrationTests: XCTestCase {
             (stub.responses.first as? Is)?.body
         }
 
-        XCTAssertEqual(sampleFiles.map(\.body), stubBodies)
+        #expect(sampleFiles.map(\.body) == stubBodies)
+
+        try await tearDown()
+    }
+
+    private func tearDown() async throws {
+        try await sut.deleteAllImposters()
+
+        sut = nil
+
     }
 
     private func postDefaultImposter(imposter: Imposter) async throws -> Int {
         let imposterResult = try await sut.postImposter(imposter: imposter)
         guard let port = imposterResult.port else {
-            XCTFail("Port should have been set by now.")
+            Issue.record("Port should have been set by now.")
             return 0
         }
 
