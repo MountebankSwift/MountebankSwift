@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,10 +6,10 @@ import PackageDescription
 let package = Package(
     name: "MountebankSwift",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v12),
+        .iOS(.v15),
+        .macOS(.v13),
         .tvOS(.v16),
-        .watchOS(.v9),
+        .watchOS(.v10),
     ],
     products: [
         .library(
@@ -20,7 +20,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.5.0"),
         // Build does fail with swift 6.3 with version 1.19.2. This is the latest working version.
-        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.18.7"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", exact: "1.19.6"),
     ],
     targets: [
         .target(
