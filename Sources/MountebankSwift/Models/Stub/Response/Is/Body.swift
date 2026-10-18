@@ -26,7 +26,10 @@ public enum Body: Equatable, Sendable {
                 return false
             }
             do {
-                return try (lhsEncoder ?? jsonEncoder).encode(lhs) == (rhsEncoder ?? jsonEncoder).encode(rhs)
+                // Compare decoded JSON instead of raw bytes, JSONEncoder doesn't guarantee a stable key order
+                let lhsJSON = try jsonDecoder.decode(JSON.self, from: (lhsEncoder ?? jsonEncoder).encode(lhs))
+                let rhsJSON = try jsonDecoder.decode(JSON.self, from: (rhsEncoder ?? jsonEncoder).encode(rhs))
+                return lhsJSON == rhsJSON
             } catch {
                 print("[Mountebank]: ❌ Failed to encode object: \(error)")
                 return false

@@ -30,7 +30,8 @@ struct IsInitializersTests {
         #expect(sut.body == .data(bodyData))
     }
 
-    func skip_testInitWithJsonEncodableBody() throws {
+    @Test
+    func initWithJsonEncodableBody() throws {
         let bodyJsonEncodable = SomeCodableObject(
             foo: "foo",
             bar: SomeCodableObject.Bar(baz: "baz")
