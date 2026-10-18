@@ -7,19 +7,19 @@ import Testing
 @testable import MountebankSwift
 
 @Suite(.serialized)
-final class MountebankIntegrationTests {
+struct MountebankIntegrationTests {
 
-    // swiftlint:disable:next implicitly_unwrapped_optional
-    private var sut: Mountebank!
+    private let sut = Mountebank(host: .localhost, port: 2525)
 
     init() async throws {
-        sut = Mountebank(host: .localhost, port: 2525)
-
         do {
             try await sut.testConnection()
         } catch {
             Issue.record("Mountebank needs to be running to run the tests. Start with `mb start`")
         }
+
+        // Clean up before instead of after each test, so a test that failed halfway can't affect the next one
+        try await sut.deleteAllImposters()
     }
 
     @Test
@@ -27,8 +27,6 @@ final class MountebankIntegrationTests {
         let logsResponse = try await sut.getLogs()
 
         #expect(logsResponse.logs.count > 0)
-
-        try await tearDown()
     }
 
     @Test
@@ -36,8 +34,6 @@ final class MountebankIntegrationTests {
         let config = try await sut.getConfig()
 
         #expect(config.version.count > 0)
-
-        try await tearDown()
     }
 
     @Test
@@ -54,8 +50,6 @@ final class MountebankIntegrationTests {
             .with(requests: [])
 
         #expect(imposterResult == expectedResult)
-
-        try await tearDown()
     }
 
     @Test
@@ -81,8 +75,6 @@ final class MountebankIntegrationTests {
             .with(requests: [])
 
         #expect(imposterResult == expectedResult)
-
-        try await tearDown()
     }
 
     @Test
@@ -119,8 +111,6 @@ final class MountebankIntegrationTests {
         #expect(firstRequest.method == .get)
         #expect(!firstRequest.ip.isEmpty)
         #expect(!firstRequest.requestFrom.isEmpty)
-
-        try await tearDown()
     }
 
     @Test
@@ -147,8 +137,6 @@ final class MountebankIntegrationTests {
 
         #expect(imposter.requests == nil)
         #expect(imposter == Imposter.Examples.simpleRecordRequests.value)
-
-        try await tearDown()
     }
 
     @Test
@@ -163,7 +151,6 @@ final class MountebankIntegrationTests {
         #expect(updatedImposterResult.stubs.count == 2)
         #expect(updatedImposterResult.stubs.first == Imposter.Examples.simple.value.stubs.first)
         #expect(updatedImposterResult.stubs.last == AddStub.Examples.addInjectStubFirstIndex.value.stub)
-        try await tearDown()
     }
 
     @Test
@@ -178,8 +165,6 @@ final class MountebankIntegrationTests {
 
         #expect(updatedImpostersResult.count == 1)
         #expect(updatedImpostersResult.first == expectedResult)
-
-        try await tearDown()
     }
 
     @Test
@@ -193,8 +178,6 @@ final class MountebankIntegrationTests {
             port: port
         )
         #expect(updatedImposterResult.stubs == Imposter.Examples.advanced.value.stubs)
-
-        try await tearDown()
     }
 
     @Test
@@ -209,8 +192,6 @@ final class MountebankIntegrationTests {
         ]
 
         #expect(allImposters == expectedResult)
-
-        try await tearDown()
     }
 
     @Test
@@ -222,8 +203,6 @@ final class MountebankIntegrationTests {
         let allImposters = try await sut.getAllImposters()
 
         #expect(allImposters.count == 0)
-
-        try await tearDown()
     }
 
     @Test
@@ -245,8 +224,6 @@ final class MountebankIntegrationTests {
         let response = try await sut.deleteSavedProxyResponses(port: port)
 
         #expect(response.stubs.count == 1)
-
-        try await tearDown()
     }
 
     // Use this test to verify in your browser that all these content types are encoded properly
@@ -286,15 +263,6 @@ final class MountebankIntegrationTests {
         }
 
         #expect(sampleFiles.map(\.body) == stubBodies)
-
-        try await tearDown()
-    }
-
-    private func tearDown() async throws {
-        try await sut.deleteAllImposters()
-
-        sut = nil
-
     }
 
     private func postDefaultImposter(imposter: Imposter) async throws -> Int {

@@ -3,21 +3,14 @@ import Testing
 @testable import MountebankSwift
 
 @Suite
-final class MountebankTests {
+struct MountebankTests {
 
-    // swiftlint:disable implicitly_unwrapped_optional
-    var sut: Mountebank!
-    var httpClientSpy: HttpClientSpy!
-    // swiftlint:enable implicitly_unwrapped_optional
+    let sut: Mountebank
+    let httpClientSpy: HttpClientSpy
 
-    init() async throws {
+    init() {
         httpClientSpy = HttpClientSpy()
         sut = Mountebank(host: .localhost, port: 2525, httpClient: httpClientSpy)
-    }
-
-    deinit {
-        httpClientSpy = nil
-        sut = nil
     }
 
     @Test
