@@ -15,4 +15,4 @@ struct DateFormatterTests {
         #expect(try sut.formatToDate(dateString) == dateObject)
         #expect(sut.formatFromDate(dateObject) == dateString)
     }
-}
+}

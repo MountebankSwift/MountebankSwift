@@ -209,7 +209,6 @@ final class MountebankIntegrationTests {
         ]
 
         #expect(allImposters == expectedResult)
-        #expect(allImposters == expectedResult)
 
         try await tearDown()
     }
