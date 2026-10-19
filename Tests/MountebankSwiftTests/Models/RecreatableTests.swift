@@ -291,7 +291,7 @@ struct RecreatableTests {
     }
 
     @Test
-    func jSON() {
+    func json() {
         let json: JSON = [
             "string": "value",
             "int": 42,

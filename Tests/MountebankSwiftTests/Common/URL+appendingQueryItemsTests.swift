@@ -6,7 +6,6 @@ import Testing
 @testable import MountebankSwift
 
 @Suite
-
 struct URLAppendingQueryItemsTestsTests {
 
     @Test

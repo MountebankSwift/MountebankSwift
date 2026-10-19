@@ -3,7 +3,6 @@ import MountebankSwift
 import Testing
 
 @Suite
-
 struct IsInitializersTests {
 
     @Test
