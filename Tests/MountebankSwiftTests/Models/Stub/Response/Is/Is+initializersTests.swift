@@ -3,7 +3,6 @@ import MountebankSwift
 import Testing
 
 @Suite
-
 struct IsInitializersTests {
 
     @Test
@@ -30,7 +29,8 @@ struct IsInitializersTests {
         #expect(sut.body == .data(bodyData))
     }
 
-    func skip_testInitWithJsonEncodableBody() throws {
+    @Test(.disabled("Disabled because JSONEncoder gives no guaranteed key order"))
+    func initWithJsonEncodableBody() throws {
         let bodyJsonEncodable = SomeCodableObject(
             foo: "foo",
             bar: SomeCodableObject.Bar(baz: "baz")

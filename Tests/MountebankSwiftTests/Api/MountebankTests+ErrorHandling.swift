@@ -48,11 +48,10 @@ extension MountebankTests {
 
     private func assertErrorOnGetAllImposters(
         mountebankError: MountebankValidationError,
-        line: UInt = #line,
-        file: StaticString = #filePath
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async throws {
-        await #expect(throws: mountebankError, performing: {
+        await #expect(throws: mountebankError, sourceLocation: sourceLocation) {
             try await sut.getAllImposters()
-        })
+        }
     }
 }

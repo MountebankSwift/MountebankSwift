@@ -42,7 +42,7 @@ struct PredicateParametersTests {
     }
 
     @Test
-    func jSONPath() throws {
+    func jsonPath() throws {
         try assertEncode(
             PredicateParameters.Examples.jsonPath.value,
             PredicateParameters.Examples.jsonPath.json

@@ -1,4 +1,3 @@
-import Testing
 @testable import MountebankSwift
 
 extension MountebankErrors {

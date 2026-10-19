@@ -19,7 +19,7 @@ struct StubTests {
     }
 
     @Test
-    func jSON() throws {
+    func json() throws {
         try assertEncode(
             Stub.Examples.json.value,
             Stub.Examples.json.json
@@ -31,7 +31,7 @@ struct StubTests {
     }
 
     @Test
-    func hTTP404() throws {
+    func http404() throws {
         try assertEncode(
             Stub.Examples.http404.value,
             Stub.Examples.http404.json
