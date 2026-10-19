@@ -29,7 +29,7 @@ struct IsInitializersTests {
         #expect(sut.body == .data(bodyData))
     }
 
-    @Test(.disabled("Disabled because JSONEncoder gives no guaranteed key order"))
+    @Test
     func initWithJsonEncodableBody() throws {
         let bodyJsonEncodable = SomeCodableObject(
             foo: "foo",
