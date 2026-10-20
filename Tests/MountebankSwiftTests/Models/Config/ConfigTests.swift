@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class ConfigTests: XCTestCase {
-    func testEquals() throws {
+@Suite
+struct ConfigTests {
+
+    @Test
+    func equals() throws {
         try assertEncode(
             Config.Examples.simple.value,
             Config.Examples.simple.json

@@ -1,5 +1,5 @@
-import XCTest
 import MountebankSwift
+import XCTest
 
 final class FeedUITests: XCTestCase {
     let mountebank = Mountebank()

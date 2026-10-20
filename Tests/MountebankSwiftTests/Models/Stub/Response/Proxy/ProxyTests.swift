@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class ProxyTests: XCTestCase {
-    func testSimpleProxy() throws {
+@Suite
+struct ProxyTests {
+
+    @Test
+    func simpleProxy() throws {
         try assertEncode(
             Proxy.Examples.simple.value,
             Proxy.Examples.simple.json
@@ -14,7 +17,8 @@ final class ProxyTests: XCTestCase {
         )
     }
 
-    func testAdvancedProxy() throws {
+    @Test
+    func advancedProxy() throws {
         try assertEncode(
             Proxy.Examples.advanced.value,
             Proxy.Examples.advanced.json
@@ -25,7 +29,8 @@ final class ProxyTests: XCTestCase {
         )
     }
 
-    func testPredicateGeneratorsProxy() throws {
+    @Test
+    func predicateGeneratorsProxy() throws {
         try assertEncode(
             Proxy.Examples.predicateGenerators.value,
             Proxy.Examples.predicateGenerators.json

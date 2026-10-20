@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class FaultTests: XCTestCase {
-    func testFaultConnectionResetByPeer() throws {
+@Suite
+struct FaultTests {
+
+    @Test
+    func faultConnectionResetByPeer() throws {
         try assertEncode(
             Fault.Examples.connectionResetByPeer.value,
             Fault.Examples.connectionResetByPeer.json
@@ -14,7 +17,8 @@ final class FaultTests: XCTestCase {
         )
     }
 
-    func testFaultRandomDataThenClose() throws {
+    @Test
+    func faultRandomDataThenClose() throws {
         try assertEncode(
             Fault.Examples.randomDataThenClose.value,
             Fault.Examples.randomDataThenClose.json

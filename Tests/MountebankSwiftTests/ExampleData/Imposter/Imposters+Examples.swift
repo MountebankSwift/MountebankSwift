@@ -1,4 +1,3 @@
-import XCTest
 @testable import MountebankSwift
 
 extension Imposters {

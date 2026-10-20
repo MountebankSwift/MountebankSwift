@@ -1,9 +1,11 @@
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-final class MountebankErrorsTests: XCTestCase {
+@Suite
+struct MountebankErrorsTests {
 
-    func testEqualsSingle() throws {
+    @Test
+    func equalsSingle() throws {
         try assertEncode(
             MountebankErrors.Examples.single.value,
             MountebankErrors.Examples.single.json
@@ -14,7 +16,8 @@ final class MountebankErrorsTests: XCTestCase {
         )
     }
 
-    func testEqualsMultiple() throws {
+    @Test
+    func equalsMultiple() throws {
         try assertEncode(
             MountebankErrors.Examples.multiple.value,
             MountebankErrors.Examples.multiple.json

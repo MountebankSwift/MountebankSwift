@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class ResponseParametersTests: XCTestCase {
-    func testRepeating() throws {
+@Suite
+struct ResponseParametersTests {
+
+    @Test
+    func repeating() throws {
         try assertEncode(
             ResponseParameters.Examples.repeating.value,
             ResponseParameters.Examples.repeating.json
@@ -14,7 +17,8 @@ final class ResponseParametersTests: XCTestCase {
         )
     }
 
-    func testBehaviors() throws {
+    @Test
+    func behaviors() throws {
         try assertEncode(
             ResponseParameters.Examples.behaviors.value,
             ResponseParameters.Examples.behaviors.json
@@ -25,7 +29,8 @@ final class ResponseParametersTests: XCTestCase {
         )
     }
 
-    func testFull() throws {
+    @Test
+    func full() throws {
         try assertEncode(
             ResponseParameters.Examples.full.value,
             ResponseParameters.Examples.full.json

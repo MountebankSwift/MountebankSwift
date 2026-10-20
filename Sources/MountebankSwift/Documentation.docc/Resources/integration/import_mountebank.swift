@@ -9,7 +9,7 @@ final class MyUITests: XCTestCase {
         try await mountebank.postImposter(imposter: imposter)
 
         let app = XCUIApplication()
-        app.launchEnvironment = [“apiHost”: "http://localhost:1234"]
+        app.launchEnvironment = ["apiHost": "http://localhost:1234"]
         app.launch()
 
         // Run UI test steps

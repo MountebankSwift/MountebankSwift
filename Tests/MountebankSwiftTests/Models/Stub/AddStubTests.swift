@@ -1,9 +1,12 @@
 @testable import MountebankSwift
 
-import XCTest
+import Testing
 
-final class AddStubTests: XCTestCase {
-    func testText() throws {
+@Suite
+struct AddStubTests {
+
+    @Test
+    func text() throws {
         try assertEncode(
             AddStub.Examples.addInjectStubFirstIndex.value,
             AddStub.Examples.addInjectStubFirstIndex.json

@@ -1,9 +1,12 @@
 import MountebankSwift
 
-import XCTest
+import Testing
 
-final class PredicateGeneratorTests: XCTestCase {
-    func testSimple() throws {
+@Suite
+struct PredicateGeneratorTests {
+
+    @Test
+    func simple() throws {
         try assertEncode(
             PredicateGenerator.Examples.simple.value,
             PredicateGenerator.Examples.simple.json
@@ -14,7 +17,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testNestedFields() throws {
+    @Test
+    func nestedFields() throws {
         try assertEncode(
             PredicateGenerator.Examples.nestedFields.value,
             PredicateGenerator.Examples.nestedFields.json
@@ -25,7 +29,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testAdvanced() throws {
+    @Test
+    func advanced() throws {
         try assertEncode(
             PredicateGenerator.Examples.advanced.value,
             PredicateGenerator.Examples.advanced.json
@@ -36,7 +41,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testJsonPath() throws {
+    @Test
+    func jsonPath() throws {
         try assertEncode(
             PredicateGenerator.Examples.jsonPath.value,
             PredicateGenerator.Examples.jsonPath.json
@@ -47,7 +53,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testXPath() throws {
+    @Test
+    func xPath() throws {
         try assertEncode(
             PredicateGenerator.Examples.xPath.value,
             PredicateGenerator.Examples.xPath.json
@@ -58,7 +65,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testInject() throws {
+    @Test
+    func inject() throws {
         try assertEncode(
             PredicateGenerator.Examples.inject.value,
             PredicateGenerator.Examples.inject.json
@@ -69,7 +77,8 @@ final class PredicateGeneratorTests: XCTestCase {
         )
     }
 
-    func testAdvancedProxy() throws {
+    @Test
+    func advancedProxy() throws {
         try assertEncode(
             Proxy.Examples.advanced.value,
             Proxy.Examples.advanced.json

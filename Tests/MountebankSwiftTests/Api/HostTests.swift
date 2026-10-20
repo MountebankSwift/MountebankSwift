@@ -1,19 +1,22 @@
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-final class HostTests: XCTestCase {
+@Suite
+struct HostTests {
 
-    func testMapLocalhost() {
+    @Test
+    func mapLocalhost() {
         let sut = Host.localhost
 
-        XCTAssertEqual(sut.rawValue, "127.0.0.1")
+        #expect(sut.rawValue == "127.0.0.1")
     }
 
-    func testMap() {
+    @Test
+    func map() {
         let customHost = "19.10.01.10"
         let sut = Host.custom(customHost)
 
-        XCTAssertEqual(sut.rawValue, customHost)
+        #expect(sut.rawValue == customHost)
     }
 
 }

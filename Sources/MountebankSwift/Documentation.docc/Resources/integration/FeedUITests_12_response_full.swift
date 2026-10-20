@@ -19,8 +19,8 @@ let listsImposter = Imposter(
                         description: "Exclusive podcast from Rolling Stone",
                         id: "852a66f0-bdf4-013c-5160-0acc26574db2",
                         url: "https://www.iheart.com/podcast/1119-rolling-stones-500-greate-156412458/"
-                    )
-                ]))
+                    ),
+                ])),
             ]
             predicate: .equals(Request(method: .get, path: "/trending.json"))
         ),

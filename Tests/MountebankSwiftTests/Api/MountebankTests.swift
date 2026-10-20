@@ -1,37 +1,31 @@
 import Foundation
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-class MountebankTests: XCTestCase {
+@Suite
+struct MountebankTests {
 
-    // swiftlint:disable implicitly_unwrapped_optional
-    var sut: Mountebank!
-    var httpClientSpy: HttpClientSpy!
-    // swiftlint:enable implicitly_unwrapped_optional
+    let sut: Mountebank
+    let httpClientSpy: HttpClientSpy
 
-    override func setUp() async throws {
+    init() {
         httpClientSpy = HttpClientSpy()
         sut = Mountebank(host: .localhost, port: 2525, httpClient: httpClientSpy)
     }
 
-    override func tearDown() async throws {
-        httpClientSpy = nil
-        sut = nil
-    }
-
-    func testGetImposter() async throws {
+    @Test
+    func getImposter() async throws {
         let imposter = Imposter.Examples.simple
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.getImposter(port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
-        XCTAssertEqual(
-            httpClientSpy.httpRequestReceivedRequest,
-            HTTPRequest(
+        #expect(httpClientSpy.httpRequestCalled)
+        #expect(
+            httpClientSpy.httpRequestReceivedRequest == HTTPRequest(
                 url: Endpoint
                     .getImposter(
                         port: port,
@@ -44,167 +38,182 @@ class MountebankTests: XCTestCase {
         )
     }
 
-    func testGetAllImposter() async throws {
+    @Test
+    func getAllImposter() async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
         let result = try await sut.getAllImposters()
-        XCTAssertEqual(imposters.value.imposters, result)
+        #expect(imposters.value.imposters == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testPostImposter() async throws {
+    @Test
+    func postImposter() async throws {
         let imposter = Imposter.Examples.simple
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.postImposter(imposter: imposter.value)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
 
     }
 
-    func testPutImposters() async throws {
+    @Test
+    func putImposters() async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
         let result = try await sut.putImposters(imposters: imposters.value.imposters)
-        XCTAssertEqual(imposters.value.imposters, result)
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(imposters.value.imposters == result)
+        #expect(httpClientSpy.httpRequestCalled)
 
     }
 
-    func testPostImposterStub() async throws {
+    @Test
+    func postImposterStub() async throws {
         let stub = Stub.Examples.json
         let imposter = Imposter.Examples.json
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.postImposterStub(stub: stub.value, port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
 
     }
 
-    func testDeleteImposterAsync() async throws {
+    @Test
+    func deleteImposterAsync() async throws {
         let imposter = Imposter.Examples.json
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.deleteImposter(port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
 
     }
 
-    func testDeleteAllImposters() async throws {
+    @Test
+    func deleteAllImposters() async throws {
         let imposters = Imposters.Examples.single
         let impostersData = try makeDataFromJSON(imposters.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: impostersData, statusCode: .accepted)
 
         let result = try await sut.deleteAllImposters()
-        XCTAssertEqual(imposters.value.imposters, result)
+        #expect(imposters.value.imposters == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testMakeImposterUrl() {
+    @Test
+    func makeImposterUrl() {
         let result = sut.makeImposterUrl(port: 1010)
-        XCTAssertEqual(result, URL(string: "http://localhost:1010"))
+        #expect(result == URL(string: "http://localhost:1010"))
     }
 
-    func testPutImposterStubs() async throws {
+    @Test
+    func putImposterStubs() async throws {
         let imposter = Imposter.Examples.advanced
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.putImposterStubs(stubs: imposter.value.stubs, port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testDeleteStub() async throws {
+    @Test
+    func deleteStub() async throws {
         let imposter = Imposter.Examples.advanced
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.deleteStub(port: port, stubIndex: 0)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testPutImposterStub() async throws {
+    @Test
+    func putImposterStub() async throws {
         let imposter = Imposter.Examples.advanced
-        let port = try XCTUnwrap(imposter.value.port)
-        let stub = try XCTUnwrap(imposter.value.stubs.last)
+        let port = try #require(imposter.value.port)
+        let stub = try #require(imposter.value.stubs.last)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.putImposterStub(stub: stub, port: port, stubIndex: 0)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testDeleteSavedProxyResponses() async throws {
+    @Test
+    func deleteSavedProxyResponses() async throws {
         let imposter = Imposter.Examples.advanced
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.deleteSavedProxyResponses(port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testDeleteSavedRequests() async throws {
+    @Test
+    func deleteSavedRequests() async throws {
         let imposter = Imposter.Examples.advanced
-        let port = try XCTUnwrap(imposter.value.port)
+        let port = try #require(imposter.value.port)
         let imposterData = try makeDataFromJSON(imposter.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: imposterData, statusCode: .accepted)
 
         let result = try await sut.deleteSavedRequests(port: port)
-        XCTAssertEqual(imposter.value, result)
+        #expect(imposter.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testGetConfig() async throws {
+    @Test
+    func getConfig() async throws {
         let config = Config.Examples.simple
         let configData = try makeDataFromJSON(config.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: configData, statusCode: .accepted)
 
         let result = try await sut.getConfig()
-        XCTAssertEqual(config.value, result)
+        #expect(config.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testGetLogs() async throws {
+    @Test
+    func getLogs() async throws {
         let logs = Logs.Examples.simple
         let logsData = try makeDataFromJSON(logs.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: logsData, statusCode: .accepted)
 
         let result = try await sut.getLogs()
-        XCTAssertEqual(logs.value, result)
+        #expect(logs.value == result)
 
-        XCTAssertTrue(httpClientSpy.httpRequestCalled)
+        #expect(httpClientSpy.httpRequestCalled)
     }
 
-    func testTestConnection() async throws {
+    @Test
+    func testConnection() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data(), statusCode: .accepted)
 
         try await sut.testConnection()

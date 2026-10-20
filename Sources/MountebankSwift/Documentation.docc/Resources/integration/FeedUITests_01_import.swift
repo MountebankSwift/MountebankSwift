@@ -1,5 +1,5 @@
-import XCTest
 import MountebankSwift
+import XCTest
 
 final class FeedUITests: XCTestCase {
 
@@ -10,4 +10,3 @@ final class FeedUITests: XCTestCase {
         // Run UI test steps
     }
 }
-

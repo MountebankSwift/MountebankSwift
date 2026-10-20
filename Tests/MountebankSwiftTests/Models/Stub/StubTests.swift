@@ -1,10 +1,13 @@
 import InlineSnapshotTesting
-import XCTest
+import Testing
 
 @testable import MountebankSwift
 
-final class StubTests: XCTestCase {
-    func testText() throws {
+@Suite
+struct StubTests {
+
+    @Test
+    func text() throws {
         try assertEncode(
             Stub.Examples.text.value,
             Stub.Examples.text.json
@@ -15,7 +18,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testJSON() throws {
+    @Test
+    func json() throws {
         try assertEncode(
             Stub.Examples.json.value,
             Stub.Examples.json.json
@@ -26,7 +30,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testHTTP404() throws {
+    @Test
+    func http404() throws {
         try assertEncode(
             Stub.Examples.http404.value,
             Stub.Examples.http404.json
@@ -37,7 +42,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testInjections() throws {
+    @Test
+    func injections() throws {
         try assertEncode(
             Stub.Examples.injections.value,
             Stub.Examples.injections.json
@@ -48,7 +54,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testMultipleResponses() throws {
+    @Test
+    func multipleResponses() throws {
         try assertEncode(
             Stub.Examples.textWhenRefresh404.value,
             Stub.Examples.textWhenRefresh404.json
@@ -59,7 +66,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testMultiplePredicatesAndResponses() throws {
+    @Test
+    func multiplePredicatesAndResponses() throws {
         try assertEncode(
             Stub.Examples.multiplePredicatesAndResponses.value,
             Stub.Examples.multiplePredicatesAndResponses.json
@@ -70,7 +78,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testWithResponseParameters() throws {
+    @Test
+    func withResponseParameters() throws {
         try assertEncode(
             Stub.Examples.withResponseParameters.value,
             Stub.Examples.withResponseParameters.json
@@ -81,7 +90,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testNoPredicates() throws {
+    @Test
+    func noPredicates() throws {
         try assertEncode(
             Stub.Examples.noPredicates.value,
             Stub.Examples.noPredicates.json
@@ -92,7 +102,8 @@ final class StubTests: XCTestCase {
         )
     }
 
-    func testRecreatable() {
+    @Test
+    func recreatable() {
         assertInlineSnapshot(
             of: Stub.Examples.text.value.recreatable(indent: 0),
             as: .lines
@@ -110,7 +121,8 @@ final class StubTests: XCTestCase {
     }
 
     // swiftlint:disable line_length
-    func testRecreatableAllStubs() {
+    @Test
+    func recreatableAllStubs() {
         assertInlineSnapshot(
             of: Stub.Examples.all.map(\.value).recreatable(indent: 0),
             as: .lines

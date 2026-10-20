@@ -1,9 +1,11 @@
 import Foundation
-import XCTest
+import Testing
 @testable import MountebankSwift
 
 extension MountebankTests {
-    func testGetAllImposterRemoteError() async throws {
+
+    @Test
+    func getAllImposterRemoteError() async throws {
         let mountebankErrors = MountebankErrors.Examples.single
         let mountebankErrorsData = try makeDataFromJSON(mountebankErrors.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mountebankErrorsData, statusCode: .badRequest)
@@ -13,7 +15,8 @@ extension MountebankTests {
         )
     }
 
-    func testInvalidResponseGetAllImposter() async throws {
+    @Test
+    func invalidResponseGetAllImposter() async throws {
         let mountebankErrors = MountebankErrors.Examples.single
         let mountebankErrorsData = try makeDataFromJSON(mountebankErrors.json)
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: mountebankErrorsData, statusCode: .accepted)
@@ -23,7 +26,8 @@ extension MountebankTests {
         )
     }
 
-    func testInvalidErrorMapping() async throws {
+    @Test
+    func invalidErrorMapping() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("[]".utf8), statusCode: .internalServerError)
 
         try await assertErrorOnGetAllImposters(
@@ -31,7 +35,8 @@ extension MountebankTests {
         )
     }
 
-    func testInvalidResponseFromInvalidStringGetAllImposter() async throws {
+    @Test
+    func invalidResponseFromInvalidStringGetAllImposter() async throws {
         httpClientSpy.httpRequestReturnValue = HTTPResponse(body: Data("invalid".utf8), statusCode: .accepted)
 
         try await assertErrorOnGetAllImposters(
@@ -43,16 +48,10 @@ extension MountebankTests {
 
     private func assertErrorOnGetAllImposters(
         mountebankError: MountebankValidationError,
-        line: UInt = #line,
-        file: StaticString = #filePath
+        sourceLocation: SourceLocation = #_sourceLocation
     ) async throws {
-        await XCTAssertThrowsErrorAsync(try await sut.getAllImposters()) { error in
-            XCTAssertEqual(
-                error as? MountebankValidationError,
-                mountebankError,
-                file: file,
-                line: line
-            )
+        await #expect(throws: mountebankError, sourceLocation: sourceLocation) {
+            try await sut.getAllImposters()
         }
     }
 }

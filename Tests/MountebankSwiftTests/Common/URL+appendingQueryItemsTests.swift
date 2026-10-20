@@ -2,29 +2,33 @@
 import FoundationNetworking
 #endif
 import Foundation
-import XCTest
+import Testing
 @testable import MountebankSwift
 
-class URLAppendingQueryItemsTestsTests: XCTestCase {
+@Suite
+struct URLAppendingQueryItemsTestsTests {
 
-    func testNoQueryItem() {
+    @Test
+    func noQueryItem() {
         let sut = URL(string: "http://localhost")?.appending([])
 
-        XCTAssertEqual(sut, URL(string: "http://localhost"))
+        #expect(sut == URL(string: "http://localhost"))
     }
 
-    func testSingleQueryItem() {
+    @Test
+    func singleQueryItem() {
         let sut = URL(string: "http://localhost")?.appending([URLQueryItem(name: "name", value: "value")])
 
-        XCTAssertEqual(sut, URL(string: "http://localhost?name=value"))
+        #expect(sut == URL(string: "http://localhost?name=value"))
     }
 
-    func testMultipleQueryItems() {
+    @Test
+    func multipleQueryItems() {
         let sut = URL(string: "http://localhost")?.appending([
             URLQueryItem(name: "name1", value: "value1"),
             URLQueryItem(name: "name2", value: "value2"),
         ])
 
-        XCTAssertEqual(sut, URL(string: "http://localhost?name1=value1&name2=value2"))
+        #expect(sut == URL(string: "http://localhost?name1=value1&name2=value2"))
     }
 }

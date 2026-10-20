@@ -1,5 +1,5 @@
-import XCTest
 import MountebankSwift
+import XCTest
 
 final class FeedUITests: XCTestCase {
     // Mountebank client to communicate with our Mountebank instance running on http://localhost:2525/

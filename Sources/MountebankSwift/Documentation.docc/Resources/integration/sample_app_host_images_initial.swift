@@ -5,7 +5,7 @@ enum Host {
 
     static var lists: URL {
         uiTestingListApiHost ??
-        URL(string: "https://lists.pocketcasts.com")!
+            URL(string: "https://lists.pocketcasts.com")!
     }
 
     static var images: String {
